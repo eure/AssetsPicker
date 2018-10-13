@@ -15,6 +15,7 @@
 		4BCA988D2171EA3D0048826A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA988B2171EA3D0048826A /* Main.storyboard */; };
 		4BCA988F2171EA400048826A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA988E2171EA400048826A /* Assets.xcassets */; };
 		4BCA98922171EA400048826A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA98902171EA400048826A /* LaunchScreen.storyboard */; };
+		4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA98992171EBFA0048826A /* AssetsPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		4BCA988E2171EA400048826A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4BCA98912171EA400048826A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4BCA98932171EA400048826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BCA98992171EBFA0048826A /* AssetsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			children = (
 				4BCA986A2171E9E80048826A /* AssetsPicker.h */,
 				4BCA986B2171E9E80048826A /* Info.plist */,
+				4BCA98992171EBFA0048826A /* AssetsPicker.swift */,
 			);
 			path = AssetsPicker;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				TargetAttributes = {
 					4BCA98662171E9E80048826A = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1000;
 					};
 					4BCA986F2171E9E80048826A = {
 						CreatedOnToolsVersion = 10.0;
@@ -276,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +456,7 @@
 		4BCA987C2171E9E80048826A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -467,6 +473,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.eure.AssetsPicker;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -475,6 +482,7 @@
 		4BCA987D2171E9E80048826A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -499,6 +507,7 @@
 		4BCA987F2171E9E80048826A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/AssetsPickerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -516,6 +525,7 @@
 		4BCA98802171E9E80048826A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Tests/AssetsPickerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
