@@ -16,6 +16,9 @@
 		4BCA988F2171EA400048826A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA988E2171EA400048826A /* Assets.xcassets */; };
 		4BCA98922171EA400048826A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA98902171EA400048826A /* LaunchScreen.storyboard */; };
 		4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA98992171EBFA0048826A /* AssetsPicker.swift */; };
+		4BCA989D2171ED560048826A /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA989C2171ED560048826A /* Photos.framework */; };
+		4BCA989E2171ED5E0048826A /* AssetsPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* AssetsPicker.framework */; };
+		4BCA989F2171ED5E0048826A /* AssetsPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* AssetsPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,7 +29,28 @@
 			remoteGlobalIDString = 4BCA98662171E9E80048826A;
 			remoteInfo = AssetsPicker;
 		};
+		4BCA98A02171ED5E0048826A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BCA985E2171E9E80048826A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4BCA98662171E9E80048826A;
+			remoteInfo = AssetsPicker;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4BCA98A22171ED5E0048826A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4BCA989F2171ED5E0048826A /* AssetsPicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4BCA98672171E9E80048826A /* AssetsPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AssetsPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,6 +67,7 @@
 		4BCA98912171EA400048826A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4BCA98932171EA400048826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BCA98992171EBFA0048826A /* AssetsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsPicker.swift; sourceTree = "<group>"; };
+		4BCA989C2171ED560048826A /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BCA989D2171ED560048826A /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BCA989E2171ED5E0048826A /* AssetsPicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +104,7 @@
 				4BCA98972171EA4C0048826A /* Sources */,
 				4BCA98982171EA570048826A /* Tests */,
 				4BCA98682171E9E80048826A /* Products */,
+				4BCA989B2171ED560048826A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,6 +167,14 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		4BCA989B2171ED560048826A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4BCA989C2171ED560048826A /* Photos.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -196,10 +232,12 @@
 				4BCA98812171EA3D0048826A /* Sources */,
 				4BCA98822171EA3D0048826A /* Frameworks */,
 				4BCA98832171EA3D0048826A /* Resources */,
+				4BCA98A22171ED5E0048826A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4BCA98A12171ED5E0048826A /* PBXTargetDependency */,
 			);
 			name = Demo;
 			productName = Demo;
@@ -308,6 +346,11 @@
 			isa = PBXTargetDependency;
 			target = 4BCA98662171E9E80048826A /* AssetsPicker */;
 			targetProxy = 4BCA98722171E9E80048826A /* PBXContainerItemProxy */;
+		};
+		4BCA98A12171ED5E0048826A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4BCA98662171E9E80048826A /* AssetsPicker */;
+			targetProxy = 4BCA98A02171ED5E0048826A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -543,6 +586,7 @@
 		4BCA98952171EA400048826A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Demo/Info.plist";
@@ -561,6 +605,7 @@
 		4BCA98962171EA400048826A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Demo/Info.plist";
