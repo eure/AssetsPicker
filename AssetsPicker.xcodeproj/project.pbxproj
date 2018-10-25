@@ -24,6 +24,7 @@
 		5A52127E2181B23A00DA0259 /* UIKit+Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52127A2181B23A00DA0259 /* UIKit+Observable.swift */; };
 		5A52127F2181B23A00DA0259 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52127B2181B23A00DA0259 /* Observable.swift */; };
 		5A5212822181B27100DA0259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212812181B27100DA0259 /* BaseViewController.swift */; };
+		5A5212852181B2A400DA0259 /* PhotoPicker.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212842181B2A400DA0259 /* PhotoPicker.Configuration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		5A52127A2181B23A00DA0259 /* UIKit+Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit+Observable.swift"; sourceTree = "<group>"; };
 		5A52127B2181B23A00DA0259 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		5A5212812181B27100DA0259 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		5A5212842181B2A400DA0259 /* PhotoPicker.Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPicker.Configuration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 		4BCA98692171E9E80048826A /* AssetsPicker */ = {
 			isa = PBXGroup;
 			children = (
+				5A5212832181B2A400DA0259 /* Configuration */,
 				5A5212802181B26600DA0259 /* ViewControllers */,
 				5A5212772181B23A00DA0259 /* Core */,
 				4BCA986A2171E9E80048826A /* AssetsPicker.h */,
@@ -204,6 +207,14 @@
 				5A5212812181B27100DA0259 /* BaseViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		5A5212832181B2A400DA0259 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				5A5212842181B2A400DA0259 /* PhotoPicker.Configuration.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -349,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A5212852181B2A400DA0259 /* PhotoPicker.Configuration.swift in Sources */,
 				5A52127D2181B23A00DA0259 /* Link.swift in Sources */,
 				5A52127F2181B23A00DA0259 /* Observable.swift in Sources */,
 				5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */,
