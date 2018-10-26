@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public struct PhotosPicker {}
+public enum PhotosPicker {}
 
 public protocol PhotosPickerDelegate: class {
     func photoPicker(_ pickerController: PhotosPicker.ViewController, didPickImages images: [UIImage])
