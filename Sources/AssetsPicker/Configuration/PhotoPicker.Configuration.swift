@@ -26,6 +26,8 @@ extension PhotosPicker {
             case multiple(limit: Int)
         }
         
+        // config of collection view height and detail number of column
+        
         /// Single of multiple select
         public let selectionMode: SelectionMode
         

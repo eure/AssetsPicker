@@ -11,7 +11,7 @@ import UIKit
 
 extension PhotosPicker.AssetsCollectionViewController {
     
-    public final class Cell: UICollectionViewCell {
+    final class Cell: UICollectionViewCell {
         
         // MARK: Properties
         
@@ -83,8 +83,7 @@ extension PhotosPicker.AssetsCollectionViewController {
             super.prepareForReuse()
             
             cellViewModel?.cancelLatestImageIfNeeded()
-            cellViewModel?.firstAssetInCollection.purge()
-            cellViewModel?.assetCount.purge()
+            cellViewModel?.delegate = nil
             cellViewModel = nil
             assetTitleLabel.text = " "
             assetNumberOfItemsLabel.text = " "
@@ -92,12 +91,20 @@ extension PhotosPicker.AssetsCollectionViewController {
         
         func bind(cellViewModel: CellViewModel) {
             self.cellViewModel = cellViewModel
-            
+            self.cellViewModel?.delegate = self
             assetTitleLabel.text = cellViewModel.assetCollection.localizedTitle ?? ""
-            assetImageLayer.contentLink.bind(data: cellViewModel.firstAssetInCollection)
-            assetNumberOfItemsLabel.textLink.bind(data: cellViewModel.assetCount)
             
             cellViewModel.fetchLatestImage()
         }
+    }
+}
+
+extension PhotosPicker.AssetsCollectionViewController.Cell: AssetsCollectionCellViewModelDelegate {
+    public func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchImage image: UIImage) {
+        assetImageLayer.contents = image.cgImage
+    }
+    
+    public func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchNumberOfAssets numberOfAssets: String) {
+        assetNumberOfItemsLabel.text = numberOfAssets
     }
 }

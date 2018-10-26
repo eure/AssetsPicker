@@ -61,5 +61,4 @@ extension PhotosPicker {
         
         func setClosed() {}
     }
-    
 }

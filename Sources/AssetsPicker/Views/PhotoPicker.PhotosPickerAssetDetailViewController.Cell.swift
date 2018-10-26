@@ -17,8 +17,6 @@ extension PhotosPicker.AssetDetailViewController {
         
         // MARK: Properties
         
-        var selectionLink: Link<CellViewModel.Selection>?
-
         private let borderLayer: CAShapeLayer = {
            let layer = CAShapeLayer()
             layer.borderColor = PhotosPicker.Configuration.shared.selectionColor.cgColor
@@ -31,15 +29,6 @@ extension PhotosPicker.AssetDetailViewController {
         
         init() {
             super.init(frame: .zero)
-
-            selectionLink = Link<CellViewModel.Selection> { [weak self] selection in
-                switch selection {
-                case .notSelected:
-                    self?.isHidden = true
-                case .selected(let number):
-                    self?.isHidden = false
-                }
-            }
             
             layer.addSublayer(borderLayer)
         }
@@ -55,7 +44,7 @@ extension PhotosPicker.AssetDetailViewController {
         }
     }
     
-    public final class Cell: UICollectionViewCell {
+    final class Cell: UICollectionViewCell {
         
         // MARK: Properties
         
@@ -70,6 +59,16 @@ extension PhotosPicker.AssetDetailViewController {
 
         private(set) var cellViewModel: CellViewModel?
 
+        override var isHighlighted: Bool {
+            didSet {
+                if isHighlighted {
+                    
+                } else {
+                    
+                }
+            }
+        }
+        
         // MARK: Lifecycle
         
         override init(frame: CGRect) {
@@ -107,19 +106,36 @@ extension PhotosPicker.AssetDetailViewController {
         func bind(cellViewModel: CellViewModel) {
             self.cellViewModel = cellViewModel
             
-            assetImageLayer.contentLink.bind(data: cellViewModel.previewImage)
-            selectedView.selectionLink?.bind(data: cellViewModel.selection)
+            updateSelectionView()
             
+            self.cellViewModel?.delegate = self
             cellViewModel.fetchPreviewImage()
+        }
+        
+        func updateSelectionView() {
+            guard let cellViewModel = cellViewModel else { return }
+            switch cellViewModel.selectionStatus() {
+            case .notSelected:
+                self.selectedView.isHidden = true
+            case .selected(_):
+                self.selectedView.isHidden = false
+            }
         }
         
         public override func prepareForReuse() {
             super.prepareForReuse()
             
+            assetImageLayer.contents = nil
+            selectedView.isHidden = true
             cellViewModel?.cancelImageIfNeeded()
-            cellViewModel?.previewImage.purge()
-            cellViewModel?.selection.purge()
+            cellViewModel?.delegate = nil
             cellViewModel = nil
         }
+    }
+}
+
+extension PhotosPicker.AssetDetailViewController.Cell: AssetDetailCellViewModelDelegate {
+    func cellViewModel(_ cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel, didFetchImage image: UIImage) {
+        assetImageLayer.contents = image.cgImage
     }
 }

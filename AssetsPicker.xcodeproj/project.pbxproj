@@ -20,9 +20,6 @@
 		4BCA989E2171ED5E0048826A /* AssetsPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* AssetsPicker.framework */; };
 		4BCA989F2171ED5E0048826A /* AssetsPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* AssetsPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212782181B23A00DA0259 /* SelectionContainer.swift */; };
-		5A52127D2181B23A00DA0259 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212792181B23A00DA0259 /* Link.swift */; };
-		5A52127E2181B23A00DA0259 /* UIKit+Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52127A2181B23A00DA0259 /* UIKit+Observable.swift */; };
-		5A52127F2181B23A00DA0259 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52127B2181B23A00DA0259 /* Observable.swift */; };
 		5A5212822181B27100DA0259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212812181B27100DA0259 /* BaseViewController.swift */; };
 		5A5212852181B2A400DA0259 /* PhotoPicker.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212842181B2A400DA0259 /* PhotoPicker.Configuration.swift */; };
 		5A5212872181B2C900DA0259 /* PhotosPicker.ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212862181B2C900DA0259 /* PhotosPicker.ViewController.swift */; };
@@ -85,9 +82,6 @@
 		4BCA98992171EBFA0048826A /* AssetsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsPicker.swift; sourceTree = "<group>"; };
 		4BCA989C2171ED560048826A /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		5A5212782181B23A00DA0259 /* SelectionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionContainer.swift; sourceTree = "<group>"; };
-		5A5212792181B23A00DA0259 /* Link.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
-		5A52127A2181B23A00DA0259 /* UIKit+Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit+Observable.swift"; sourceTree = "<group>"; };
-		5A52127B2181B23A00DA0259 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		5A5212812181B27100DA0259 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		5A5212842181B2A400DA0259 /* PhotoPicker.Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPicker.Configuration.swift; sourceTree = "<group>"; };
 		5A5212862181B2C900DA0259 /* PhotosPicker.ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosPicker.ViewController.swift; sourceTree = "<group>"; };
@@ -216,9 +210,6 @@
 			isa = PBXGroup;
 			children = (
 				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
-				5A5212792181B23A00DA0259 /* Link.swift */,
-				5A52127A2181B23A00DA0259 /* UIKit+Observable.swift */,
-				5A52127B2181B23A00DA0259 /* Observable.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -407,9 +398,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A5212852181B2A400DA0259 /* PhotoPicker.Configuration.swift in Sources */,
-				5A52127F2181B23A00DA0259 /* Observable.swift in Sources */,
-				5A52127D2181B23A00DA0259 /* Link.swift in Sources */,
-				5A52127E2181B23A00DA0259 /* UIKit+Observable.swift in Sources */,
 				5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */,
 				4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */,
 				5A52129D2181B3B700DA0259 /* PhotoPicker.TitleView.swift in Sources */,

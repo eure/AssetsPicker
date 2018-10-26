@@ -9,6 +9,10 @@
 import Foundation
 import Photos
 
+protocol AssetDetailCellViewModelDelegate: class {
+    func cellViewModel(_ cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel, didFetchImage image: UIImage)
+}
+
 extension PhotosPicker.AssetDetailViewController {
     final class CellViewModel: ItemIdentifier {
         
@@ -22,12 +26,10 @@ extension PhotosPicker.AssetDetailViewController {
         
         // MARK: Properties
         
-        private(set) var previewImage: Observable<UIImage?> = Observable<UIImage?>(nil)
-        private(set) var selection: Observable<Selection> = Observable<Selection>(.notSelected)
+        weak var delegate: AssetDetailCellViewModelDelegate?
         private let asset: PHAsset
         private let imageManager: PHCachingImageManager
         private let selectionContainer: SelectionContainer<CellViewModel>
-        private var link: Link<[CellViewModel]>?
         private var imageRequestId: PHImageRequestID?
 
         // MARK: Lifecycle
@@ -41,21 +43,21 @@ extension PhotosPicker.AssetDetailViewController {
             self.asset = asset
             self.imageManager = imageManager
             self.selectionContainer = selectionContainer
-
-            link = Link<[CellViewModel]>() { [weak self] selectedItems in
-                var selectionState = Selection.notSelected
-                if let index = selectedItems.index(where: { $0.identifier == asset.localIdentifier }) {
-                    selectionState = Selection.selected(number: index + 1)
-                }
-
-                self?.selection.value = selectionState
+        }
+        
+        func selectionStatus() -> Selection {
+            var selectionState = Selection.notSelected
+            
+            if let index = self.selectionContainer.selectedItems.index(where: { $0.identifier == asset.localIdentifier }) {
+                selectionState = Selection.selected(number: index + 1)
             }
-
-            link?.bind(data: selectionContainer.selectedItems)
+            
+            return selectionState
         }
         
         func cancelImageIfNeeded() {
             guard let imageRequestId = imageRequestId else { return }
+            
             PHCachingImageManager.default().cancelImageRequest(imageRequestId)
             self.imageRequestId = nil
         }
@@ -73,7 +75,8 @@ extension PhotosPicker.AssetDetailViewController {
                 contentMode: .aspectFill,
                 options: options) { [weak self] (image, userInfo) in
                     if let image = image {
-                        self?.previewImage.value = image
+                        guard let `self` = self else { return }
+                        self.delegate?.cellViewModel(self, didFetchImage: image)
                     } else {
                         print("cannot download image for id = \(self?.asset.localIdentifier)")
                     }

@@ -19,19 +19,19 @@ public final class SelectionContainer<T: ItemIdentifier> {
     
     // MARK: Properties
     
-    private(set) var selectedItems: Observable<[T]> = Observable<[T]>([])
+    private(set) var selectedItems: [T] = []
     private(set) var size: Int
     
     var selectedCount: Int {
-        return selectedItems.value.count
+        return selectedItems.count
     }
     
     var isEmpty: Bool {
-        return selectedItems.value.isEmpty
+        return selectedItems.isEmpty
     }
     
     var isFilled: Bool {
-        return !(selectedItems.value.count < size)
+        return !(selectedItems.count < size)
     }
     
     // MARK: Lifecycle
@@ -40,35 +40,39 @@ public final class SelectionContainer<T: ItemIdentifier> {
         self.size = size
     }
     
+    // MARK: Core
+    
     func item(for key: T.Identifier) -> T? {
-        let items = selectedItems.value
+        let items = selectedItems
         return items.index(where: { $0.identifier == key }).map { items[$0] }
     }
     
     func append(item: T, removeFirstIfAlreadyFilled: Bool = false) {
-        guard !selectedItems.value.contains(where: { $0.identifier == item.identifier }) else { return }
+        if selectedItems.contains(where: { $0.identifier == item.identifier }) {
+            remove(item: item)
+        }
         
         if isFilled {
             if removeFirstIfAlreadyFilled {
-                let items = selectedItems.value
-                selectedItems.value = items.dropFirst() + [item]
+                let items = selectedItems
+                selectedItems = items.dropFirst() + [item]
             }
         } else {
-            selectedItems.value.append(item)
+            selectedItems.append(item)
         }
     }
     
     func remove(item: T) {
-        var items = selectedItems.value
+        var items = selectedItems
         
         guard let index = items.index(where: { $0.identifier == item.identifier }) else { return }
         
         items.remove(at: index)
         
-        selectedItems.value = items
+        selectedItems = items
     }
     
     func purge() {
-        selectedItems.value = []
+        selectedItems = []
     }
 }

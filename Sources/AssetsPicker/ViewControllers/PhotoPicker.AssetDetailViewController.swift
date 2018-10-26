@@ -55,8 +55,8 @@ extension PhotosPicker {
                     let doneBarButtonItem = UIBarButtonItem(title: PhotosPicker.Configuration.shared.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
                     doneBarButtonItem.isEnabled = false
                     doneBarButtonItem.tintColor = PhotosPicker.Configuration.shared.tintColor
+                    doneBarButtonItem.isEnabled = false
                     parentController.navigationItem.rightBarButtonItem = doneBarButtonItem
-                    parentController.navigationItem.rightBarButtonItem?.enabledLink.bind(data: viewModel.isNotEmptySelectionContainer)
                 }
             }
             layout: do {
@@ -140,9 +140,22 @@ extension PhotosPicker {
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             guard let cell = collectionView.cellForItem(at: indexPath) as? PhotosPicker.AssetDetailViewController.Cell else { return }
             
-            guard let cellModel = cell.cellViewModel else { return }
+            guard let cellViewModel = cell.cellViewModel else { return }
             
-            self.viewModel.toggle(item: cellModel)
+            self.viewModel.toggle(item: cellViewModel)
+            
+            // If it's a single selection container and we are selecting a new cell, we unselect the previous selected cell and select the new one
+            if self.viewModel.selectionContainer.size == 1 {
+                for visibleCell in collectionView.visibleCells {
+                    (visibleCell as? PhotosPicker.AssetDetailViewController.Cell)?.updateSelectionView()
+                }
+            } else {
+                cell.updateSelectionView()
+            }
+            
+            if let parentController = parent {
+                parentController.navigationItem.rightBarButtonItem?.isEnabled = !viewModel.selectionContainer.isEmpty
+            }
         }
     }
     
@@ -150,12 +163,10 @@ extension PhotosPicker {
         
         // MARK: Properties
         
-        private(set) var isNotEmptySelectionContainer: Observable<Bool> = Observable<Bool>(true)
         private let imageManager = PHCachingImageManager()
         private(set) var assetCollection: PHAssetCollection
         private(set) var selectionContainer: SelectionContainer<PhotosPicker.AssetDetailViewController.CellViewModel>
         private(set) var displayItems: PHFetchResult<PHAsset>
-        private var link: Link<[PhotosPicker.AssetDetailViewController.CellViewModel]>?
 
         // MARK: Lifecycle
         
@@ -163,12 +174,6 @@ extension PhotosPicker {
             self.assetCollection = assetCollection
             self.selectionContainer = selectionContainer
             self.displayItems = PHFetchResult<PHAsset>()
-            
-            link = Link<[PhotosPicker.AssetDetailViewController.CellViewModel]>() { [weak self] selectedItems in
-                self?.isNotEmptySelectionContainer.value = !selectedItems.isEmpty
-            }
-            
-            link?.bind(data: selectionContainer.selectedItems)
         }
         
         func fetchPhotos(onNext: @escaping (() -> ())) {
@@ -192,7 +197,7 @@ extension PhotosPicker {
             let dispatchGroup = DispatchGroup()
             var images: [UIImage] = []
 
-            for cellModel in selectionContainer.selectedItems.value {
+            for cellModel in selectionContainer.selectedItems {
                 dispatchGroup.enter()
                 
                 cellModel.download(onNext: { image in
@@ -240,13 +245,13 @@ extension PhotosPicker {
         }
         
         func toggle(item: PhotosPicker.AssetDetailViewController.CellViewModel) {
-            if case .notSelected = item.selection.value {
+            if case .notSelected = item.selectionStatus() {
                 select(item: item)
             } else {
                 unselect(item: item)
             }
         }
-        
+
         private func select(item: PhotosPicker.AssetDetailViewController.CellViewModel) {
             selectionContainer.append(item: item, removeFirstIfAlreadyFilled: selectionContainer.size == 1)
         }

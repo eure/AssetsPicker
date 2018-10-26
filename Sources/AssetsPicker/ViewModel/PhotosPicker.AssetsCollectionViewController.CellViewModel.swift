@@ -10,15 +10,19 @@ import Foundation
 import UIKit
 import Photos
 
+public protocol AssetsCollectionCellViewModelDelegate: class {
+    func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchImage image: UIImage)
+    func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchNumberOfAssets numberOfAssets: String)
+}
+
 extension PhotosPicker.AssetsCollectionViewController {
     
     public final class CellViewModel: ItemIdentifier {
 
         // MARK: Properties
         
+        weak var delegate: AssetsCollectionCellViewModelDelegate?
         private(set) var assetCollection: PHAssetCollection
-        private(set) var assetCount: Observable<String?> =  Observable<String?>(nil)
-        private(set) var firstAssetInCollection: Observable<UIImage?> = Observable<UIImage?>(nil)
         private var imageRequestId: PHImageRequestID?
         
         // MARK: Lifecycle
@@ -61,12 +65,16 @@ extension PhotosPicker.AssetsCollectionViewController {
             let currentAssetCollection = self.assetCollection
             
             queue.async(execute: { [weak self] in
+                guard let `self` = self else { return }
+
                 let result = PHAsset.fetchAssets(
                     in: currentAssetCollection,
                     options: firstAssetFetchOptions
                 )
                 
-                self?.assetCount.value = result.count.description
+                DispatchQueue.main.async {
+                    self.delegate?.cellViewModel(self, didFetchNumberOfAssets: result.count.description)
+                }
                 
                 guard let firstAsset = result.firstObject else {
                     return
@@ -79,13 +87,16 @@ extension PhotosPicker.AssetsCollectionViewController {
                 options.resizeMode = .fast
                 
                 let imageManager = PHCachingImageManager.default()
-                self?.imageRequestId = imageManager.requestImage(
+                self.imageRequestId = imageManager.requestImage(
                     for: firstAsset,
                     targetSize: CGSize(width: 250, height: 250),
                     contentMode: .aspectFill,
                     options: options) { [weak self] (image, userInfo) in
+                        guard let `self` = self else { return }
                         if let image = image {
-                            self?.firstAssetInCollection.value = image
+                            DispatchQueue.main.async {
+                                self.delegate?.cellViewModel(self, didFetchImage: image)
+                            }
                         }
                 }
             })

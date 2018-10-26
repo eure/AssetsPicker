@@ -11,17 +11,22 @@ import AssetsPicker
 
 class ViewController: UIViewController {
     
+    // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    // MARK: User Interaction
+
     @IBAction func didTapPresentButton(_ sender: Any) {
         let configuration = PhotosPicker.Configuration(
-            selectionMode: .multiple(limit: 3),
+            selectionMode: .single,
             selectionColor: #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1),
             tintColor: #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1),
-            numberOfItemsInRow: 3
+            numberOfItemsInRow: 2
         )
+
         let photoPicker = PhotosPicker.ViewController(withConfiguration: configuration)
         photoPicker.pickerDelegate = self
         present(photoPicker, animated: true, completion: nil)
@@ -34,5 +39,3 @@ extension ViewController: PhotosPickerDelegate {
         print("main didPickImages = \(images)")
     }
 }
-
-
