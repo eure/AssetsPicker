@@ -75,6 +75,9 @@ extension PhotosPicker.AssetDetailViewController {
             super.init(frame: frame)
             
             layout: do {
+                backgroundColor = .white
+                contentView.backgroundColor = .white
+
                 contentView.layer.addSublayer(assetImageLayer)
                 contentView.addSubview(selectedView)
                 

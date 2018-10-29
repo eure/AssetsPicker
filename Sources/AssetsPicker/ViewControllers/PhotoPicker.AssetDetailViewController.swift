@@ -23,16 +23,23 @@ extension PhotosPicker {
         // MARK: Properties
         
         weak var delegate: PhotosPickerAssetDetailDelegate?
-
+        var headerSizeCalculator: ViewSizeCalculator<UIView>?
+        
         private let collectionView: UICollectionView = {
             let layout = UICollectionViewFlowLayout()
             layout.minimumLineSpacing = 1
             layout.minimumInteritemSpacing = 1
-            layout.estimatedItemSize = CGSize(width: 120, height: 120)
+            layout.sectionHeadersPinToVisibleBounds = Configuration.shared.isHeaderFloating
             
             let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.backgroundColor = .white
+            
             collectionView.register(PhotosPicker.AssetDetailViewController.Cell.self, forCellWithReuseIdentifier:  String(describing: PhotosPicker.AssetDetailViewController.Cell.self))
+            
+            if Configuration.shared.headerView != nil {
+                collectionView.register(HeaderContainerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: PhotosPicker.AssetDetailViewController.HeaderContainerView.self))
+            }
+            
             return collectionView
         }()
         
@@ -111,6 +118,19 @@ extension PhotosPicker {
             return cell
         }
         
+        @objc dynamic public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            if kind == UICollectionView.elementKindSectionHeader {
+                guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: HeaderContainerView.self), for: indexPath) as? HeaderContainerView else { return UICollectionReusableView() }
+                
+                guard let headerView = Configuration.shared.headerView else { fatalError() }
+                view.set(view: headerView)
+                
+                return view
+            } else {
+                fatalError()
+            }
+        }
+        
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             func CalculateFittingGridSize(maxWidth: CGFloat, numberOfItemsInRow: Int, margin: CGFloat, index: Int) -> CGSize {
                 let totalMargin: CGFloat = margin * CGFloat(numberOfItemsInRow - 1)
@@ -156,6 +176,18 @@ extension PhotosPicker {
             if let parentController = parent {
                 parentController.navigationItem.rightBarButtonItem?.isEnabled = !viewModel.selectionContainer.isEmpty
             }
+        }
+        
+        @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+            guard let haederView = Configuration.shared.headerView else {
+                return .zero
+            }
+            
+            if headerSizeCalculator == nil {
+                headerSizeCalculator = ViewSizeCalculator(sourceView: haederView, calculateTargetView: { $0 })
+            }
+            
+            return headerSizeCalculator?.calculate(width: collectionView.bounds.width, height: nil, cacheKey: nil, closure: { _ in }) ?? .zero
         }
     }
     
@@ -258,20 +290,6 @@ extension PhotosPicker {
         
         private func unselect(item: PhotosPicker.AssetDetailViewController.CellViewModel) {
             selectionContainer.remove(item: item)
-        }
-    }
-}
-
-class ImageDownloadOperation: Operation {
-    
-    let cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel
-    
-    init(cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel) {
-        self.cellViewModel = cellViewModel
-    }
-    override func start() {
-        cellViewModel.download { (image) in
-            
         }
     }
 }

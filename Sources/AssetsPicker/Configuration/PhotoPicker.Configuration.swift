@@ -46,18 +46,23 @@ extension PhotosPicker {
         /// Custom header view for assets collection
         public let headerView: UIView?
         
+        /// Custom header view for assets collection
+        public let isHeaderFloating: Bool
+        
         public init(
             selectionMode: SelectionMode,
             selectionColor: UIColor = .red,
             tintColor: UIColor = .green,
             numberOfItemsInRow: Int = 3,
-            headerView: UIView? = nil
+            headerView: UIView? = nil,
+            isHeaderFloating: Bool = false
             ) {
             self.selectionMode = selectionMode
             self.selectionColor = selectionColor
             self.tintColor = tintColor
             self.numberOfItemsInRow = numberOfItemsInRow
             self.headerView = headerView
+            self.isHeaderFloating = isHeaderFloating
         }
     }
 }
