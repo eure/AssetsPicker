@@ -11,7 +11,7 @@ import UIKit
 
 extension PhotosPicker.AssetsCollectionViewController {
     
-    final class Cell: UICollectionViewCell {
+    final class Cell: UICollectionViewCell, AssetPickAssetCollectionCellCustomization {
         
         // MARK: Properties
         

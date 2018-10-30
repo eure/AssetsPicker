@@ -34,8 +34,11 @@ extension PhotosPicker {
             let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.backgroundColor = .white
             
-            collectionView.register(PhotosPicker.AssetDetailViewController.Cell.self, forCellWithReuseIdentifier:  String(describing: PhotosPicker.AssetDetailViewController.Cell.self))
-            
+            collectionView.register(
+                PhotosPicker.Configuration.shared.cellRegistrator.cellType(forCellType: .asset),
+                forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .asset)
+            )
+
             if Configuration.shared.headerView != nil {
                 collectionView.register(HeaderContainerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: PhotosPicker.AssetDetailViewController.HeaderContainerView.self))
             }
@@ -76,7 +79,7 @@ extension PhotosPicker {
             }
             
             if PHPhotoLibrary.authorizationStatus() == .denied {
-                print("Permission denied for accessing to photos.")
+                fatalError("Permission denied for accessing to photos.")
             }
             
             loadPhotos()
@@ -111,9 +114,7 @@ extension PhotosPicker {
         }
         
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PhotosPicker.AssetDetailViewController.Cell.self), for: indexPath) as? PhotosPicker.AssetDetailViewController.Cell else {
-                return UICollectionViewCell()
-            }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .asset)), for: indexPath)
             
             return cell
         }
@@ -151,28 +152,38 @@ extension PhotosPicker {
         }
         
         public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-            guard let cell = cell as? PhotosPicker.AssetDetailViewController.Cell else { return }
-            
+            guard let cell = cell as? AssetPickAssetCellCustomization else { return }
             let cellViewModel = viewModel.cellModel(at: indexPath.item)
             cell.bind(cellViewModel: cellViewModel)
+            
+            switch cellViewModel.selectionStatus() {
+            case .notSelected:
+                cell.updateSelection(isItemSelected: false)
+            case .selected(_):
+                cell.updateSelection(isItemSelected: true)
+            }
         }
         
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            guard let cell = collectionView.cellForItem(at: indexPath) as? PhotosPicker.AssetDetailViewController.Cell else { return }
-            
+            guard let cell = collectionView.cellForItem(at: indexPath) as? AssetPickAssetCellCustomization else { return }
             guard let cellViewModel = cell.cellViewModel else { return }
-            
+
             self.viewModel.toggle(item: cellViewModel)
-            
-            // If it's a single selection container and we are selecting a new cell, we unselect the previous selected cell and select the new one
+
+            // If it's a single selection container -> we unselect the previous selected cell and select the new one
             if self.viewModel.selectionContainer.size == 1 {
                 for visibleCell in collectionView.visibleCells {
-                    (visibleCell as? PhotosPicker.AssetDetailViewController.Cell)?.updateSelectionView()
+                    (visibleCell as? AssetPickAssetCellCustomization)?.updateSelection(isItemSelected: false)
                 }
-            } else {
-                cell.updateSelectionView()
             }
             
+            switch cellViewModel.selectionStatus() {
+            case .notSelected:
+                cell.updateSelection(isItemSelected: false)
+            case .selected(_):
+                cell.updateSelection(isItemSelected: true)
+            }
+
             if let parentController = parent {
                 parentController.navigationItem.rightBarButtonItem?.isEnabled = !viewModel.selectionContainer.isEmpty
             }

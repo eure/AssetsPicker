@@ -10,7 +10,7 @@ import Foundation
 import Photos
 
 public protocol ItemIdentifier {
-    associatedtype Identifier : Hashable
+    associatedtype Identifier : Equatable
 
     var identifier: Self.Identifier { get }
 }

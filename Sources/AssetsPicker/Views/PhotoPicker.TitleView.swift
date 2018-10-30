@@ -29,12 +29,7 @@ extension PhotosPicker {
             addSubview(label)
             
             label.text = title
-            label.backgroundColor = .green
-            backgroundColor = .red
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 0)
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
             label.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0)
             label.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0)
         }

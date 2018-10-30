@@ -34,6 +34,9 @@
 		5A52129D2181B3B700DA0259 /* PhotoPicker.TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52129C2181B3B700DA0259 /* PhotoPicker.TitleView.swift */; };
 		5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */; };
 		5A5212A22186FFF200DA0259 /* PhotoPicker.PhotosPickerAssetDetailViewController.HeaderContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A12186FFF200DA0259 /* PhotoPicker.PhotosPickerAssetDetailViewController.HeaderContainerView.swift */; };
+		5A5212A4218820A200DA0259 /* CellRegistrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A3218820A200DA0259 /* CellRegistrator.swift */; };
+		5A5212A621882AAF00DA0259 /* CustomAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A521882AAF00DA0259 /* CustomAssetCell.swift */; };
+		5AC4ADF521894A87001ED22E /* CustomAssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF421894A87001ED22E /* CustomAssetCollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +101,9 @@
 		5A52129C2181B3B700DA0259 /* PhotoPicker.TitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPicker.TitleView.swift; sourceTree = "<group>"; };
 		5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewSizeCalculator.swift; sourceTree = "<group>"; };
 		5A5212A12186FFF200DA0259 /* PhotoPicker.PhotosPickerAssetDetailViewController.HeaderContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.PhotosPickerAssetDetailViewController.HeaderContainerView.swift; sourceTree = "<group>"; };
+		5A5212A3218820A200DA0259 /* CellRegistrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellRegistrator.swift; sourceTree = "<group>"; };
+		5A5212A521882AAF00DA0259 /* CustomAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAssetCell.swift; sourceTree = "<group>"; };
+		5AC4ADF421894A87001ED22E /* CustomAssetCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAssetCollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +183,8 @@
 			isa = PBXGroup;
 			children = (
 				4BCA98872171EA3D0048826A /* AppDelegate.swift */,
+				5A5212A521882AAF00DA0259 /* CustomAssetCell.swift */,
+				5AC4ADF421894A87001ED22E /* CustomAssetCollectionCell.swift */,
 				4BCA98892171EA3D0048826A /* ViewController.swift */,
 				4BCA988B2171EA3D0048826A /* Main.storyboard */,
 				4BCA988E2171EA400048826A /* Assets.xcassets */,
@@ -215,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
+				5A5212A3218820A200DA0259 /* CellRegistrator.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -420,11 +429,14 @@
 				5A5212872181B2C900DA0259 /* PhotosPicker.ViewController.swift in Sources */,
 				5A5212902181B34500DA0259 /* PhotosPicker.AssetsCollectionViewModel.swift in Sources */,
 				5A5212942181B36800DA0259 /* PhotoPicker.AssetDetailViewController.swift in Sources */,
+				5A5212A621882AAF00DA0259 /* CustomAssetCell.swift in Sources */,
 				5A5212892181B2EB00DA0259 /* PhotosPicker.SelectAssetCollectionContainerViewController.swift in Sources */,
 				5A52128E2181B33E00DA0259 /* PhotosPicker.AssetsCollectionViewController.swift in Sources */,
 				5A5212922181B34900DA0259 /* PhotosPicker.AssetsCollectionViewController.CellViewModel.swift in Sources */,
 				5A52129B2181B39300DA0259 /* PhotosPicker.AssetDetailViewController.CellViewModel.swift in Sources */,
 				5A5212972181B37B00DA0259 /* PhotoPicker.PhotosPickerAssetsCollectionViewController.Cell.swift in Sources */,
+				5A5212A4218820A200DA0259 /* CellRegistrator.swift in Sources */,
+				5AC4ADF521894A87001ED22E /* CustomAssetCollectionCell.swift in Sources */,
 				5A5212A22186FFF200DA0259 /* PhotoPicker.PhotosPickerAssetDetailViewController.HeaderContainerView.swift in Sources */,
 				5A5212992181B38A00DA0259 /* PhotoPicker.PhotosPickerAssetDetailViewController.Cell.swift in Sources */,
 			);

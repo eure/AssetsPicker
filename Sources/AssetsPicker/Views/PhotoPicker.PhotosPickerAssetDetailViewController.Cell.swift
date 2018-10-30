@@ -44,12 +44,12 @@ extension PhotosPicker.AssetDetailViewController {
         }
     }
     
-    final class Cell: UICollectionViewCell {
+    final class Cell: UICollectionViewCell, AssetPickAssetCellCustomization {
         
         // MARK: Properties
         
         private let selectedView = SelectedView()
-        private let assetImageLayer: CALayer = {
+        public let assetImageLayer: CALayer = {
             let layer = CALayer()
             layer.masksToBounds = true
             layer.contentsGravity = .resizeAspectFill
@@ -58,16 +58,6 @@ extension PhotosPicker.AssetDetailViewController {
         }()
 
         private(set) var cellViewModel: CellViewModel?
-
-        override var isHighlighted: Bool {
-            didSet {
-                if isHighlighted {
-                    
-                } else {
-                    
-                }
-            }
-        }
         
         // MARK: Lifecycle
         
@@ -75,9 +65,6 @@ extension PhotosPicker.AssetDetailViewController {
             super.init(frame: frame)
             
             layout: do {
-                backgroundColor = .white
-                contentView.backgroundColor = .white
-
                 contentView.layer.addSublayer(assetImageLayer)
                 contentView.addSubview(selectedView)
                 
@@ -109,20 +96,15 @@ extension PhotosPicker.AssetDetailViewController {
         func bind(cellViewModel: CellViewModel) {
             self.cellViewModel = cellViewModel
             
-            updateSelectionView()
+            //updateSelectionView()
             
             self.cellViewModel?.delegate = self
             cellViewModel.fetchPreviewImage()
         }
         
-        func updateSelectionView() {
-            guard let cellViewModel = cellViewModel else { return }
-            switch cellViewModel.selectionStatus() {
-            case .notSelected:
-                self.selectedView.isHidden = true
-            case .selected(_):
-                self.selectedView.isHidden = false
-            }
+        
+        func updateSelection(isItemSelected: Bool) {
+            self.selectedView.isHidden = !isItemSelected
         }
         
         public override func prepareForReuse() {

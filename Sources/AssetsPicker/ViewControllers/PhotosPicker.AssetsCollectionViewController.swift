@@ -34,7 +34,12 @@ extension PhotosPicker {
             collectionView.backgroundColor = .white
             collectionView.delegate = self
             collectionView.dataSource = self
-            collectionView.register(Cell.self, forCellWithReuseIdentifier: String(describing: Cell.self))
+            
+            collectionView.register(
+                PhotosPicker.Configuration.shared.cellRegistrator.cellType(forCellType: .assetCollection),
+                forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection)
+            )
+            
             collectionView.alwaysBounceVertical = false
             
             return collectionView
@@ -58,7 +63,7 @@ extension PhotosPicker {
             }
             
             if PHPhotoLibrary.authorizationStatus() == .denied {
-                print("Permission denied for accessing to photos.")
+                fatalError("Permission denied for accessing to photos.")
             }
             
             viewModel.fetchAssetsCollections() {
@@ -79,9 +84,7 @@ extension PhotosPicker {
         }
     
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PhotosPicker.AssetsCollectionViewController.Cell.self), for: indexPath) as? PhotosPicker.AssetsCollectionViewController.Cell else {
-                return UICollectionViewCell()
-            }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection)), for: indexPath)
             
             return cell
         }
@@ -99,8 +102,8 @@ extension PhotosPicker {
         }
         
         public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-            guard let cell = cell as? PhotosPicker.AssetsCollectionViewController.Cell else { return }
-            
+            guard let cell = cell as? AssetPickAssetCollectionCellCustomization else { return }
+
             let cellViewModel = viewModel.displayItems[indexPath.item]
             cell.bind(cellViewModel: cellViewModel)
         }

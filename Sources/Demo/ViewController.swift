@@ -27,13 +27,19 @@ class ViewController: UIViewController {
 
 
         let configuration = PhotosPicker.Configuration(
-            selectionMode: .single,
+            selectionMode: .multiple(limit: 4),
             selectionColor: #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1),
             tintColor: #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1),
             numberOfItemsInRow: 4,
             headerView: headerView,
             isHeaderFloating: true
         )
+        
+        // Uncomment if you want to use a custom cell for asset item
+        //configuration.cellRegistrator.register(cellClass: CustomAssetCell.self, forCellType: .asset)
+        
+        // Uncomment if you want to use a custom cell for asset collection item
+        // configuration.cellRegistrator.register(cellClass: CustomAssetCollectionCell.self, forCellType: .assetCollection)
 
         let photoPicker = PhotosPicker.ViewController(withConfiguration: configuration)
         photoPicker.pickerDelegate = self

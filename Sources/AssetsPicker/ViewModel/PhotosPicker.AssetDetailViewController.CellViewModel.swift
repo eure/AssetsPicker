@@ -9,12 +9,12 @@
 import Foundation
 import Photos
 
-protocol AssetDetailCellViewModelDelegate: class {
+public protocol AssetDetailCellViewModelDelegate: class {
     func cellViewModel(_ cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel, didFetchImage image: UIImage)
 }
 
 extension PhotosPicker.AssetDetailViewController {
-    final class CellViewModel: ItemIdentifier {
+    public final class CellViewModel: ItemIdentifier {
         
         // MARK: Inner
         
@@ -101,7 +101,7 @@ extension PhotosPicker.AssetDetailViewController {
         
         // MARK: ItemIdentifier
         
-        var identifier: String {
+        public var identifier: String {
             return asset.localIdentifier
         }
     }

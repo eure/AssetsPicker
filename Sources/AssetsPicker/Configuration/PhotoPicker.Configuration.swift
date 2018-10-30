@@ -26,10 +26,14 @@ extension PhotosPicker {
             case multiple(limit: Int)
         }
         
+        
         // config of collection view height and detail number of column
         
         /// Single of multiple select
         public let selectionMode: SelectionMode
+        
+        /// Display camera option
+        public let shouldDisplayCameraOption: Bool
         
         /// Color of asset selection
         public let selectionColor: UIColor
@@ -43,6 +47,9 @@ extension PhotosPicker {
         /// Localization of buttons
         public var localize: LocalizedStrings = .init()
         
+        /// Custom cells
+        public var cellRegistrator: CellRegistrator = .init()
+        
         /// Custom header view for assets collection
         public let headerView: UIView?
         
@@ -51,6 +58,7 @@ extension PhotosPicker {
         
         public init(
             selectionMode: SelectionMode,
+            shouldDisplayCameraOption: Bool = false,
             selectionColor: UIColor = .red,
             tintColor: UIColor = .green,
             numberOfItemsInRow: Int = 3,
@@ -58,6 +66,7 @@ extension PhotosPicker {
             isHeaderFloating: Bool = false
             ) {
             self.selectionMode = selectionMode
+            self.shouldDisplayCameraOption = shouldDisplayCameraOption
             self.selectionColor = selectionColor
             self.tintColor = tintColor
             self.numberOfItemsInRow = numberOfItemsInRow
