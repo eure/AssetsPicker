@@ -11,49 +11,67 @@ import UIKit
 
 extension PhotosPicker {
     
-    final class TitleView : UIControl {
+    final class TitleView : UIButton {
         
-        private let label: UILabel = .init()
-
-        override var intrinsicContentSize: CGSize {
-            return UIView.layoutFittingExpandedSize
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            setup()
+        }
+       
+        func setup() {
+            let flippedTransform = CGAffineTransform(scaleX: -1, y: 1)
+            transform = flippedTransform
+            titleLabel?.transform = flippedTransform
+            imageView?.transform = flippedTransform
+            
+            let arrowDownImage = UIImage(named: "icon_arrow_down", in: Bundle.main, compatibleWith: nil)
+            setImage(arrowDownImage, for: .normal)
+            imageEdgeInsets.left = -10
+            
+            setTitleColor(.black, for: .normal)
+            setTitle(PhotosPicker.Configuration.shared.localize.collections, for: .normal)
+            titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         }
         
-        init(withTitle title: String) {
-            super.init(frame: .zero)
-            
-            label.font = UIFont.boldSystemFont(ofSize: 17)
-            label.textAlignment = .center
-            label.textColor = #colorLiteral(red: 0.172549, green: 0.231373, blue: 0.282353, alpha: 1.000000)
-            
-            addSubview(label)
-            
-            label.text = title
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0)
-            label.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0)
+        
+        func setOpened() {
+            UIView.animate(
+                withDuration: 0.5,
+                delay: 0,
+                usingSpringWithDamping: 1,
+                initialSpringVelocity: 0,
+                options: [
+                    .beginFromCurrentState,
+                    .allowUserInteraction
+                ],
+                animations: {
+                    self.imageView?.transform = CGAffineTransform(rotationAngle: -.pi)
+            }) { (finish) in
+                
+            }
         }
+        
+        func setClosed() {
+            UIView.animate(
+                withDuration: 0.5,
+                delay: 0,
+                usingSpringWithDamping: 1,
+                initialSpringVelocity: 0,
+                options: [
+                    .beginFromCurrentState,
+                    .allowUserInteraction
+                ],
+                animations: {
+                    self.imageView?.transform = .identity
+            }) { (finish) in
+                
+            }
+        }
+        
         
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
-        override var isHighlighted: Bool {
-            didSet {
-                UIView.animate(
-                    withDuration: 0.2,
-                    delay: 0,
-                    options: [.allowUserInteraction, .beginFromCurrentState],
-                    animations: {
-                        self.alpha = self.isHighlighted ? 0.6 : 1
-                },
-                    completion: nil
-                )
-            }
-        }
-        
-        func setOpened() {}
-        
-        func setClosed() {}
     }
 }

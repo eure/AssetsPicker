@@ -38,6 +38,7 @@
 		5AC4ADFA218AEF5C001ED22E /* CustomCellDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF8218AEF4E001ED22E /* CustomCellDemoViewController.swift */; };
 		5AC4ADFB218AEF62001ED22E /* CustomAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A521882AAF00DA0259 /* CustomAssetCell.swift */; };
 		5AC4ADFC218AEF6A001ED22E /* CustomAssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF421894A87001ED22E /* CustomAssetCollectionCell.swift */; };
+		5AC4ADFF218AF919001ED22E /* icon_arrow_down.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5AC4ADFE218AF918001ED22E /* icon_arrow_down.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		5A5212A521882AAF00DA0259 /* CustomAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAssetCell.swift; sourceTree = "<group>"; };
 		5AC4ADF421894A87001ED22E /* CustomAssetCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAssetCollectionCell.swift; sourceTree = "<group>"; };
 		5AC4ADF8218AEF4E001ED22E /* CustomCellDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellDemoViewController.swift; sourceTree = "<group>"; };
+		5AC4ADFE218AF918001ED22E /* icon_arrow_down.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = icon_arrow_down.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 		4BCA98692171E9E80048826A /* AssetsPicker */ = {
 			isa = PBXGroup;
 			children = (
+				5AC4ADFE218AF918001ED22E /* icon_arrow_down.pdf */,
 				5A52129E2186DE8000DA0259 /* Utils */,
 				5A5212952181B36F00DA0259 /* Views */,
 				5A5212832181B2A400DA0259 /* Configuration */,
@@ -404,6 +407,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AC4ADFF218AF919001ED22E /* icon_arrow_down.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

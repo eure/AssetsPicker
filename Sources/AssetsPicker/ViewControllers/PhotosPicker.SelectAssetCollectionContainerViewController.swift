@@ -22,7 +22,7 @@ extension PhotosPicker {
         private let configuration: PhotosPicker.Configuration
         private var currentAssetDetailViewController: PhotosPicker.AssetDetailViewController?
         private let selectionContainer: SelectionContainer<PhotosPicker.AssetDetailViewController.CellViewModel>
-        private let titleButton = UIButton()
+        private let titleButton = PhotosPicker.TitleView()
 
         // MARK: Lifecycle
         
@@ -47,8 +47,6 @@ extension PhotosPicker {
                 navigationItem.leftBarButtonItem = dismissBarButtonItem
             }
             setupTitleView: do {
-                titleButton.setTitleColor(PhotosPicker.Configuration.shared.tintColor, for: .normal)
-                titleButton.setTitle(PhotosPicker.Configuration.shared.localize.collections, for: .normal)
                 self.navigationItem.titleView = titleButton
                 titleButton.addTarget(self, action: #selector(showCollections(sender:)), for: .touchUpInside)
             }
@@ -121,6 +119,7 @@ extension PhotosPicker {
             }
             
             titleButton.setTitle(assetCollection.localizedTitle ?? PhotosPicker.Configuration.shared.localize.collections, for: .normal)
+            titleButton.sizeToFit()
             currentAssetDetailViewController?.viewModel.reset(withAssetCollection: assetCollection)
             currentAssetDetailViewController?.loadPhotos()
         }
@@ -128,6 +127,7 @@ extension PhotosPicker {
         // Assets Collection
         
         private func showCollections() {
+            titleButton.setOpened()
             currentAnimator?.stopAnimation(true)
             
             isShowingCollection = true
@@ -153,6 +153,7 @@ extension PhotosPicker {
         }
         
         private func hideCollections() {
+            titleButton.setClosed()
             currentAnimator?.stopAnimation(true)
             
             isShowingCollection = false
