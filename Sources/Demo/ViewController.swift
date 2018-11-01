@@ -25,16 +25,14 @@ class ViewController: UIViewController {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
 
+        var configuration = PhotosPicker.Configuration()
+        configuration.selectionMode = .multiple(limit: 4)
+        configuration.selectionColor =  #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
+        configuration.tintColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
+        configuration.numberOfItemsInRow = 3
+        configuration.headerView = headerView
+        configuration.isHeaderFloating = true
 
-        let configuration = PhotosPicker.Configuration(
-            selectionMode: .multiple(limit: 4),
-            selectionColor: #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1),
-            tintColor: #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1),
-            numberOfItemsInRow: 4,
-            headerView: headerView,
-            isHeaderFloating: true
-        )
-        
         // Uncomment if you want to use a custom cell for asset item
         //configuration.cellRegistrator.register(cellClass: CustomAssetCell.self, forCellType: .asset)
         

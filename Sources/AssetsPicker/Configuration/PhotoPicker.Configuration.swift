@@ -8,11 +8,12 @@
 
 import Foundation
 import UIKit
+import enum Photos.PHAssetMediaType
 
 extension PhotosPicker {
     public struct Configuration {
         
-        internal static var shared = Configuration(selectionMode: .single, headerView: nil)
+        internal static var shared = PhotosPicker.Configuration()
         
         public struct LocalizedStrings {
             public var done: String = "Done"
@@ -26,53 +27,33 @@ extension PhotosPicker {
             case multiple(limit: Int)
         }
         
-        
-        // config of collection view height and detail number of column
-        
         /// Single of multiple select
-        public let selectionMode: SelectionMode
-        
-        /// Display camera option
-        public let shouldDisplayCameraOption: Bool
+        public var selectionMode: SelectionMode = .single
         
         /// Color of asset selection
-        public let selectionColor: UIColor
+        public var selectionColor: UIColor = .red
         
         /// Color of asset selection
-        public let tintColor: UIColor
+        public var tintColor: UIColor = .green
         
         /// Color of asset selection
-        public let numberOfItemsInRow: Int
+        public var numberOfItemsInRow = 3
         
         /// Localization of buttons
-        public var localize: LocalizedStrings = .init()
+        public var localize = LocalizedStrings()
         
         /// Custom cells
-        public var cellRegistrator: CellRegistrator = .init()
+        public var cellRegistrator = CellRegistrator()
         
         /// Custom header view for assets collection
-        public let headerView: UIView?
+        public var headerView: UIView?
+        
+        public var supportOnlyMediaType: [PHAssetMediaType] = [.image, .video]
         
         /// Custom header view for assets collection
-        public let isHeaderFloating: Bool
+        public var isHeaderFloating = false
         
-        public init(
-            selectionMode: SelectionMode,
-            shouldDisplayCameraOption: Bool = false,
-            selectionColor: UIColor = .red,
-            tintColor: UIColor = .green,
-            numberOfItemsInRow: Int = 3,
-            headerView: UIView? = nil,
-            isHeaderFloating: Bool = false
-            ) {
-            self.selectionMode = selectionMode
-            self.shouldDisplayCameraOption = shouldDisplayCameraOption
-            self.selectionColor = selectionColor
-            self.tintColor = tintColor
-            self.numberOfItemsInRow = numberOfItemsInRow
-            self.headerView = headerView
-            self.isHeaderFloating = isHeaderFloating
-        }
+        public init() {}
     }
 }
 

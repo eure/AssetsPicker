@@ -223,7 +223,12 @@ extension PhotosPicker {
             DispatchQueue.global(qos: .userInteractive).async {
                 
                 let fetchOptions = PHFetchOptions()
-                fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+                
+                if !PhotosPicker.Configuration.shared.supportOnlyMediaType.isEmpty {
+                    let predicates = PhotosPicker.Configuration.shared.supportOnlyMediaType.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
+                    fetchOptions.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
+                }
+                
                 fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
                 
                 let result = PHAsset.fetchAssets(
