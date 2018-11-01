@@ -31,10 +31,10 @@ extension PhotosPicker {
         public var selectionMode: SelectionMode = .single
         
         /// Color of asset selection
-        public var selectionColor: UIColor = .red
+        public var selectionColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
         
         /// Color of asset selection
-        public var tintColor: UIColor = .green
+        public var tintColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
         
         /// Color of asset selection
         public var numberOfItemsInRow = 3
@@ -48,7 +48,11 @@ extension PhotosPicker {
         /// Custom header view for assets collection
         public var headerView: UIView?
         
-        public var supportOnlyMediaType: [PHAssetMediaType] = [.image, .video]
+        /// The media type that will be displayed
+        public var supportOnlyMediaType: [PHAssetMediaType] = [.image]
+        
+        /// Set this property to true if you want to disable animations when scrolling through the assets
+        public var disableOnLibraryScrollAnimation = false
         
         /// Custom header view for assets collection
         public var isHeaderFloating = false

@@ -26,7 +26,7 @@ extension PhotosPicker.AssetDetailViewController {
         
         // MARK: Properties
         
-        weak var delegate: AssetDetailCellViewModelDelegate?
+        public weak var delegate: AssetDetailCellViewModelDelegate?
         private let asset: PHAsset
         private let imageManager: PHCachingImageManager
         private let selectionContainer: SelectionContainer<CellViewModel>
@@ -55,14 +55,14 @@ extension PhotosPicker.AssetDetailViewController {
             return selectionState
         }
         
-        func cancelImageIfNeeded() {
+        public func cancelImageIfNeeded() {
             guard let imageRequestId = imageRequestId else { return }
             
             PHCachingImageManager.default().cancelImageRequest(imageRequestId)
             self.imageRequestId = nil
         }
         
-        func fetchPreviewImage() {
+        public func fetchPreviewImage() {
             let options = PHImageRequestOptions()
             options.deliveryMode = .opportunistic
             options.isNetworkAccessAllowed = true

@@ -152,15 +152,23 @@ extension PhotosPicker {
         }
         
         public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-            guard let cell = cell as? AssetPickAssetCellCustomization else { return }
+            guard let cellProtocol = cell as? AssetPickAssetCellCustomization else { return }
             let cellViewModel = viewModel.cellModel(at: indexPath.item)
-            cell.bind(cellViewModel: cellViewModel)
+            cellProtocol.bind(cellViewModel: cellViewModel)
             
             switch cellViewModel.selectionStatus() {
             case .notSelected:
-                cell.updateSelection(isItemSelected: false)
+                cellProtocol.updateSelection(isItemSelected: false)
             case .selected(_):
-                cell.updateSelection(isItemSelected: true)
+                cellProtocol.updateSelection(isItemSelected: true)
+            }
+            
+            if PhotosPicker.Configuration.shared.disableOnLibraryScrollAnimation == false {
+                cell.alpha = 0.5
+                
+                UIView.animate(withDuration: 0.3) {
+                    cell.alpha = 1
+                }
             }
         }
         

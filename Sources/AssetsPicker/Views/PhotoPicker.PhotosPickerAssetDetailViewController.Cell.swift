@@ -95,9 +95,7 @@ extension PhotosPicker.AssetDetailViewController {
 
         func bind(cellViewModel: CellViewModel) {
             self.cellViewModel = cellViewModel
-            
-            //updateSelectionView()
-            
+                        
             self.cellViewModel?.delegate = self
             cellViewModel.fetchPreviewImage()
         }

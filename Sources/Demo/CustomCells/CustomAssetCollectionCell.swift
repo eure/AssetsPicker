@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import AssetsLibrary
+import AssetsPicker
 
 public class CustomAssetCollectionCell: UICollectionViewCell, AssetPickAssetCollectionCellCustomization, AssetsCollectionCellViewModelDelegate {
     

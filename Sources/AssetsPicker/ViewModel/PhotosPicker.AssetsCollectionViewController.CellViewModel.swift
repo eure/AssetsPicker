@@ -21,8 +21,8 @@ extension PhotosPicker.AssetsCollectionViewController {
 
         // MARK: Properties
         
-        weak var delegate: AssetsCollectionCellViewModelDelegate?
-        private(set) var assetCollection: PHAssetCollection
+        public weak var delegate: AssetsCollectionCellViewModelDelegate?
+        public var assetCollection: PHAssetCollection
         private var imageRequestId: PHImageRequestID?
         
         // MARK: Lifecycle
@@ -43,13 +43,13 @@ extension PhotosPicker.AssetsCollectionViewController {
         
         // MARK: Core
         
-        func cancelLatestImageIfNeeded() {
+        public func cancelLatestImageIfNeeded() {
             guard let imageRequestId = imageRequestId else { return }
             PHCachingImageManager.default().cancelImageRequest(imageRequestId)
             self.imageRequestId = nil
         }
         
-        func fetchLatestImage() {
+        public func fetchLatestImage() {
             imageRequestId = nil
             
             let queue = DispatchQueue.init(label: "jp.eure.pairs.photo")
