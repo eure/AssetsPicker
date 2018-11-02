@@ -84,7 +84,7 @@ extension PhotosPicker {
         }
     
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection)), for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection), for: indexPath)
             
             return cell
         }

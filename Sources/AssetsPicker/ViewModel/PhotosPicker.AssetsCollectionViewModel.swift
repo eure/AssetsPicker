@@ -16,7 +16,6 @@ extension PhotosPicker {
         
         // MARK: Lifecycle
         
-        private(set) var isNotEmptySelectionContainer: Observable<Bool> = Observable<Bool>(true)
         let cameraRollAssetCollection: PHAssetCollection?
         fileprivate(set) var displayItems: [PhotosPicker.AssetsCollectionViewController.CellViewModel] = []
 

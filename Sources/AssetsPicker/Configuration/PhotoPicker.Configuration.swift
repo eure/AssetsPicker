@@ -28,7 +28,7 @@ extension PhotosPicker {
         }
         
         /// Single of multiple select
-        public var selectionMode: SelectionMode = .single
+        public var selectionMode: SelectionMode = .multiple(limit: 3)
         
         /// Color of asset selection
         public var selectionColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)

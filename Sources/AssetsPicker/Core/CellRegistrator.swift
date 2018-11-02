@@ -18,7 +18,6 @@ public protocol PickerCustomization {}
 public protocol AssetPickAssetCellCustomization: PickerCustomization, AssetDetailCellViewModelDelegate {
     var cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel? { get }
     func bind(cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel)
-    func updateSelection(isItemSelected: Bool)
 }
 
 public protocol AssetPickAssetCollectionCellCustomization: PickerCustomization, AssetsCollectionCellViewModelDelegate {

@@ -48,6 +48,12 @@ extension PhotosPicker.AssetDetailViewController {
         
         // MARK: Properties
         
+        override var isSelected: Bool {
+            didSet {
+                selectedView.isHidden = !isSelected
+            }
+        }        
+        
         private let selectedView = SelectedView()
         public let assetImageLayer: CALayer = {
             let layer = CALayer()
@@ -99,15 +105,11 @@ extension PhotosPicker.AssetDetailViewController {
             self.cellViewModel?.delegate = self
             cellViewModel.fetchPreviewImage()
         }
-        
-        
-        func updateSelection(isItemSelected: Bool) {
-            self.selectedView.isHidden = !isItemSelected
-        }
-        
+
         public override func prepareForReuse() {
             super.prepareForReuse()
             
+//            isSelected = false
             assetImageLayer.contents = nil
             selectedView.isHidden = true
             cellViewModel?.cancelImageIfNeeded()

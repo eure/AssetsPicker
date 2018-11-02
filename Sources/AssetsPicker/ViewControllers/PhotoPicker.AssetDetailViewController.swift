@@ -33,7 +33,14 @@ extension PhotosPicker {
             
             let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.backgroundColor = .white
+            collectionView.allowsSelection = true
             
+            switch PhotosPicker.Configuration.shared.selectionMode {
+            case .single:
+                collectionView.allowsMultipleSelection = false
+            case .multiple(let size):
+                collectionView.allowsMultipleSelection = size > 1
+            }
             collectionView.register(
                 PhotosPicker.Configuration.shared.cellRegistrator.cellType(forCellType: .asset),
                 forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .asset)
@@ -156,13 +163,6 @@ extension PhotosPicker {
             let cellViewModel = viewModel.cellModel(at: indexPath.item)
             cellProtocol.bind(cellViewModel: cellViewModel)
             
-            switch cellViewModel.selectionStatus() {
-            case .notSelected:
-                cellProtocol.updateSelection(isItemSelected: false)
-            case .selected(_):
-                cellProtocol.updateSelection(isItemSelected: true)
-            }
-            
             if PhotosPicker.Configuration.shared.disableOnLibraryScrollAnimation == false {
                 cell.alpha = 0.5
                 
@@ -173,25 +173,22 @@ extension PhotosPicker {
         }
         
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            guard let cell = collectionView.cellForItem(at: indexPath) as? AssetPickAssetCellCustomization else { return }
-            guard let cellViewModel = cell.cellViewModel else { return }
+            guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+            guard let cellViewModel = (cell as? AssetPickAssetCellCustomization)?.cellViewModel else { return }
 
             self.viewModel.toggle(item: cellViewModel)
 
-            // If it's a single selection container -> we unselect the previous selected cell and select the new one
-            if self.viewModel.selectionContainer.size == 1 {
-                for visibleCell in collectionView.visibleCells {
-                    (visibleCell as? AssetPickAssetCellCustomization)?.updateSelection(isItemSelected: false)
-                }
+            if let parentController = parent {
+                parentController.navigationItem.rightBarButtonItem?.isEnabled = !viewModel.selectionContainer.isEmpty
             }
+        }
+        
+        public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+            guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+            guard let cellViewModel = (cell as? AssetPickAssetCellCustomization)?.cellViewModel else { return }
             
-            switch cellViewModel.selectionStatus() {
-            case .notSelected:
-                cell.updateSelection(isItemSelected: false)
-            case .selected(_):
-                cell.updateSelection(isItemSelected: true)
-            }
-
+            self.viewModel.toggle(item: cellViewModel)
+            
             if let parentController = parent {
                 parentController.navigationItem.rightBarButtonItem?.isEnabled = !viewModel.selectionContainer.isEmpty
             }

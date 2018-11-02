@@ -34,7 +34,6 @@ extension PhotosPicker {
             titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         }
         
-        
         func setOpened() {
             UIView.animate(
                 withDuration: 0.5,
