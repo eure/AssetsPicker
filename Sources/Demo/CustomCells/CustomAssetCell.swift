@@ -29,10 +29,15 @@ public class CustomAssetCell: UICollectionViewCell, AssetPickAssetCellCustomizat
         layout: do {
             contentView.addSubview(imageView)
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-            imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-            imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+            
+            NSLayoutConstraint.activate([
+                    imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                    imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+                    imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+                    imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+                ]
+            )
+
         }
     }
 
