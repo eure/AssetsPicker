@@ -166,9 +166,9 @@ extension PhotosPicker {
             if PhotosPicker.Configuration.shared.disableOnLibraryScrollAnimation == false {
                 cell.alpha = 0.5
                 
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
                     cell.alpha = 1
-                }
+                }, completion: nil)
             }
         }
         
