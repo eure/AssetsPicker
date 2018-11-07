@@ -36,10 +36,14 @@ extension PhotosPicker {
             collectionView.delegate = self
             collectionView.dataSource = self
             
-            collectionView.register(
-                PhotosPicker.Configuration.shared.cellRegistrator.cellType(forCellType: .assetCollection),
-                forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection)
-            )
+            if let nib = PhotosPicker.Configuration.shared.cellRegistrator.customAssetItemNibs[.assetCollection]?.0 {
+                collectionView.register(nib, forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection))
+            } else {
+                collectionView.register(
+                    PhotosPicker.Configuration.shared.cellRegistrator.cellType(forCellType: .assetCollection),
+                    forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection)
+                )
+            }
             
             collectionView.alwaysBounceVertical = false
             

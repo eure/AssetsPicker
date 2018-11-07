@@ -42,7 +42,7 @@ public class CellRegistrator {
     }
     
     func cellIdentifier(forCellType cellType: CellType) -> String {
-        return customAssetItemClasses[cellType]?.1 ?? defaultAssetItemClasses[cellType]?.1 ?? "Cell"
+        return customAssetItemNibs[cellType]?.1 ?? customAssetItemClasses[cellType]?.1 ?? defaultAssetItemClasses[cellType]?.1 ?? "Cell"
     }
 
     // MARK: Core

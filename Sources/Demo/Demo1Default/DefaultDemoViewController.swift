@@ -9,7 +9,7 @@
 import UIKit
 import AssetsPicker
 
-class DefaultDemoViewController: UIViewController {
+class DemoDefaultViewController: UIViewController {
     
     // MARK: Lifecycle
     
@@ -27,7 +27,7 @@ class DefaultDemoViewController: UIViewController {
     }
 }
 
-extension DefaultDemoViewController: PhotosPickerDelegate {
+extension DemoDefaultViewController: PhotosPickerDelegate {
     func photoPicker(_ pickerController: PhotosPicker.ViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")

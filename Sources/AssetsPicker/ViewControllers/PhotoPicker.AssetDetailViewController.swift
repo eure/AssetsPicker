@@ -42,10 +42,15 @@ extension PhotosPicker {
             case .multiple(let size):
                 collectionView.allowsMultipleSelection = size > 1
             }
-            collectionView.register(
-                PhotosPicker.Configuration.shared.cellRegistrator.cellType(forCellType: .asset),
-                forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .asset)
-            )
+            
+            if let nib = PhotosPicker.Configuration.shared.cellRegistrator.customAssetItemNibs[.asset]?.0 {
+                collectionView.register(nib, forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .asset))
+            } else {
+                collectionView.register(
+                    PhotosPicker.Configuration.shared.cellRegistrator.cellType(forCellType: .asset),
+                    forCellWithReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .asset)
+                )
+            }
 
             if Configuration.shared.headerView != nil {
                 collectionView.register(HeaderContainerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: PhotosPicker.AssetDetailViewController.HeaderContainerView.self))

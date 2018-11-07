@@ -27,7 +27,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Basic Demo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tt4-OQ-jbi">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Default" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tt4-OQ-jbi">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -47,7 +47,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Custom cells" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I6w-1O-DS6">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Custom classes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I6w-1O-DS6">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -58,6 +58,46 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="ONw-W1-7kz" kind="show" id="bym-Iq-M9C"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="WWz-mG-qnk" style="IBUITableViewCellStyleDefault" id="1wb-fp-OxH">
+                                        <rect key="frame" x="0.0" y="88" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1wb-fp-OxH" id="XTn-lB-SvV">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Custom Nib" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WWz-mG-qnk">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="BYx-fl-nAC" kind="show" id="wjE-ay-2rR"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="dCO-zW-INP" style="IBUITableViewCellStyleDefault" id="nS0-BH-Dtt">
+                                        <rect key="frame" x="0.0" y="132" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nS0-BH-Dtt" id="oFD-3p-kwB">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Header view" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dCO-zW-INP">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="q9l-BT-ahB" kind="show" id="jvt-9h-pEr"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -74,10 +114,10 @@
             </objects>
             <point key="canvasLocation" x="879.20000000000005" y="-27.436281859070466"/>
         </scene>
-        <!--Default Demo View Controller-->
+        <!--Demo Default View Controller-->
         <scene sceneID="uGb-ob-FNB">
             <objects>
-                <viewController id="Uli-os-cLf" customClass="DefaultDemoViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Uli-os-cLf" customClass="DemoDefaultViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aDQ-i1-eEh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -102,10 +142,10 @@
             </objects>
             <point key="canvasLocation" x="1647" y="-27"/>
         </scene>
-        <!--Custom Cell Demo View Controller-->
+        <!--Demo2 View Controller-->
         <scene sceneID="842-Zc-GZs">
             <objects>
-                <viewController id="ONw-W1-7kz" customClass="CustomCellDemoViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ONw-W1-7kz" customClass="Demo2ViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CVP-4I-Jq1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -133,6 +173,37 @@
             </objects>
             <point key="canvasLocation" x="1646" y="625"/>
         </scene>
+        <!--Demo3 View Controller-->
+        <scene sceneID="KTj-FP-EGC">
+            <objects>
+                <viewController id="BYx-fl-nAC" customClass="Demo3ViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EyQ-qJ-ZLb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="65v-tT-Q9C">
+                                <rect key="frame" x="156" y="316.5" width="63" height="34"/>
+                                <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Present">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapPresentButton:" destination="BYx-fl-nAC" eventType="touchUpInside" id="SiJ-RW-gDt"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="65v-tT-Q9C" firstAttribute="centerX" secondItem="EyQ-qJ-ZLb" secondAttribute="centerX" id="aUa-bW-3cG"/>
+                            <constraint firstItem="65v-tT-Q9C" firstAttribute="centerY" secondItem="EyQ-qJ-ZLb" secondAttribute="centerY" id="yDn-l5-kVh"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="vDt-5b-2h6"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="caw-8E-wfX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="879" y="732"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="eHo-eA-zpe">
             <objects>
@@ -150,6 +221,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xz-cF-TPm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-60" y="-27.436281859070466"/>
+        </scene>
+        <!--Demo4 View Controller-->
+        <scene sceneID="LJU-bV-LJa">
+            <objects>
+                <viewController id="q9l-BT-ahB" customClass="Demo4ViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KsD-IG-fOY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DV5-ox-u2V">
+                                <rect key="frame" x="156" y="316.5" width="63" height="34"/>
+                                <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Present">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapPresentButton:" destination="q9l-BT-ahB" eventType="touchUpInside" id="PQa-Yu-otC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="DV5-ox-u2V" firstAttribute="centerX" secondItem="KsD-IG-fOY" secondAttribute="centerX" id="DHE-qk-P8C"/>
+                            <constraint firstItem="DV5-ox-u2V" firstAttribute="centerY" secondItem="KsD-IG-fOY" secondAttribute="centerY" id="IcF-jK-mTN"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="v4z-hG-M85"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Sg-dM-4A9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="188" y="732"/>
         </scene>
     </scenes>
 </document>
