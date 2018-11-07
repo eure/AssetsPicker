@@ -15,13 +15,14 @@ protocol PhotosPickerAssetDetailDelegate: class {
 
 extension PhotosPicker {
     
-    public final class AssetDetailViewController: BaseViewController<ViewModel>,
+    public final class AssetDetailViewController: UIViewController,
         UICollectionViewDelegate,
         UICollectionViewDataSource,
         UICollectionViewDelegateFlowLayout {
         
         // MARK: Properties
         
+        let viewModel: ViewModel
         weak var delegate: PhotosPickerAssetDetailDelegate?
         var headerSizeCalculator: ViewSizeCalculator<UIView>?
         
@@ -57,6 +58,19 @@ extension PhotosPicker {
         
         // MARK: Lifecycle
         
+        init(withAssetCollection assetCollection: PHAssetCollection, andSelectionContainer selectionContainer: SelectionContainer<PhotosPicker.AssetDetailViewController.CellViewModel>) {
+            self.viewModel = ViewModel(
+                assetCollection: assetCollection,
+                selectionContainer: selectionContainer
+            )
+            
+            super.init(nibName: nil, bundle: nil)
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }        
+        
         public override func viewDidLoad() {
             super.viewDidLoad()
             
@@ -79,10 +93,13 @@ extension PhotosPicker {
             layout: do {
                 guard let view = view else { return }
                 collectionView.translatesAutoresizingMaskIntoConstraints = false
-                collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-                collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+                
+                NSLayoutConstraint.activate([
+                    collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+                    collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ])
             }
             
             if PHPhotoLibrary.authorizationStatus() == .denied {
@@ -124,6 +141,15 @@ extension PhotosPicker {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .asset)), for: indexPath)
             
             return cell
+        }
+        
+        @objc dynamic
+        public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+            guard let cell = cell as? AssetPickAssetCellCustomization else { return }
+            
+            cell.cellViewModel?.cancelImageIfNeeded()
+            cell.cellViewModel?.delegate = nil
+            cell.cellViewModel = nil
         }
         
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

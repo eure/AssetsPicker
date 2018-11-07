@@ -55,15 +55,15 @@ extension PhotosPicker.AssetDetailViewController {
         }        
         
         private let selectedView = SelectedView()
-        public let assetImageLayer: CALayer = {
-            let layer = CALayer()
-            layer.masksToBounds = true
-            layer.contentsGravity = .resizeAspectFill
-            
-            return layer
+        
+        public let imageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.clipsToBounds = true
+            imageView.contentMode = .scaleAspectFill
+            return imageView
         }()
 
-        private(set) var cellViewModel: CellViewModel?
+        var cellViewModel: CellViewModel?
         
         // MARK: Lifecycle
         
@@ -71,26 +71,28 @@ extension PhotosPicker.AssetDetailViewController {
             super.init(frame: frame)
             
             layout: do {
-                contentView.layer.addSublayer(assetImageLayer)
+                contentView.addSubview(imageView)
                 contentView.addSubview(selectedView)
-                
-                selectedView.isHidden = true
+
+                imageView.translatesAutoresizingMaskIntoConstraints = false
                 selectedView.translatesAutoresizingMaskIntoConstraints = false
-                selectedView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
-                selectedView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
-                selectedView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 0).isActive = true
-                selectedView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0).isActive = true
+
+                NSLayoutConstraint.activate([
+                    imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                    imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+                    imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+                    imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                    
+                    selectedView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+                    selectedView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+                    selectedView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 0),
+                    selectedView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 0)
+                    ]
+                )
+
+                selectedView.isHidden = true
+
             }
-        }
-        
-        public override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-            return layoutAttributes
-        }
-        
-        public override func layoutSublayers(of layer: CALayer) {
-            super.layoutSublayers(of: layer)
-            
-            assetImageLayer.frame = self.bounds
         }
 
         required init?(coder aDecoder: NSCoder) {
@@ -109,18 +111,14 @@ extension PhotosPicker.AssetDetailViewController {
         public override func prepareForReuse() {
             super.prepareForReuse()
             
-//            isSelected = false
-            assetImageLayer.contents = nil
+            imageView.image = nil
             selectedView.isHidden = true
-            cellViewModel?.cancelImageIfNeeded()
-            cellViewModel?.delegate = nil
-            cellViewModel = nil
         }
     }
 }
 
 extension PhotosPicker.AssetDetailViewController.Cell: AssetDetailCellViewModelDelegate {
     func cellViewModel(_ cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel, didFetchImage image: UIImage) {
-        assetImageLayer.contents = image.cgImage
+        imageView.image = image
     }
 }

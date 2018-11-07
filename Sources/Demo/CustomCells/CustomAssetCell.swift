@@ -45,9 +45,6 @@ public class CustomAssetCell: UICollectionViewCell, AssetPickAssetCellCustomizat
         super.prepareForReuse()
         
         imageView.image = nil
-        cellViewModel?.cancelImageIfNeeded()
-        cellViewModel?.delegate = nil
-        cellViewModel = nil
     }
     
     required init?(coder aDecoder: NSCoder) {

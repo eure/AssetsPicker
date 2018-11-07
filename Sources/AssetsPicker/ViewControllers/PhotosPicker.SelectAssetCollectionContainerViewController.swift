@@ -12,38 +12,37 @@ import Photos
 
 extension PhotosPicker {
     
-    public class SelectAssetCollectionContainerViewController: BaseViewController<AssetCollectionViewModel> {
+    public class SelectAssetCollectionContainerViewController: UIViewController {
         
         // MARK: Properties
         
-        private lazy var assetsCollectionsViewController = PhotosPicker.AssetsCollectionViewController(viewModel: .init())
+        private let viewModel = AssetCollectionViewModel()
+        private lazy var assetsCollectionsViewController = PhotosPicker.AssetsCollectionViewController()
         private var currentAnimator: UIViewPropertyAnimator?
         private var isShowingCollection: Bool = false
-        private let configuration: PhotosPicker.Configuration
         private var currentAssetDetailViewController: PhotosPicker.AssetDetailViewController?
         private let selectionContainer: SelectionContainer<PhotosPicker.AssetDetailViewController.CellViewModel>
         private let titleButton = PhotosPicker.TitleView()
 
         // MARK: Lifecycle
         
-        init(withViewModel viewModel: AssetCollectionViewModel, configuration: PhotosPicker.Configuration) {
-            
+        init() {
+        
             setupConfiguration: do {
-                self.configuration = configuration
                 
-                switch configuration.selectionMode {
+                switch PhotosPicker.Configuration.shared.selectionMode {
                 case .single:
                     self.selectionContainer = SelectionContainer<PhotosPicker.AssetDetailViewController.CellViewModel>(withSize: 1)
                 case .multiple(let limit):
                     self.selectionContainer = SelectionContainer<PhotosPicker.AssetDetailViewController.CellViewModel>(withSize: limit)
                 }
+                
+                super.init(nibName: nil, bundle: nil)
             }
             
-            super.init(viewModel: viewModel)
-            
             setupDismissButton: do {
-                let dismissBarButtonItem = UIBarButtonItem(title: configuration.localize.dismiss, style: .done, target: self, action: #selector(dismissPicker(sender:)))
-                dismissBarButtonItem.tintColor = configuration.tintColor
+                let dismissBarButtonItem = UIBarButtonItem(title: PhotosPicker.Configuration.shared.localize.dismiss, style: .done, target: self, action: #selector(dismissPicker(sender:)))
+                dismissBarButtonItem.tintColor = PhotosPicker.Configuration.shared.tintColor
                 navigationItem.leftBarButtonItem = dismissBarButtonItem
             }
             setupTitleView: do {
@@ -90,12 +89,7 @@ extension PhotosPicker {
         // MARK: Core
         
         private func setup(toAssetCollection assetCollection: PHAssetCollection) {
-            let controller = PhotosPicker.AssetDetailViewController(
-                viewModel: PhotosPicker.ViewModel(
-                    assetCollection: assetCollection,
-                    selectionContainer: selectionContainer
-                )
-            )
+            let controller = PhotosPicker.AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: selectionContainer)
             
             controller.delegate = self
             
@@ -106,10 +100,13 @@ extension PhotosPicker {
             
             guard let view = view else { return }
             controller.view.translatesAutoresizingMaskIntoConstraints = false
-            controller.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            
+            NSLayoutConstraint.activate([
+                controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+                controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
         }
         
         private func switchTo(assetCollection: PHAssetCollection) {
@@ -136,10 +133,13 @@ extension PhotosPicker {
             assetsCollectionsViewController.view.transform = .identity
             
             assetsCollectionsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            assetsCollectionsViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            assetsCollectionsViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            assetsCollectionsViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            assetsCollectionsViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            
+            NSLayoutConstraint.activate([
+                assetsCollectionsViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
+                assetsCollectionsViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                assetsCollectionsViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                assetsCollectionsViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
             
             assetsCollectionsViewController.view.transform = .init(translationX: 0, y: -assetsCollectionsViewController.view.bounds.height)
             

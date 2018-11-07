@@ -42,15 +42,18 @@ public class CustomAssetCollectionCell: UICollectionViewCell, AssetPickAssetColl
             contentView.addSubview(assetTitleLabel)
             
             assetImageView.translatesAutoresizingMaskIntoConstraints = false
-            assetImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
-            assetImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-            assetImageView.widthAnchor.constraint(equalToConstant: 64).isActive = true
-            assetImageView.heightAnchor.constraint(equalToConstant: 64).isActive = true
-            
             assetTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-            assetTitleLabel.centerYAnchor.constraint(equalTo: assetImageView.centerYAnchor, constant: 0).isActive = true
-            assetTitleLabel.leftAnchor.constraint(equalTo: assetImageView.rightAnchor, constant: 16).isActive = true
-            assetTitleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 16).isActive = true
+
+            NSLayoutConstraint.activate([
+                assetImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0),
+                assetImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+                assetImageView.widthAnchor.constraint(equalToConstant: 64),
+                assetImageView.heightAnchor.constraint(equalToConstant: 64),
+                
+                assetTitleLabel.centerYAnchor.constraint(equalTo: assetImageView.centerYAnchor, constant: 0),
+                assetTitleLabel.leftAnchor.constraint(equalTo: assetImageView.rightAnchor, constant: 16),
+                assetTitleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 16)
+            ])
         }
         binding: do {
             

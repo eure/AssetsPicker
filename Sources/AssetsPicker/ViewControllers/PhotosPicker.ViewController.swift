@@ -33,7 +33,7 @@ extension PhotosPicker {
             PhotosPicker.Configuration.shared = configuration
             
             setupRootController: do  {
-                let controller = PhotosPicker.SelectAssetCollectionContainerViewController(withViewModel: .init(), configuration: configuration)
+                let controller = PhotosPicker.SelectAssetCollectionContainerViewController()
                 pushViewController(controller, animated: false)
             }
             setupPickImagesNotification: do {

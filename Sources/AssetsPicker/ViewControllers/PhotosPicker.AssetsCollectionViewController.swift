@@ -16,13 +16,14 @@ protocol PhotosPickerAssetsCollectionDelegate: class {
 
 extension PhotosPicker {
     
-    public class AssetsCollectionViewController: BaseViewController<AssetCollectionViewModel>,
+    public class AssetsCollectionViewController: UIViewController,
         UICollectionViewDataSource,
         UICollectionViewDelegate,
         UICollectionViewDelegateFlowLayout {
         
         // MARK: Properties
         
+        private let viewModel = AssetCollectionViewModel()
         weak var delegate: PhotosPickerAssetsCollectionDelegate?
 
         private lazy var collectionView: UICollectionView = {
@@ -56,10 +57,13 @@ extension PhotosPicker {
             layout: do {
                 guard let view = view else { return }
                 collectionView.translatesAutoresizingMaskIntoConstraints = false
-                collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-                collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+                
+                NSLayoutConstraint.activate([
+                    collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+                    collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                    collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                    collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                ])
             }
             
             if PHPhotoLibrary.authorizationStatus() == .denied {
@@ -87,6 +91,15 @@ extension PhotosPicker {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosPicker.Configuration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection), for: indexPath)
             
             return cell
+        }
+        
+        @objc dynamic
+        public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+            guard let cell = cell as? AssetPickAssetCollectionCellCustomization else { return }
+
+            cell.cellViewModel?.cancelLatestImageIfNeeded()
+            cell.cellViewModel?.delegate = nil
+            cell.cellViewModel = nil
         }
     
         @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

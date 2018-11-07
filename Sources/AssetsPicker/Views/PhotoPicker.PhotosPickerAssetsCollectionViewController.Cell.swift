@@ -15,18 +15,16 @@ extension PhotosPicker.AssetsCollectionViewController {
         
         // MARK: Properties
         
-        private let assetImageLayer: CALayer = {
-            let layer = CALayer()
-            layer.masksToBounds = true
-            layer.contentsGravity = .resizeAspectFill
-            
-            return layer
+        public let assetImageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.clipsToBounds = true
+            imageView.contentMode = .scaleAspectFill
+            return imageView
         }()
         
-        private let assetImageView = UIView()
         private let assetTitleLabel = UILabel()
         private let assetNumberOfItemsLabel = UILabel()
-        private(set) var cellViewModel: CellViewModel?
+        var cellViewModel: CellViewModel?
 
         // MARK: Lifecycle
         
@@ -44,35 +42,29 @@ extension PhotosPicker.AssetsCollectionViewController {
             }
             layout: do {
                 contentView.addSubview(assetImageView)
-                assetImageView.layer.addSublayer(assetImageLayer)
                 contentView.addSubview(assetTitleLabel)
                 contentView.addSubview(assetNumberOfItemsLabel)
 
                 assetImageView.translatesAutoresizingMaskIntoConstraints = false
-                assetImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0).isActive = true
-                assetImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-                assetImageView.widthAnchor.constraint(equalToConstant: 64).isActive = true
-                assetImageView.heightAnchor.constraint(equalToConstant: 64).isActive = true
-
                 assetTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-                assetTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
-                assetTitleLabel.leftAnchor.constraint(equalTo: assetImageView.rightAnchor, constant: 16).isActive = true
-                assetTitleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 16).isActive = true
-
                 assetNumberOfItemsLabel.translatesAutoresizingMaskIntoConstraints = false
-                assetNumberOfItemsLabel.topAnchor.constraint(equalTo: assetTitleLabel.bottomAnchor, constant: 4).isActive = true
-                assetNumberOfItemsLabel.leftAnchor.constraint(equalTo: assetTitleLabel.leftAnchor, constant: 0).isActive = true
-                assetNumberOfItemsLabel.rightAnchor.constraint(equalTo: assetTitleLabel.rightAnchor, constant: 0).isActive = true
-            }
-            binding: do {
 
+                NSLayoutConstraint.activate([
+                        assetImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0),
+                        assetImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+                        assetImageView.widthAnchor.constraint(equalToConstant: 64),
+                        assetImageView.heightAnchor.constraint(equalToConstant: 64),
+                        
+                        assetTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+                        assetTitleLabel.leftAnchor.constraint(equalTo: assetImageView.rightAnchor, constant: 16),
+                        assetTitleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: 16),
+                        
+                        assetNumberOfItemsLabel.topAnchor.constraint(equalTo: assetTitleLabel.bottomAnchor, constant: 4),
+                        assetNumberOfItemsLabel.leftAnchor.constraint(equalTo: assetTitleLabel.leftAnchor, constant: 0),
+                        assetNumberOfItemsLabel.rightAnchor.constraint(equalTo: assetTitleLabel.rightAnchor, constant: 0)
+                    ]
+                )
             }
-        }
-        
-        public override func layoutSublayers(of layer: CALayer) {
-            super.layoutSublayers(of: layer)
-            
-            assetImageLayer.frame = assetImageView.bounds
         }
 
         required init?(coder aDecoder: NSCoder) {
@@ -82,9 +74,7 @@ extension PhotosPicker.AssetsCollectionViewController {
         public override func prepareForReuse() {
             super.prepareForReuse()
             
-            cellViewModel?.cancelLatestImageIfNeeded()
-            cellViewModel?.delegate = nil
-            cellViewModel = nil
+            assetImageView.image = nil
             assetTitleLabel.text = " "
             assetNumberOfItemsLabel.text = " "
         }
@@ -101,7 +91,7 @@ extension PhotosPicker.AssetsCollectionViewController {
 
 extension PhotosPicker.AssetsCollectionViewController.Cell: AssetsCollectionCellViewModelDelegate {
     public func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchImage image: UIImage) {
-        assetImageLayer.contents = image.cgImage
+        assetImageView.image = image
     }
     
     public func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchNumberOfAssets numberOfAssets: String) {

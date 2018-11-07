@@ -19,10 +19,12 @@ extension PhotosPicker.AssetDetailViewController {
             
             addSubview(view)
 
-            view.topAnchor.constraint(equalTo: topAnchor).isActive = true
-            view.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-            view.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-            view.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: topAnchor),
+                view.leadingAnchor.constraint(equalTo: leadingAnchor),
+                view.trailingAnchor.constraint(equalTo: trailingAnchor),
+                view.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
         }
     }
 }

@@ -20,7 +20,6 @@
 		4BCA989E2171ED5E0048826A /* AssetsPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* AssetsPicker.framework */; };
 		4BCA989F2171ED5E0048826A /* AssetsPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* AssetsPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212782181B23A00DA0259 /* SelectionContainer.swift */; };
-		5A5212822181B27100DA0259 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212812181B27100DA0259 /* BaseViewController.swift */; };
 		5A5212852181B2A400DA0259 /* PhotoPicker.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212842181B2A400DA0259 /* PhotoPicker.Configuration.swift */; };
 		5A5212872181B2C900DA0259 /* PhotosPicker.ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212862181B2C900DA0259 /* PhotosPicker.ViewController.swift */; };
 		5A5212892181B2EB00DA0259 /* PhotosPicker.SelectAssetCollectionContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212882181B2EB00DA0259 /* PhotosPicker.SelectAssetCollectionContainerViewController.swift */; };
@@ -89,7 +88,6 @@
 		4BCA98992171EBFA0048826A /* AssetsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsPicker.swift; sourceTree = "<group>"; };
 		4BCA989C2171ED560048826A /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		5A5212782181B23A00DA0259 /* SelectionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionContainer.swift; sourceTree = "<group>"; };
-		5A5212812181B27100DA0259 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		5A5212842181B2A400DA0259 /* PhotoPicker.Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPicker.Configuration.swift; sourceTree = "<group>"; };
 		5A5212862181B2C900DA0259 /* PhotosPicker.ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosPicker.ViewController.swift; sourceTree = "<group>"; };
 		5A5212882181B2EB00DA0259 /* PhotosPicker.SelectAssetCollectionContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosPicker.SelectAssetCollectionContainerViewController.swift; sourceTree = "<group>"; };
@@ -236,7 +234,6 @@
 		5A5212802181B26600DA0259 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				5A5212812181B27100DA0259 /* BaseViewController.swift */,
 				5A5212862181B2C900DA0259 /* PhotosPicker.ViewController.swift */,
 				5A5212882181B2EB00DA0259 /* PhotosPicker.SelectAssetCollectionContainerViewController.swift */,
 				5A52128D2181B33E00DA0259 /* PhotosPicker.AssetsCollectionViewController.swift */,
@@ -440,7 +437,6 @@
 				5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */,
 				4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */,
 				5A52129D2181B3B700DA0259 /* PhotoPicker.TitleView.swift in Sources */,
-				5A5212822181B27100DA0259 /* BaseViewController.swift in Sources */,
 				5A5212872181B2C900DA0259 /* PhotosPicker.ViewController.swift in Sources */,
 				5AC4AE06218C5C18001ED22E /* PhotosPicker.AssetsCollectionViewModel.swift in Sources */,
 				5A5212942181B36800DA0259 /* PhotoPicker.AssetDetailViewController.swift in Sources */,
