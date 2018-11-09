@@ -16,6 +16,13 @@ extension PhotosPicker {
         
         // MARK: Properties
         
+        private lazy var changePermissionsButton: UIButton = {
+          let button = UIButton(type: UIButton.ButtonType.custom)
+            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            button.setTitleColor(Configuration.shared.tintColor, for: .normal)
+
+            return button
+        }()
         private let viewModel = AssetCollectionViewModel()
         private lazy var assetsCollectionsViewController = PhotosPicker.AssetsCollectionViewController()
         private var currentAnimator: UIViewPropertyAnimator?
@@ -58,12 +65,55 @@ extension PhotosPicker {
         public override func viewDidLoad() {
             super.viewDidLoad()
             
+            view.backgroundColor = .white
+            
+            switch PHPhotoLibrary.authorizationStatus() {
+            case .authorized:
+                setupController()
+            case .notDetermined:
+                PHPhotoLibrary.requestAuthorization({ (newStatus) in
+                    if newStatus == .authorized {
+                        DispatchQueue.main.async {
+                            self.setupController()
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            self.showPermissionsLabel()
+                        }
+                    }
+                })
+            case .denied, .restricted:
+                showPermissionsLabel()
+            }
+        }
+        
+        func showPermissionsLabel() {
+            titleButton.isHidden = true
+            view.addSubview(changePermissionsButton)
+            changePermissionsButton.translatesAutoresizingMaskIntoConstraints = false
+            changePermissionsButton.setTitle(Configuration.shared.localize.changePermissions, for: .normal)
+            changePermissionsButton.addTarget(self, action: #selector(openSettings(sender:)), for: .touchUpInside)
+            NSLayoutConstraint.activate([
+                changePermissionsButton.topAnchor.constraint(equalTo: view.topAnchor),
+                changePermissionsButton.leftAnchor.constraint(equalTo: view.leftAnchor),
+                changePermissionsButton.rightAnchor.constraint(equalTo: view.rightAnchor),
+                changePermissionsButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                ]
+            )
+        }
+        
+        @objc func openSettings(sender: UIButton) {
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }
+        
+        func setupController() {
             setupAssetsCollection: do {
                 addChild(assetsCollectionsViewController)
                 assetsCollectionsViewController.didMove(toParent: self)
                 assetsCollectionsViewController.delegate = self
             }
             setupInitialState: do {
+                viewModel.loadAssets()
                 if let assetCollection = viewModel.cameraRollAssetCollection {
                     setup(toAssetCollection: assetCollection)
                 } else {

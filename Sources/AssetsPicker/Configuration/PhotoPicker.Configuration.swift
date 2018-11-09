@@ -20,6 +20,7 @@ extension PhotosPicker {
             public var next: String = "Next"
             public var dismiss: String = "Dismiss"
             public var collections: String = "Collections"
+            public var changePermissions: String = "Change your Photo Library permissions"
         }
         
         public enum SelectionMode {
@@ -33,10 +34,10 @@ extension PhotosPicker {
         /// Color of asset selection
         public var selectionColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
         
-        /// Color of asset selection
+        /// Tint color used for navigation items color ( done button, etc )
         public var tintColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
         
-        /// Color of asset selection
+        /// Number of items in a row for the assets list within an asset collection
         public var numberOfItemsInRow = 3
         
         /// Localization of buttons

@@ -16,12 +16,12 @@ extension PhotosPicker {
         
         // MARK: Lifecycle
         
-        let cameraRollAssetCollection: PHAssetCollection?
+        var cameraRollAssetCollection: PHAssetCollection?
         fileprivate(set) var displayItems: [PhotosPicker.AssetsCollectionViewController.CellViewModel] = []
 
         // MARK: Lifecycle
         
-        init() {
+        func loadAssets() {
             self.cameraRollAssetCollection = PHAssetCollection.fetchAssetCollections(
                 with: .smartAlbum,
                 subtype: .smartAlbumUserLibrary,
