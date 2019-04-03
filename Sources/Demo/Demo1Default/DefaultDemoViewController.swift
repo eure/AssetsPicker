@@ -20,15 +20,15 @@ class DemoDefaultViewController: UIViewController {
     // MARK: User Interaction
 
     @IBAction func didTapPresentButton(_ sender: Any) {
-        let configuration = PhotosPicker.Configuration()
-        let photoPicker = PhotosPicker.ViewController(withConfiguration: configuration)
+        let configuration = AssetPickerConfiguration()
+        let photoPicker = AssetPickerViewController(withConfiguration: configuration)
         photoPicker.pickerDelegate = self
         present(photoPicker, animated: true, completion: nil)
     }
 }
 
-extension DemoDefaultViewController: PhotosPickerDelegate {
-    func photoPicker(_ pickerController: PhotosPicker.ViewController, didPickImages images: [UIImage]) {
+extension DemoDefaultViewController: AssetPickerDelegate {
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }

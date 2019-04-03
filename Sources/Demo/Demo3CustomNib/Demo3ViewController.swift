@@ -24,19 +24,19 @@ class Demo3ViewController: UIViewController {
         let assetNib = UINib(nibName: String(describing: Demo3AssetNib.self), bundle: nil)
         let assetCollectionNib = UINib(nibName: String(describing: Demo3AssetCollectionNib.self), bundle: nil)
 
-        let configuration = PhotosPicker.Configuration()
+        let configuration = AssetPickerConfiguration()
         configuration.cellRegistrator.register(nib: assetNib, forCellType: .asset)
         configuration.cellRegistrator.register(nib: assetCollectionNib, forCellType: .assetCollection)
 
-        let photoPicker = PhotosPicker.ViewController(withConfiguration: configuration)
+        let photoPicker = AssetPickerViewController(withConfiguration: configuration)
         photoPicker.pickerDelegate = self
         
         present(photoPicker, animated: true, completion: nil)
     }
 }
 
-extension Demo3ViewController: PhotosPickerDelegate {
-    func photoPicker(_ pickerController: PhotosPicker.ViewController, didPickImages images: [UIImage]) {
+extension Demo3ViewController: AssetPickerDelegate {
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }

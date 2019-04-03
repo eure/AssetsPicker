@@ -16,13 +16,13 @@ public enum CellType: String {
 public protocol PickerCustomization {}
 
 public protocol AssetPickAssetCellCustomization: PickerCustomization, AssetDetailCellViewModelDelegate {
-    var cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel? { get set }
-    func bind(cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel)
+    var cellViewModel: AssetDetailCellViewModel? { get set }
+    func bind(cellViewModel: AssetDetailCellViewModel)
 }
 
 public protocol AssetPickAssetCollectionCellCustomization: PickerCustomization, AssetsCollectionCellViewModelDelegate {
-    var cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel? { get set }
-    func bind(cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel)
+    var cellViewModel: AssetCollectionCellViewModel? { get set }
+    func bind(cellViewModel: AssetCollectionCellViewModel)
 }
 
 public class CellRegistrator {
@@ -33,8 +33,8 @@ public class CellRegistrator {
     var customAssetItemNibs: [CellType: (UINib, String)] = [:]
 
     var defaultAssetItemClasses: [CellType: (UICollectionViewCell.Type, String)] = [
-        .asset: (PhotosPicker.AssetDetailViewController.Cell.self, String(describing: PhotosPicker.AssetDetailViewController.Cell.self)),
-        .assetCollection: (PhotosPicker.AssetsCollectionViewController.Cell.self, String(describing: PhotosPicker.AssetsCollectionViewController.Cell.self))
+        .asset: (AssetDetailCell.self, String(describing: AssetDetailCell.self)),
+        .assetCollection: (AssetCollectionCell.self, String(describing: AssetCollectionCell.self))
     ]
     
     func cellType(forCellType cellType: CellType) -> UICollectionViewCell.Type {

@@ -15,7 +15,7 @@ class Demo3AssetNib: UICollectionViewCell, AssetPickAssetCellCustomization {
     // MARK: Properties
     
     @IBOutlet weak var imageView: UIImageView!
-    var cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel?
+    var cellViewModel: AssetDetailCellViewModel?
     
     // MARK: Lifecycle
 
@@ -25,7 +25,7 @@ class Demo3AssetNib: UICollectionViewCell, AssetPickAssetCellCustomization {
     
     // MARK: Core
     
-    func bind(cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel) {
+    func bind(cellViewModel: AssetDetailCellViewModel) {
         self.cellViewModel = cellViewModel
         
         self.cellViewModel?.delegate = self
@@ -40,7 +40,7 @@ class Demo3AssetNib: UICollectionViewCell, AssetPickAssetCellCustomization {
 }
 
 extension Demo3AssetNib: AssetDetailCellViewModelDelegate {
-    func cellViewModel(_ cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel, didFetchImage image: UIImage) {
+    func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage) {
         imageView.image = image
     }
 }

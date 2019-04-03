@@ -16,7 +16,7 @@ class Demo3AssetCollectionNib: UICollectionViewCell, AssetPickAssetCollectionCel
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    public var cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel?
+    public var cellViewModel: AssetCollectionCellViewModel?
     
     // MARK: Lifecycle
     
@@ -33,7 +33,7 @@ class Demo3AssetCollectionNib: UICollectionViewCell, AssetPickAssetCollectionCel
     
     // MARK: AssetCollectionCellProtocol
     
-    public func bind(cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel) {
+    public func bind(cellViewModel: AssetCollectionCellViewModel) {
         self.cellViewModel = cellViewModel
         self.cellViewModel?.delegate = self
         titleLabel.text = cellViewModel.assetCollection.localizedTitle ?? ""
@@ -43,11 +43,11 @@ class Demo3AssetCollectionNib: UICollectionViewCell, AssetPickAssetCollectionCel
     
     // MARK: AssetsCollectionCellViewModelDelegate
     
-    public func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchImage image: UIImage) {
+    public func cellViewModel(_ cellViewModel: AssetCollectionCellViewModel, didFetchImage image: UIImage) {
         imageView.image = image
     }
     
-    public func cellViewModel(_ cellViewModel: PhotosPicker.AssetsCollectionViewController.CellViewModel, didFetchNumberOfAssets numberOfAssets: String) {
+    public func cellViewModel(_ cellViewModel: AssetCollectionCellViewModel, didFetchNumberOfAssets numberOfAssets: String) {
     }
     
 }

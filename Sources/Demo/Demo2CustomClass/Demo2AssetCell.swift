@@ -37,7 +37,6 @@ public class Demo2AssetCell: UICollectionViewCell, AssetPickAssetCellCustomizati
                     imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
                 ]
             )
-
         }
     }
 
@@ -53,9 +52,9 @@ public class Demo2AssetCell: UICollectionViewCell, AssetPickAssetCellCustomizati
     
     // MARK: AssetCellProtocol
     
-    public var cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel?
+    public var cellViewModel: AssetDetailCellViewModel?
     
-    public func bind(cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel) {
+    public func bind(cellViewModel: AssetDetailCellViewModel) {
         self.cellViewModel = cellViewModel
         
         self.cellViewModel?.delegate = self
@@ -69,7 +68,7 @@ public class Demo2AssetCell: UICollectionViewCell, AssetPickAssetCellCustomizati
     
     // MARK: AssetDetailCellViewModelDelegate
     
-    public func cellViewModel(_ cellViewModel: PhotosPicker.AssetDetailViewController.CellViewModel, didFetchImage image: UIImage) {
+    public func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage) {
         imageView.image = image
     }
 }

@@ -23,19 +23,19 @@ class Demo4ViewController: UIViewController {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
 
-        var configuration = PhotosPicker.Configuration()
+        var configuration = AssetPickerConfiguration()
         configuration.headerView = headerView
         // configuration.isHeaderFloating = true
         
-        let photoPicker = PhotosPicker.ViewController(withConfiguration: configuration)
+        let photoPicker = AssetPickerViewController(withConfiguration: configuration)
         photoPicker.pickerDelegate = self
         
         present(photoPicker, animated: true, completion: nil)
     }
 }
 
-extension Demo4ViewController: PhotosPickerDelegate {
-    func photoPicker(_ pickerController: PhotosPicker.ViewController, didPickImages images: [UIImage]) {
+extension Demo4ViewController: AssetPickerDelegate {
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
