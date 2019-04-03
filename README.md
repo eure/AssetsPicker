@@ -48,4 +48,4 @@ TODO
 
 ## License
 
-Rideau is released under the MIT license.
+AssetsPicker is released under the MIT license.
