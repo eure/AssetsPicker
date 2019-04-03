@@ -22,12 +22,11 @@ class Demo4ViewController: UIViewController {
         headerView.backgroundColor = .lightGray
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-
-        var configuration = AssetPickerConfiguration()
-        configuration.headerView = headerView
-        // configuration.isHeaderFloating = true
         
-        let photoPicker = AssetPickerViewController(withConfiguration: configuration)
+        let photoPicker = AssetPickerViewController()
+                            .setHeaderView(headerView, isHeaderFloating: true)
+                            .setNumberOfItemsPerRow(5)
+        
         photoPicker.pickerDelegate = self
         
         present(photoPicker, animated: true, completion: nil)

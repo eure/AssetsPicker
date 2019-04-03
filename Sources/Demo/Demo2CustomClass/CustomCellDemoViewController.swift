@@ -21,12 +21,13 @@ class Demo2ViewController: UIViewController {
     // MARK: User Interaction
     
     @IBAction func didTapPresentButton(_ sender: Any) {
-        let configuration = AssetPickerConfiguration()
+
+        let cellRegistrator = AssetPickerCellRegistrator()
+        cellRegistrator.register(cellClass: Demo2AssetCell.self, forCellType: .asset)
+        cellRegistrator.register(cellClass: Demo2AssetCollectionCell.self, forCellType: .assetCollection)
         
-        configuration.cellRegistrator.register(cellClass: Demo2AssetCell.self, forCellType: .asset)
-        configuration.cellRegistrator.register(cellClass: Demo2AssetCollectionCell.self, forCellType: .assetCollection)
-        
-        let photoPicker = AssetPickerViewController(withConfiguration: configuration)
+        let photoPicker = AssetPickerViewController()
+                            .setCellRegistrator(cellRegistrator)
         photoPicker.pickerDelegate = self
         
         present(photoPicker, animated: true, completion: nil)

@@ -58,7 +58,7 @@ UICollectionViewDelegateFlowLayout {
         return collectionView
     }()
     
-    private let gridCount: Int = AssetPickerConfiguration.shared.numberOfItemsInRow
+    private let gridCount: Int = AssetPickerConfiguration.shared.numberOfItemsPerRow
     
     // MARK: Lifecycle
     

@@ -20,8 +20,7 @@ class DemoDefaultViewController: UIViewController {
     // MARK: User Interaction
 
     @IBAction func didTapPresentButton(_ sender: Any) {
-        let configuration = AssetPickerConfiguration()
-        let photoPicker = AssetPickerViewController(withConfiguration: configuration)
+        let photoPicker = AssetPickerViewController()
         photoPicker.pickerDelegate = self
         present(photoPicker, animated: true, completion: nil)
     }

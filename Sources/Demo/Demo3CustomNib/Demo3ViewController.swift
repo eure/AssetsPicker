@@ -24,11 +24,13 @@ class Demo3ViewController: UIViewController {
         let assetNib = UINib(nibName: String(describing: Demo3AssetNib.self), bundle: nil)
         let assetCollectionNib = UINib(nibName: String(describing: Demo3AssetCollectionNib.self), bundle: nil)
 
-        let configuration = AssetPickerConfiguration()
-        configuration.cellRegistrator.register(nib: assetNib, forCellType: .asset)
-        configuration.cellRegistrator.register(nib: assetCollectionNib, forCellType: .assetCollection)
+        let cellRegistrator = AssetPickerCellRegistrator()
+        cellRegistrator.register(nib: assetNib, forCellType: .asset)
+        cellRegistrator.register(nib: assetCollectionNib, forCellType: .assetCollection)
 
-        let photoPicker = AssetPickerViewController(withConfiguration: configuration)
+        let photoPicker = AssetPickerViewController()
+                            .setCellRegistrator(cellRegistrator)
+
         photoPicker.pickerDelegate = self
         
         present(photoPicker, animated: true, completion: nil)

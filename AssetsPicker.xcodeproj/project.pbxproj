@@ -32,7 +32,7 @@
 		5A52129D2181B3B700DA0259 /* AssetPickerTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52129C2181B3B700DA0259 /* AssetPickerTitleView.swift */; };
 		5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */; };
 		5A5212A22186FFF200DA0259 /* AssetDetailHeaderContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A12186FFF200DA0259 /* AssetDetailHeaderContainerView.swift */; };
-		5A5212A4218820A200DA0259 /* CellRegistrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A3218820A200DA0259 /* CellRegistrator.swift */; };
+		5A5212A4218820A200DA0259 /* AssetPickerCellRegistrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A3218820A200DA0259 /* AssetPickerCellRegistrator.swift */; };
 		5A700D782192E8C000DF8880 /* Demo3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A700D762192E89700DF8880 /* Demo3ViewController.swift */; };
 		5A700D792192E8C500DF8880 /* Demo3AssetCollectionNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A700D742192E61E00DF8880 /* Demo3AssetCollectionNib.swift */; };
 		5A700D7A2192E8CB00DF8880 /* Demo3AssetCollectionNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A700D722192E59900DF8880 /* Demo3AssetCollectionNib.xib */; };
@@ -106,7 +106,7 @@
 		5A52129C2181B3B700DA0259 /* AssetPickerTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetPickerTitleView.swift; sourceTree = "<group>"; };
 		5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewSizeCalculator.swift; sourceTree = "<group>"; };
 		5A5212A12186FFF200DA0259 /* AssetDetailHeaderContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailHeaderContainerView.swift; sourceTree = "<group>"; };
-		5A5212A3218820A200DA0259 /* CellRegistrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellRegistrator.swift; sourceTree = "<group>"; };
+		5A5212A3218820A200DA0259 /* AssetPickerCellRegistrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerCellRegistrator.swift; sourceTree = "<group>"; };
 		5A5212A521882AAF00DA0259 /* Demo2AssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo2AssetCell.swift; sourceTree = "<group>"; };
 		5A700D722192E59900DF8880 /* Demo3AssetCollectionNib.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Demo3AssetCollectionNib.xib; sourceTree = "<group>"; };
 		5A700D742192E61E00DF8880 /* Demo3AssetCollectionNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo3AssetCollectionNib.swift; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
-				5A5212A3218820A200DA0259 /* CellRegistrator.swift */,
+				5A5212A3218820A200DA0259 /* AssetPickerCellRegistrator.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -489,7 +489,7 @@
 				5A5212922181B34900DA0259 /* AssetCollectionCellViewModel.swift in Sources */,
 				5A52129B2181B39300DA0259 /* AssetDetailCellViewModel.swift in Sources */,
 				5A5212972181B37B00DA0259 /* AssetCollectionCell.swift in Sources */,
-				5A5212A4218820A200DA0259 /* CellRegistrator.swift in Sources */,
+				5A5212A4218820A200DA0259 /* AssetPickerCellRegistrator.swift in Sources */,
 				5A5212A22186FFF200DA0259 /* AssetDetailHeaderContainerView.swift in Sources */,
 				5A5212992181B38A00DA0259 /* AssetDetailSelectedView.swift in Sources */,
 			);

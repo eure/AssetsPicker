@@ -25,7 +25,7 @@ public protocol AssetPickAssetCollectionCellCustomization: PickerCustomization, 
     func bind(cellViewModel: AssetCollectionCellViewModel)
 }
 
-public class CellRegistrator {
+public class AssetPickerCellRegistrator {
     
     // MARK: Properties
     
@@ -45,6 +45,10 @@ public class CellRegistrator {
         return customAssetItemNibs[cellType]?.1 ?? customAssetItemClasses[cellType]?.1 ?? defaultAssetItemClasses[cellType]?.1 ?? "Cell"
     }
 
+    // MARK: Lifecycle
+    
+    public init() {}
+     
     // MARK: Core
     
     public func register(nib: UINib, forCellType cellType: CellType) {
