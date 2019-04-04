@@ -23,6 +23,12 @@ public class Demo2AssetCell: UICollectionViewCell, AssetPickAssetCellCustomizati
     
     // MARK: Lifecycle
     
+    public override var isSelected: Bool {
+        didSet {
+            updateSelection(isItemSelected: isSelected)
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -63,7 +69,14 @@ public class Demo2AssetCell: UICollectionViewCell, AssetPickAssetCellCustomizati
     }
     
     public func updateSelection(isItemSelected: Bool) {
-        print("custom cell updateSelectionView = \(isItemSelected)")
+        if isItemSelected {
+            imageView.layer.borderColor = UIColor.green.cgColor
+            imageView.layer.borderWidth = 2
+        } else {
+            imageView.layer.borderColor = nil
+            imageView.layer.borderWidth = 0
+
+        }
     }
     
     // MARK: AssetDetailCellViewModelDelegate

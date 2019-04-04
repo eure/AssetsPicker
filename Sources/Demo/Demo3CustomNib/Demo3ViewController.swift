@@ -27,7 +27,7 @@ class Demo3ViewController: UIViewController {
         let cellRegistrator = AssetPickerCellRegistrator()
         cellRegistrator.register(nib: assetNib, forCellType: .asset)
         cellRegistrator.register(nib: assetCollectionNib, forCellType: .assetCollection)
-
+        
         let photoPicker = AssetPickerViewController()
                             .setCellRegistrator(cellRegistrator)
 
