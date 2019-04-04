@@ -19,13 +19,17 @@ public final class AssetCollectionViewModel {
     
     // MARK: Lifecycle
     
-    func loadAssets() {
-        self.cameraRollAssetCollection = PHAssetCollection.fetchAssetCollections(
-            with: .smartAlbum,
-            subtype: .smartAlbumUserLibrary,
-            options: nil
-            )
-            .firstObject
+    func loadCameraRollAsset(onNext: @escaping (() -> ())) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.cameraRollAssetCollection = PHAssetCollection.fetchAssetCollections(
+                with: .smartAlbum,
+                subtype: .smartAlbumUserLibrary,
+                options: nil
+                )
+                .firstObject
+            
+            onNext()
+        }
     }
     
     // MARK: Core

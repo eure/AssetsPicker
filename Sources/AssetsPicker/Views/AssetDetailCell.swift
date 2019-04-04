@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-final class AssetDetailCell: UICollectionViewCell, AssetPickAssetCellCustomization {
+final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
     
     // MARK: Properties
     
@@ -61,7 +61,6 @@ final class AssetDetailCell: UICollectionViewCell, AssetPickAssetCellCustomizati
         }
     }
     
-    
     // MARK: Core
     
     func bind(cellViewModel: AssetDetailCellViewModel) {
@@ -78,6 +77,7 @@ final class AssetDetailCell: UICollectionViewCell, AssetPickAssetCellCustomizati
     }
 }
 
+// MARK: AssetDetailCellViewModelDelegate
 
 extension AssetDetailCell: AssetDetailCellViewModelDelegate {
     func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage) {

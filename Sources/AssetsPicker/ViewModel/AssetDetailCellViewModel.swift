@@ -47,19 +47,14 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     func selectionStatus() -> Selection {
         var selectionState = Selection.notSelected
         
-        if let index = self.selectionContainer.selectedItems.index(where: { $0.identifier == asset.localIdentifier }) {
+        if let index = self.selectionContainer.selectedItems.firstIndex(where: { $0.identifier == asset.localIdentifier }) {
             selectionState = Selection.selected(number: index + 1)
         }
         
         return selectionState
     }
     
-    public func cancelImageIfNeeded() {
-        guard let imageRequestId = imageRequestId else { return }
-        
-        PHCachingImageManager.default().cancelImageRequest(imageRequestId)
-        self.imageRequestId = nil
-    }
+    // MARK: Network
     
     public func fetchPreviewImage() {
         let options = PHImageRequestOptions()
@@ -67,12 +62,12 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         options.isNetworkAccessAllowed = true
         options.version = .current
         options.resizeMode = .fast
-        
+
         self.imageRequestId = imageManager.requestImage(
             for: asset,
             targetSize: CGSize(width: 360, height: 360),
             contentMode: .aspectFill,
-            options: options) { [weak self] (image, userInfo) in
+            options: options) { [weak self] image, _ in
                 if let image = image {
                     guard let `self` = self else { return }
                     self.delegate?.cellViewModel(self, didFetchImage: image)
@@ -96,6 +91,13 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
             options: options) { (image, userInfo) in
                 onNext(image)
         }
+    }
+    
+    public func cancelImageIfNeeded() {
+        guard let imageRequestId = imageRequestId else { return }
+        
+        PHCachingImageManager.default().cancelImageRequest(imageRequestId)
+        self.imageRequestId = nil
     }
     
     // MARK: ItemIdentifier

@@ -51,7 +51,6 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
     public func fetchLatestImage() {
         imageRequestId = nil
         
-        let queue = DispatchQueue.init(label: "jp.eure.pairs.photo")
         let firstAssetFetchOptions: PHFetchOptions = {
             let fetchOptions = PHFetchOptions()
             fetchOptions.sortDescriptors = [
@@ -61,13 +60,12 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
             
             return fetchOptions
         }()
-        let currentAssetCollection = self.assetCollection
         
-        queue.async(execute: { [weak self] in
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let `self` = self else { return }
             
             let result = PHAsset.fetchAssets(
-                in: currentAssetCollection,
+                in: self.assetCollection,
                 options: firstAssetFetchOptions
             )
             
@@ -86,6 +84,7 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
             options.resizeMode = .fast
             
             let imageManager = PHCachingImageManager.default()
+            
             self.imageRequestId = imageManager.requestImage(
                 for: firstAsset,
                 targetSize: CGSize(width: 250, height: 250),
@@ -98,7 +97,7 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
                         }
                     }
             }
-        })
+        }
     }
 }
 

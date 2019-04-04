@@ -28,6 +28,7 @@ class Demo2ViewController: UIViewController {
         
         let photoPicker = AssetPickerViewController()
                             .setCellRegistrator(cellRegistrator)
+                            .setSelectionMode(.multiple(limit: 5))
         
         photoPicker.pickerDelegate = self
         
@@ -39,5 +40,10 @@ extension Demo2ViewController: AssetPickerDelegate {
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
+    }
+    
+    func photoPickerDidCancel(_ pickerController: AssetPickerViewController) {
+        print("photoPickerDidCancel")
+        self.dismiss(animated: true, completion: nil)
     }
 }

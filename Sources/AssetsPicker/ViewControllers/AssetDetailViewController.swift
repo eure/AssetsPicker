@@ -41,7 +41,7 @@ UICollectionViewDelegateFlowLayout {
         case .multiple(let size):
             collectionView.allowsMultipleSelection = size > 1
         }
-        
+                
         if let nib = AssetPickerConfiguration.shared.cellRegistrator.customAssetItemNibs[.asset]?.0 {
             collectionView.register(nib, forCellWithReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .asset))
         } else {
@@ -90,7 +90,6 @@ UICollectionViewDelegateFlowLayout {
                 let doneBarButtonItem = UIBarButtonItem(title: AssetPickerConfiguration.shared.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
                 doneBarButtonItem.isEnabled = false
                 doneBarButtonItem.tintColor = AssetPickerConfiguration.shared.tintColor
-                doneBarButtonItem.isEnabled = false
                 parentController.navigationItem.rightBarButtonItem = doneBarButtonItem
             }
         }
@@ -142,14 +141,14 @@ UICollectionViewDelegateFlowLayout {
     }
     
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .asset)), for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
         
         return cell
     }
     
     @objc dynamic
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? AssetPickAssetCellCustomization else { return }
+        guard let cell = cell as? AssetDetailCellBindable else { return }
         
         cell.cellViewModel?.cancelImageIfNeeded()
         cell.cellViewModel?.delegate = nil
@@ -189,11 +188,13 @@ UICollectionViewDelegateFlowLayout {
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cellProtocol = cell as? AssetPickAssetCellCustomization else { return }
+        guard let cellProtocol = cell as? AssetDetailCellBindable else { return }
         let cellViewModel = viewModel.cellModel(at: indexPath.item)
         cellProtocol.bind(cellViewModel: cellViewModel)
         
-        if AssetPickerConfiguration.shared.disableOnLibraryScrollAnimation == false {
+        cell.isSelected = viewModel.selectionContainer.selectedItems.contains(where: { $0.identifier == cellViewModel.identifier })
+        
+        if (collectionView.isDragging || collectionView.isDecelerating), !AssetPickerConfiguration.shared.disableOnLibraryScrollAnimation {
             cell.alpha = 0.5
             
             UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
@@ -204,33 +205,41 @@ UICollectionViewDelegateFlowLayout {
     
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        guard let cellViewModel = (cell as? AssetPickAssetCellCustomization)?.cellViewModel else { return }
+        guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
         
         self.viewModel.toggle(item: cellViewModel)
         
         if let parentController = parent {
-            parentController.navigationItem.rightBarButtonItem?.isEnabled = !viewModel.selectionContainer.isEmpty
+            parentController.navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.isFilled
         }
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        guard let cellViewModel = (cell as? AssetPickAssetCellCustomization)?.cellViewModel else { return }
+        guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
         
         self.viewModel.toggle(item: cellViewModel)
         
         if let parentController = parent {
-            parentController.navigationItem.rightBarButtonItem?.isEnabled = !viewModel.selectionContainer.isEmpty
+            parentController.navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.isFilled
         }
     }
     
+    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if collectionView.allowsMultipleSelection, self.viewModel.selectionContainer.isFilled {
+            return false
+        }
+        
+        return true
+    }
+    
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        guard let haederView = AssetPickerConfiguration.shared.headerView else {
+        guard let headerView = AssetPickerConfiguration.shared.headerView else {
             return .zero
         }
         
         if headerSizeCalculator == nil {
-            headerSizeCalculator = ViewSizeCalculator(sourceView: haederView, calculateTargetView: { $0 })
+            headerSizeCalculator = ViewSizeCalculator(sourceView: headerView, calculateTargetView: { $0 })
         }
         
         return headerSizeCalculator?.calculate(width: collectionView.bounds.width, height: nil, cacheKey: nil, closure: { _ in }) ?? .zero
@@ -343,4 +352,3 @@ public final class ViewModel {
         selectionContainer.remove(item: item)
     }
 }
-

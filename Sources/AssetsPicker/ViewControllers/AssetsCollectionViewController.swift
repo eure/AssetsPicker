@@ -16,9 +16,9 @@ protocol PhotosPickerAssetsCollectionDelegate: class {
 
 
 final class AssetsCollectionViewController: UIViewController,
-    UICollectionViewDataSource,
-    UICollectionViewDelegate,
-UICollectionViewDelegateFlowLayout {
+                                            UICollectionViewDataSource,
+                                            UICollectionViewDelegate,
+                                            UICollectionViewDelegateFlowLayout {
     
     // MARK: Properties
     
@@ -98,7 +98,7 @@ UICollectionViewDelegateFlowLayout {
     
     @objc dynamic
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? AssetPickAssetCollectionCellCustomization else { return }
+        guard let cell = cell as? AssetCollectionCellBindable else { return }
         
         cell.cellViewModel?.cancelLatestImageIfNeeded()
         cell.cellViewModel?.delegate = nil
@@ -118,7 +118,7 @@ UICollectionViewDelegateFlowLayout {
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? AssetPickAssetCollectionCellCustomization else { return }
+        guard let cell = cell as? AssetCollectionCellBindable else { return }
         
         let cellViewModel = viewModel.displayItems[indexPath.item]
         cell.bind(cellViewModel: cellViewModel)

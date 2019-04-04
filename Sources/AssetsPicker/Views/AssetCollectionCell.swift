@@ -9,8 +9,7 @@
 import Foundation
 import UIKit
 
-
-final class AssetCollectionCell: UICollectionViewCell, AssetPickAssetCollectionCellCustomization {
+final class AssetCollectionCell: UICollectionViewCell, AssetCollectionCellBindable {
     
     // MARK: Properties
     
@@ -36,9 +35,13 @@ final class AssetCollectionCell: UICollectionViewCell, AssetPickAssetCollectionC
             assetImageView.layer.cornerRadius = 2
             assetImageView.layer.masksToBounds = true
             
-            assetTitleLabel.textColor = .black // To be replaced by appareance theme
-            assetNumberOfItemsLabel.textColor = .lightGray // To be replaced by appareance theme
+            assetTitleLabel.textColor = .black
+            assetTitleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+
+            assetNumberOfItemsLabel.textColor = .lightGray
+            assetNumberOfItemsLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         }
+        
         layout: do {
             contentView.addSubview(assetImageView)
             contentView.addSubview(assetTitleLabel)
@@ -81,12 +84,14 @@ final class AssetCollectionCell: UICollectionViewCell, AssetPickAssetCollectionC
     func bind(cellViewModel: AssetCollectionCellViewModel) {
         self.cellViewModel = cellViewModel
         self.cellViewModel?.delegate = self
+        
         assetTitleLabel.text = cellViewModel.assetCollection.localizedTitle ?? ""
         
         cellViewModel.fetchLatestImage()
     }
 }
 
+// MARK: AssetsCollectionCellViewModelDelegate
 
 extension AssetCollectionCell: AssetsCollectionCellViewModelDelegate {
     public func cellViewModel(_ cellViewModel: AssetCollectionCellViewModel, didFetchImage image: UIImage) {

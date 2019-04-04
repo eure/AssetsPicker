@@ -44,7 +44,7 @@ public final class SelectionContainer<T: ItemIdentifier> {
     
     func item(for key: T.Identifier) -> T? {
         let items = selectedItems
-        return items.index(where: { $0.identifier == key }).map { items[$0] }
+        return items.firstIndex(where: { $0.identifier == key }).map { items[$0] }
     }
     
     func append(item: T, removeFirstIfAlreadyFilled: Bool = false) {
@@ -65,7 +65,7 @@ public final class SelectionContainer<T: ItemIdentifier> {
     func remove(item: T) {
         var items = selectedItems
         
-        guard let index = items.index(where: { $0.identifier == item.identifier }) else { return }
+        guard let index = items.firstIndex(where: { $0.identifier == item.identifier }) else { return }
         
         items.remove(at: index)
         

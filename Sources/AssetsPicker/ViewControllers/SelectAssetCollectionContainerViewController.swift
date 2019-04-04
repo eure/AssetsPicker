@@ -79,19 +79,15 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
     private func handleAuthorizations() {
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
-            setupController()
+            setup()
         case .notDetermined:
-            PHPhotoLibrary.requestAuthorization({ (newStatus) in
+            PHPhotoLibrary.requestAuthorization { newStatus in
                 if newStatus == .authorized {
-                    DispatchQueue.main.async {
-                        self.setupController()
-                    }
+                    self.setup()
                 } else {
-                    DispatchQueue.main.async {
-                        self.showPermissionsLabel()
-                    }
+                    self.showPermissionsLabel()
                 }
-            })
+            }
         case .denied, .restricted:
             showPermissionsLabel()
         @unknown default:
@@ -100,7 +96,7 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
     }
     
     @objc func dismissPicker(sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: PhotoPickerCancelNotification), object: nil)
     }
     
     @objc func showCollections(sender: Any) {
@@ -113,10 +109,13 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
     
     private func showPermissionsLabel() {
         titleButton.isHidden = true
+        
         view.addSubview(changePermissionsButton)
+        
         changePermissionsButton.translatesAutoresizingMaskIntoConstraints = false
         changePermissionsButton.setTitle(AssetPickerConfiguration.shared.localize.changePermissions, for: .normal)
         changePermissionsButton.addTarget(self, action: #selector(openSettings(sender:)), for: .touchUpInside)
+       
         NSLayoutConstraint.activate([
             changePermissionsButton.topAnchor.constraint(equalTo: view.topAnchor),
             changePermissionsButton.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -126,56 +125,53 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
         )
     }
     
-    func setupController() {
-        setupAssetsCollection: do {
-            addChild(assetsCollectionsViewController)
-            assetsCollectionsViewController.didMove(toParent: self)
-            assetsCollectionsViewController.delegate = self
-        }
-        setupInitialState: do {
-            viewModel.loadAssets()
-            if let assetCollection = viewModel.cameraRollAssetCollection {
-                setup(toAssetCollection: assetCollection)
-            } else {
-                fatalError("no cameral roll!!!!")
-            }
-        }
-    }
-    
-    // MARK: Core
-    
-    private func setup(toAssetCollection assetCollection: PHAssetCollection) {
-        let assetDetailController = AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: selectionContainer)
-        assetDetailController.delegate = self
-        
-        addChild(assetDetailController)
-        currentAssetDetailViewController = assetDetailController
-        
-        view.insertSubview(assetDetailController.view, at: 0)
-        
-        guard let view = view else { return }
-        assetDetailController.view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            assetDetailController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            assetDetailController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            assetDetailController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            assetDetailController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-    }
-    
     private func switchTo(assetCollection: PHAssetCollection) {
-        guard currentAssetDetailViewController?.viewModel.assetCollection != assetCollection else {
-            // It's currently displayed
-            return
-        }
+        // We do nothing if the user selected the same asset
+        guard currentAssetDetailViewController?.viewModel.assetCollection != assetCollection else { return }
         
         titleButton.setTitle(assetCollection.localizedTitle ?? AssetPickerConfiguration.shared.localize.collections, for: .normal)
         titleButton.sizeToFit()
+        
         currentAssetDetailViewController?.viewModel.reset(withAssetCollection: assetCollection)
         currentAssetDetailViewController?.loadPhotos()
     }
     
+    // MARK: Setup
+    
+    func setup() {
+        addChild(assetsCollectionsViewController)
+        assetsCollectionsViewController.didMove(toParent: self)
+        assetsCollectionsViewController.delegate = self
+
+        viewModel.loadCameraRollAsset() { [weak self] in
+            
+            guard let `self` = self else { return }
+        
+            DispatchQueue.main.async {
+                if let assetCollection = self.viewModel.cameraRollAssetCollection {
+                    let assetDetailController = AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: self.selectionContainer)
+                    assetDetailController.delegate = self
+                    
+                    self.addChild(assetDetailController)
+                    self.currentAssetDetailViewController = assetDetailController
+                    
+                    self.view.addSubview(assetDetailController.view)
+                    
+                    assetDetailController.view.translatesAutoresizingMaskIntoConstraints = false
+                    
+                    NSLayoutConstraint.activate([
+                        assetDetailController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+                        assetDetailController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                        assetDetailController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                        assetDetailController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+                        ])
+                } else {
+                    fatalError("no cameral roll!!!!")
+                }
+            }
+        }
+    }
+
     // Assets Collection
     
     private func showCollections() {

@@ -38,4 +38,9 @@ extension Demo4ViewController: AssetPickerDelegate {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
+    
+    func photoPickerDidCancel(_ pickerController: AssetPickerViewController) {
+        print("photoPickerDidCancel")
+        self.dismiss(animated: true, completion: nil)
+    }
 }

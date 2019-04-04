@@ -13,14 +13,14 @@ public enum CellType: String {
     case assetCollection, asset
 }
 
-public protocol PickerCustomization {}
+public protocol CustomizableCell {}
 
-public protocol AssetPickAssetCellCustomization: PickerCustomization, AssetDetailCellViewModelDelegate {
+public protocol AssetDetailCellBindable: CustomizableCell, AssetDetailCellViewModelDelegate {
     var cellViewModel: AssetDetailCellViewModel? { get set }
     func bind(cellViewModel: AssetDetailCellViewModel)
 }
 
-public protocol AssetPickAssetCollectionCellCustomization: PickerCustomization, AssetsCollectionCellViewModelDelegate {
+public protocol AssetCollectionCellBindable: CustomizableCell, AssetsCollectionCellViewModelDelegate {
     var cellViewModel: AssetCollectionCellViewModel? { get set }
     func bind(cellViewModel: AssetCollectionCellViewModel)
 }
@@ -56,7 +56,7 @@ public class AssetPickerCellRegistrator {
         customAssetItemNibs[cellType] = (nib, nibIdentifier)
     }
     
-    public func register<T: UICollectionViewCell>(cellClass: T.Type, forCellType cellType: CellType) where T: PickerCustomization {
+    public func register<T: UICollectionViewCell>(cellClass: T.Type, forCellType cellType: CellType) where T: CustomizableCell {
         let cellIdentifier = String(describing: T.self)
         customAssetItemClasses[cellType] = (cellClass, cellIdentifier)
     }

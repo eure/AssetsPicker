@@ -22,7 +22,7 @@ final class AssetDetailHeaderContainerView : UICollectionReusableView {
             view.leadingAnchor.constraint(equalTo: leadingAnchor),
             view.trailingAnchor.constraint(equalTo: trailingAnchor),
             view.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
+        ])
     }
     
 }

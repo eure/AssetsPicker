@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import AssetsPicker
 
-class Demo3AssetCollectionNib: UICollectionViewCell, AssetPickAssetCollectionCellCustomization, AssetsCollectionCellViewModelDelegate {
+class Demo3AssetCollectionNib: UICollectionViewCell, AssetCollectionCellBindable, AssetsCollectionCellViewModelDelegate {
     
     // MARK: Properties
     

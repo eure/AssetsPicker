@@ -171,16 +171,15 @@
 		4BCA98692171E9E80048826A /* AssetsPicker */ = {
 			isa = PBXGroup;
 			children = (
-				5AC4ADFE218AF918001ED22E /* icon_arrow_down.pdf */,
-				5A52129E2186DE8000DA0259 /* Utils */,
-				5A5212952181B36F00DA0259 /* Views */,
-				5A5212832181B2A400DA0259 /* Configuration */,
-				5A5212772181B23A00DA0259 /* Core */,
-				5A5212802181B26600DA0259 /* ViewControllers */,
-				5A52128A2181B2F400DA0259 /* ViewModel */,
+				4BCA98992171EBFA0048826A /* AssetsPicker.swift */,
 				4BCA986A2171E9E80048826A /* AssetsPicker.h */,
 				4BCA986B2171E9E80048826A /* Info.plist */,
-				4BCA98992171EBFA0048826A /* AssetsPicker.swift */,
+				5A5212832181B2A400DA0259 /* Configuration */,
+				5A5212952181B36F00DA0259 /* Views */,
+				5A5212802181B26600DA0259 /* ViewControllers */,
+				5A52128A2181B2F400DA0259 /* ViewModel */,
+				5A52129E2186DE8000DA0259 /* Utils */,
+				5A9B778C2255DA4C00BE3AAC /* Resources */,
 			);
 			path = AssetsPicker;
 			sourceTree = "<group>";
@@ -235,15 +234,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5A5212772181B23A00DA0259 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
-				5A5212A3218820A200DA0259 /* AssetPickerCellRegistrator.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		5A5212802181B26600DA0259 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +277,8 @@
 		5A52129E2186DE8000DA0259 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5A5212A3218820A200DA0259 /* AssetPickerCellRegistrator.swift */,
+				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
 				5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */,
 			);
 			path = Utils;
@@ -328,6 +320,14 @@
 				5A700D842192EF1D00DF8880 /* Demo4ViewController.swift */,
 			);
 			path = Demo4CustomHeader;
+			sourceTree = "<group>";
+		};
+		5A9B778C2255DA4C00BE3AAC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5AC4ADFE218AF918001ED22E /* icon_arrow_down.pdf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

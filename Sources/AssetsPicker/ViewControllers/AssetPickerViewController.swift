@@ -12,10 +12,11 @@ import enum Photos.PHAssetMediaType
 
 public protocol AssetPickerDelegate: class {
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage])
+    func photoPickerDidCancel(_ pickerController: AssetPickerViewController)
 }
 
 let PhotoPickerPickImageNotification = "PhotoPickerPickImageNotification"
-
+let PhotoPickerCancelNotification = "PhotoPickerCancelNotification"
 
 public final class AssetPickerViewController : UINavigationController {
     
@@ -29,6 +30,14 @@ public final class AssetPickerViewController : UINavigationController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,9 +47,19 @@ public final class AssetPickerViewController : UINavigationController {
         }
         
         setupPickImagesNotification: do {
-            NotificationCenter.default.addObserver(self, selector: #selector(didPickImages(notification:)), name: NSNotification.Name(rawValue: PhotoPickerPickImageNotification), object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(didPickImages(notification:)),
+                                                   name: NSNotification.Name(rawValue: PhotoPickerPickImageNotification),
+                                                   object: nil)
+            
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(didCancel(notification:)),
+                                                   name: NSNotification.Name(rawValue: PhotoPickerCancelNotification),
+                                                   object: nil)
         }
     }
+    
+    // MARK: User Interaction
     
     @objc func didPickImages(notification: Notification) {
         if let images = notification.object as? [UIImage] {
@@ -48,12 +67,8 @@ public final class AssetPickerViewController : UINavigationController {
         }
     }
     
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    @objc func didCancel(notification: Notification) {
+        self.pickerDelegate?.photoPickerDidCancel(self)
     }
 }
 

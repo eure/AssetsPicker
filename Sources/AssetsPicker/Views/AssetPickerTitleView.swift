@@ -9,28 +9,34 @@
 import Foundation
 import UIKit
 
-
 final class AssetPickerTitleView : UIButton {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    // MARK: Lifecycle
+    
+    convenience init() {
+        self.init(frame: .zero)
         
         setup()
     }
     
+    // MARK: Setup
+    
     func setup() {
+        
+        // Flip button title and button image
         let flippedTransform = CGAffineTransform(scaleX: -1, y: 1)
         transform = flippedTransform
         titleLabel?.transform = flippedTransform
         imageView?.transform = flippedTransform
         
+        // Space between image and title
         let arrowDownImage = UIImage(named: "icon_arrow_down", in: Bundle.main, compatibleWith: nil)
         setImage(arrowDownImage, for: .normal)
         imageEdgeInsets.left = -10
         
         setTitleColor(.black, for: .normal)
         setTitle(AssetPickerConfiguration.shared.localize.collections, for: .normal)
-        titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
     }
     
     func setOpened() {
@@ -39,15 +45,10 @@ final class AssetPickerTitleView : UIButton {
             delay: 0,
             usingSpringWithDamping: 1,
             initialSpringVelocity: 0,
-            options: [
-                .beginFromCurrentState,
-                .allowUserInteraction
-            ],
+            options: [],
             animations: {
                 self.imageView?.transform = CGAffineTransform(rotationAngle: -.pi)
-        }) { (finish) in
-            
-        }
+        })
     }
     
     func setClosed() {
@@ -56,20 +57,9 @@ final class AssetPickerTitleView : UIButton {
             delay: 0,
             usingSpringWithDamping: 1,
             initialSpringVelocity: 0,
-            options: [
-                .beginFromCurrentState,
-                .allowUserInteraction
-            ],
+            options: [],
             animations: {
                 self.imageView?.transform = .identity
-        }) { (finish) in
-            
-        }
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        })
     }
 }
-
