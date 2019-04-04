@@ -1,18 +1,23 @@
 # 📸 AssetsPicker
 
-TODO
-
-## Overview
-
-TODO
+Your customizable asset picker.
 
 ## 🔶 Requirements
 
-TODO
+iOS 10.0+
+Xcode 10.1+
+Swift 4.2+
 
 ## 📱 Features
 
-TODO
+- [x] Load camera rolls and others albums
+- [x] Customize cells
+- [x] Customize style and localization
+- [x] Custom header
+- [] Photo on the cloud?
+- [] Permissions handling ?
+- [] Selection counter ( badge ? )
+- [] Other asset ( LivePhoto, Video, Gif, .. )
 
 ## 👨🏻‍💻 Usage
 
