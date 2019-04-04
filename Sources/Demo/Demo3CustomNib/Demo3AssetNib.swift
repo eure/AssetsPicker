@@ -17,10 +17,26 @@ class Demo3AssetNib: UICollectionViewCell, AssetPickAssetCellCustomization {
     @IBOutlet weak var imageView: UIImageView!
     var cellViewModel: AssetDetailCellViewModel?
     
+    public override var isSelected: Bool {
+        didSet {
+            updateSelection(isItemSelected: isSelected)
+        }
+    }
+    
     // MARK: Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    public func updateSelection(isItemSelected: Bool) {
+        if isItemSelected {
+            imageView.layer.borderColor = UIColor.purple.cgColor
+            imageView.layer.borderWidth = 4
+        } else {
+            imageView.layer.borderColor = nil
+            imageView.layer.borderWidth = 0
+        }
     }
     
     // MARK: Core

@@ -28,6 +28,7 @@ class Demo2ViewController: UIViewController {
         
         let photoPicker = AssetPickerViewController()
                             .setCellRegistrator(cellRegistrator)
+        
         photoPicker.pickerDelegate = self
         
         present(photoPicker, animated: true, completion: nil)
