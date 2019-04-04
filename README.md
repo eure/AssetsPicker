@@ -88,6 +88,19 @@ func setCellRegistrator(_ cellRegistrator: AssetPickerCellRegistrator)
 func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType])
 func disableOnLibraryScrollAnimation()
 func localize(_ localize: LocalizedStrings)
+
+public enum SelectionMode {
+    case single
+    case multiple(limit: Int)
+}
+
+public struct LocalizedStrings {
+    public var done: String = "Done"
+    public var next: String = "Next"
+    public var dismiss: String = "Dismiss"
+    public var collections: String = "Collections"
+    public var changePermissions: String = "Change your Photo Library permissions"
+}
 ```
 
 ## Installation
