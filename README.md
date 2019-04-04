@@ -2,6 +2,10 @@
 
 Your customizable asset picker.
 
+## Overview
+
+![Whimsical AssetPicker](./AssetPicker.png)
+
 ## 🔶 Requirements
 
 iOS 10.0+
