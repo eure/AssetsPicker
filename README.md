@@ -14,10 +14,10 @@ Swift 4.2+
 - [x] Customize cells
 - [x] Customize style and localization
 - [x] Custom header
-- [] Photo on the cloud?
-- [] Permissions handling ?
-- [] Selection counter ( badge ? )
-- [] Other asset ( LivePhoto, Video, Gif, .. )
+- [ ] Photo on the cloud?
+- [ ] Permissions handling ?
+- [ ] Selection counter ( badge ? )
+- [ ] Other asset ( LivePhoto, Video, Gif, .. )
 
 ## 👨🏻‍💻 Usage
 
