@@ -21,6 +21,8 @@ public struct LocalizedStrings {
     public var dismiss: String = "Dismiss"
     public var collections: String = "Collections"
     public var changePermissions: String = "Change your Photo Library permissions"
+    
+    public init() {}
 }
 
 struct AssetPickerConfiguration {
