@@ -26,7 +26,7 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     // MARK: Properties
     
     public weak var delegate: AssetDetailCellViewModelDelegate?
-    private let asset: PHAsset
+    public let asset: PHAsset
     private let imageManager: PHCachingImageManager
     private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
     private var imageRequestId: PHImageRequestID?
@@ -72,7 +72,7 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
                     guard let `self` = self else { return }
                     self.delegate?.cellViewModel(self, didFetchImage: image)
                 } else {
-                    print("cannot download image for id = \(self?.asset.localIdentifier)")
+                    print("cannot download image for id = \(String(describing: self?.asset.localIdentifier))")
                 }
         }
     }

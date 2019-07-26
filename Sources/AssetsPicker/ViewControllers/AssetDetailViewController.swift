@@ -9,20 +9,9 @@
 import Foundation
 import Photos
 
-protocol PhotosPickerAssetDetailDelegate: class {
-    func photoPicker(_ pickerController: AssetDetailViewController, didPickImages images: [UIImage])
-}
-
-
-public final class AssetDetailViewController: UIViewController,
-    UICollectionViewDelegate,
-    UICollectionViewDataSource,
-UICollectionViewDelegateFlowLayout {
-    
+public final class AssetDetailViewController: UIViewController {
     // MARK: Properties
-    
     let viewModel: ViewModel
-    weak var delegate: PhotosPickerAssetDetailDelegate?
     var headerSizeCalculator: ViewSizeCalculator<UIView>?
     
     private let collectionView: UICollectionView = {
@@ -84,14 +73,9 @@ UICollectionViewDelegateFlowLayout {
             view.addSubview(collectionView)
             collectionView.delegate = self
             collectionView.dataSource = self
-        }
-        setupDoneButton: do {
-            if let parentController = parent {
-                let doneBarButtonItem = UIBarButtonItem(title: AssetPickerConfiguration.shared.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
-                doneBarButtonItem.isEnabled = false
-                doneBarButtonItem.tintColor = AssetPickerConfiguration.shared.tintColor
-                parentController.navigationItem.rightBarButtonItem = doneBarButtonItem
-            }
+            let doneBarButtonItem = UIBarButtonItem(title: AssetPickerConfiguration.shared.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
+            doneBarButtonItem.isEnabled = viewModel.selectionContainer.isFilled
+            navigationItem.rightBarButtonItem = doneBarButtonItem
         }
         layout: do {
             guard let view = view else { return }
@@ -104,11 +88,13 @@ UICollectionViewDelegateFlowLayout {
                 collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
                 ])
         }
-        
+
         if PHPhotoLibrary.authorizationStatus() == .denied {
             fatalError("Permission denied for accessing to photos.")
         }
-        
+        setupTitleView: do {
+            title = viewModel.assetCollection.localizedTitle
+        }
         loadPhotos()
     }
     
@@ -116,36 +102,30 @@ UICollectionViewDelegateFlowLayout {
         viewModel.fetchPhotos { [weak self] in
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
+                self?.restoreSelectionState()
             }
         }
     }
-    // MARK: User Interaction
     
-    @IBAction func didPickAssets(sender: Any) {
-        // Display loader
-        viewModel.downloadSelectedCells { [weak self] images in
-            guard let `self` = self else { return }
-            // stop loader
-            self.delegate?.photoPicker(self, didPickImages: images)
+    func restoreSelectionState() {
+        for selectedIndex in viewModel.selectedIndexs.map({ IndexPath(row: $0, section: 0) }) {
+            collectionView.selectItem(at: selectedIndex, animated: false, scrollPosition: .top)
         }
     }
     
-    // MARK: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
+    // MARK: User Interaction
     
-    @objc dynamic public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+    @IBAction func didPickAssets(sender: Any) {
+        //TODO Display loader
+        viewModel.downloadSelectedCells { [weak self] images in
+            guard self != nil else { return } //User cancelled the request
+            NotificationCenter.default.post(name: PhotoPickerPickImageNotificationName, object: images)
+            //TODO Stop loader
+        }
     }
-    
-    @objc dynamic public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.displayItems.count
-    }
-    
-    @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
-        
-        return cell
-    }
-    
+}
+
+extension AssetDetailViewController: UICollectionViewDelegate {
     @objc dynamic
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? AssetDetailCellBindable else { return }
@@ -153,6 +133,57 @@ UICollectionViewDelegateFlowLayout {
         cell.cellViewModel?.cancelImageIfNeeded()
         cell.cellViewModel?.delegate = nil
         cell.cellViewModel = nil
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if collectionView.allowsMultipleSelection, self.viewModel.selectionContainer.isFilled {
+            return false
+        }
+        
+        return true
+    }
+    
+    @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
+        
+        self.viewModel.toggle(item: cellViewModel)
+        if !viewModel.selectionContainer.selectedItems.contains(where: { $0.identifier == cellViewModel.identifier }) {
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
+        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.isFilled
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cellProtocol = cell as? AssetDetailCellBindable else { return }
+        let cellViewModel = viewModel.cellModel(at: indexPath.item)
+        cellProtocol.bind(cellViewModel: cellViewModel)
+        
+        cell.isSelected = viewModel.selectionContainer.selectedItems.contains(where: { $0.identifier == cellViewModel.identifier })
+        
+        if (collectionView.isDragging || collectionView.isDecelerating), !AssetPickerConfiguration.shared.disableOnLibraryScrollAnimation {
+            cell.alpha = 0.5
+            
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+                cell.alpha = 1
+            }, completion: nil)
+        }
+    }
+}
+
+extension AssetDetailViewController: UICollectionViewDataSource {
+    @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
+        
+        return cell
+    }
+    
+    @objc dynamic public func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    @objc dynamic public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.displayItems.count
     }
     
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -167,7 +198,9 @@ UICollectionViewDelegateFlowLayout {
             fatalError()
         }
     }
-    
+}
+
+extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         func CalculateFittingGridSize(maxWidth: CGFloat, numberOfItemsInRow: Int, margin: CGFloat, index: Int) -> CGSize {
             let totalMargin: CGFloat = margin * CGFloat(numberOfItemsInRow - 1)
@@ -187,52 +220,6 @@ UICollectionViewDelegateFlowLayout {
         return size
     }
     
-    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cellProtocol = cell as? AssetDetailCellBindable else { return }
-        let cellViewModel = viewModel.cellModel(at: indexPath.item)
-        cellProtocol.bind(cellViewModel: cellViewModel)
-        
-        cell.isSelected = viewModel.selectionContainer.selectedItems.contains(where: { $0.identifier == cellViewModel.identifier })
-        
-        if (collectionView.isDragging || collectionView.isDecelerating), !AssetPickerConfiguration.shared.disableOnLibraryScrollAnimation {
-            cell.alpha = 0.5
-            
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-                cell.alpha = 1
-            }, completion: nil)
-        }
-    }
-    
-    @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
-        
-        self.viewModel.toggle(item: cellViewModel)
-        
-        if let parentController = parent {
-            parentController.navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.isFilled
-        }
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
-        
-        self.viewModel.toggle(item: cellViewModel)
-        
-        if let parentController = parent {
-            parentController.navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.isFilled
-        }
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        if collectionView.allowsMultipleSelection, self.viewModel.selectionContainer.isFilled {
-            return false
-        }
-        
-        return true
-    }
-    
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         guard let headerView = AssetPickerConfiguration.shared.headerView else {
             return .zero
@@ -246,6 +233,7 @@ UICollectionViewDelegateFlowLayout {
     }
 }
 
+
 public final class ViewModel {
     
     // MARK: Properties
@@ -254,7 +242,12 @@ public final class ViewModel {
     private(set) var assetCollection: PHAssetCollection
     private(set) var selectionContainer: SelectionContainer<AssetDetailCellViewModel>
     private(set) var displayItems: PHFetchResult<PHAsset>
+    var selectedIndexs: [Int] {
+        let selectedAssets = selectionContainer.selectedItems.map { $0.asset }
+        return selectedAssets.compactMap { displayItems.contains($0) ? displayItems.index(of: $0) : nil }
+    }
     
+
     // MARK: Lifecycle
     
     init(assetCollection: PHAssetCollection, selectionContainer: SelectionContainer<AssetDetailCellViewModel>) {
@@ -352,3 +345,5 @@ public final class ViewModel {
         selectionContainer.remove(item: item)
     }
 }
+
+

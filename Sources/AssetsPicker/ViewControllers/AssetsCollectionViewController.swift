@@ -6,25 +6,16 @@
 //  Copyright © 2018 eure. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import Photos
 
-protocol PhotosPickerAssetsCollectionDelegate: class {
-    func photoPicker(_ selectAssetController: AssetsCollectionViewController, didSelectAsset asset: PHAssetCollection)
-}
-
-
-final class AssetsCollectionViewController: UIViewController,
-                                            UICollectionViewDataSource,
-                                            UICollectionViewDelegate,
-                                            UICollectionViewDelegateFlowLayout {
+final class AssetsCollectionViewController: UIViewController {
     
     // MARK: Properties
     
     private let viewModel = AssetCollectionViewModel()
-    weak var delegate: PhotosPickerAssetsCollectionDelegate?
-    
+    private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 1
@@ -48,6 +39,24 @@ final class AssetsCollectionViewController: UIViewController,
         
         return collectionView
     }()
+    
+    init() {
+        setupConfiguration: do {
+            
+            switch AssetPickerConfiguration.shared.selectionMode {
+            case .single:
+                self.selectionContainer = SelectionContainer<AssetDetailCellViewModel>(withSize: 1)
+            case .multiple(let limit):
+                self.selectionContainer = SelectionContainer<AssetDetailCellViewModel>(withSize: limit)
+            }            
+            super.init(nibName: nil, bundle: nil)
+        }
+    }
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: Lifecycle
     
@@ -79,9 +88,10 @@ final class AssetsCollectionViewController: UIViewController,
             })
         }
     }
-    
-    // MARK: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
-    
+}
+
+
+extension AssetsCollectionViewController: UICollectionViewDataSource {
     @objc dynamic public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.displayItems.isEmpty ? 0 : 1
     }
@@ -95,26 +105,13 @@ final class AssetsCollectionViewController: UIViewController,
         
         return cell
     }
-    
-    @objc dynamic
-    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? AssetCollectionCellBindable else { return }
-        
-        cell.cellViewModel?.cancelLatestImageIfNeeded()
-        cell.cellViewModel?.delegate = nil
-        cell.cellViewModel = nil
-    }
-    
-    @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: 80)
+}
+
+extension AssetsCollectionViewController: UICollectionViewDelegate {
+    @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let assetCollection = viewModel.displayItems[indexPath.item].assetCollection
+        let assetDetailController = AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: self.selectionContainer)
+        navigationController?.pushViewController(assetDetailController, animated: true)
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -124,9 +121,26 @@ final class AssetsCollectionViewController: UIViewController,
         cell.bind(cellViewModel: cellViewModel)
     }
     
-    @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let assetCollection = viewModel.displayItems[indexPath.item].assetCollection
-        delegate?.photoPicker(self, didSelectAsset: assetCollection)
+    @objc dynamic
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? AssetCollectionCellBindable else { return }
+        
+        cell.cellViewModel?.cancelLatestImageIfNeeded()
+        cell.cellViewModel?.delegate = nil
+        cell.cellViewModel = nil
     }
 }
 
+extension AssetsCollectionViewController: UICollectionViewDelegateFlowLayout {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 80)
+    }
+    
+    @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+}

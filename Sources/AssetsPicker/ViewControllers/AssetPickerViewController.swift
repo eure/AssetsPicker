@@ -6,7 +6,6 @@
 //  Copyright © 2018 eure. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import enum Photos.PHAssetMediaType
 
@@ -15,8 +14,8 @@ public protocol AssetPickerDelegate: class {
     func photoPickerDidCancel(_ pickerController: AssetPickerViewController)
 }
 
-let PhotoPickerPickImageNotification = "PhotoPickerPickImageNotification"
-let PhotoPickerCancelNotification = "PhotoPickerCancelNotification"
+let PhotoPickerPickImageNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickImageNotification")
+let PhotoPickerCancelNotificationName = NSNotification.Name(rawValue: "PhotoPickerCancelNotification")
 
 public final class AssetPickerViewController : UINavigationController {
     
@@ -49,17 +48,20 @@ public final class AssetPickerViewController : UINavigationController {
         setupPickImagesNotification: do {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(didPickImages(notification:)),
-                                                   name: NSNotification.Name(rawValue: PhotoPickerPickImageNotification),
+                                                   name: PhotoPickerPickImageNotificationName,
                                                    object: nil)
             
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(didCancel(notification:)),
-                                                   name: NSNotification.Name(rawValue: PhotoPickerCancelNotification),
+                                                   name: PhotoPickerCancelNotificationName,
                                                    object: nil)
         }
+        setupNavigationBar: do {
+            let dismissBarButtonItem = UIBarButtonItem(title: AssetPickerConfiguration.shared.localize.dismiss, style: .plain, target: self, action: #selector(dismissPicker(sender:)))
+            navigationBar.topItem?.leftBarButtonItem = dismissBarButtonItem
+            navigationBar.tintColor = AssetPickerConfiguration.shared.tintColor
+        }
     }
-    
-    // MARK: User Interaction
     
     @objc func didPickImages(notification: Notification) {
         if let images = notification.object as? [UIImage] {
@@ -69,6 +71,10 @@ public final class AssetPickerViewController : UINavigationController {
     
     @objc func didCancel(notification: Notification) {
         self.pickerDelegate?.photoPickerDidCancel(self)
+    }
+    
+    @objc func dismissPicker(sender: Any) {
+        NotificationCenter.default.post(name: PhotoPickerCancelNotificationName, object: nil)
     }
 }
 

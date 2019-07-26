@@ -36,9 +36,7 @@ public final class AssetCollectionViewModel {
     
     func fetchAssetsCollections(onNext: @escaping (() -> ())) {
         DispatchQueue.global(qos: .userInteractive).async {
-            
             var assetCollections: [PHAssetCollection] = []
-            
             do {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
@@ -78,8 +76,20 @@ public final class AssetCollectionViewModel {
                     }
                 }
             }
+        
+            do {
+                let library = PHAssetCollection.fetchAssetCollections(
+                    with: .album,
+                    subtype: .albumCloudShared,
+                    options: nil
+                )
+                
+                assetCollections += library.toArray()
+            }
             
-            self.displayItems = assetCollections.map(AssetCollectionCellViewModel.init(assetCollection:))
+            self.displayItems = assetCollections
+                .filter( { $0.estimatedAssetCount != 0 } )
+                .map(AssetCollectionCellViewModel.init(assetCollection:))
             onNext()
         }
     }
@@ -94,7 +104,7 @@ extension PHFetchResult where ObjectType == PHAssetCollection {
         self.enumerateObjects { (asset, _, _) in
             array.append(asset)
         }
-        
+
         return array
     }
 }
