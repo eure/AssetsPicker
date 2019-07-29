@@ -41,10 +41,12 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
             setup()
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { newStatus in
-                if newStatus == .authorized {
-                    self.setup()
-                } else {
-                    self.showPermissionsLabel()
+                DispatchQueue.main.async {
+                    if newStatus == .authorized {
+                        self.setup()
+                    } else {
+                        self.showPermissionsLabel()
+                    }
                 }
             }
         case .denied, .restricted:
