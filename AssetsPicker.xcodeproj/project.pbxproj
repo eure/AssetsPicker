@@ -42,6 +42,7 @@
 		5AC4ADFB218AEF62001ED22E /* Demo2AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A521882AAF00DA0259 /* Demo2AssetCell.swift */; };
 		5AC4ADFC218AEF6A001ED22E /* Demo2AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */; };
 		5AC4AE06218C5C18001ED22E /* AssetsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */; };
+		FC1A639322EE952000E1C38D /* Demo5MultipleAssetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,7 @@
 		5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo2AssetCollectionCell.swift; sourceTree = "<group>"; };
 		5AC4ADF8218AEF4E001ED22E /* CustomCellDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellDemoViewController.swift; sourceTree = "<group>"; };
 		5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsCollectionViewModel.swift; sourceTree = "<group>"; };
+		FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo5MultipleAssetSelection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 				5A700D7C2192EA3F00DF8880 /* Demo2CustomClass */,
 				5A700D712192E40800DF8880 /* Demo3CustomNib */,
 				5A700D832192EED500DF8880 /* Demo4CustomHeader */,
+				FC1A639022EE94BC00E1C38D /* Demo5MultipleAssetSelection */,
 				4BCA98872171EA3D0048826A /* AppDelegate.swift */,
 				4BCA988B2171EA3D0048826A /* Main.storyboard */,
 				4BCA988E2171EA400048826A /* Assets.xcassets */,
@@ -324,6 +327,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		FC1A639022EE94BC00E1C38D /* Demo5MultipleAssetSelection */ = {
+			isa = PBXGroup;
+			children = (
+				FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */,
+			);
+			path = Demo5MultipleAssetSelection;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -400,7 +411,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = eure;
 				TargetAttributes = {
 					4BCA98662171E9E80048826A = {
@@ -508,6 +519,7 @@
 				4BCA98882171EA3D0048826A /* AppDelegate.swift in Sources */,
 				5AC4ADFB218AEF62001ED22E /* Demo2AssetCell.swift in Sources */,
 				5A700D812192EC7F00DF8880 /* Demo3AssetNib.swift in Sources */,
+				FC1A639322EE952000E1C38D /* Demo5MultipleAssetSelection.swift in Sources */,
 				5A700D852192EF1D00DF8880 /* Demo4ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -673,7 +685,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = XWC8HFRCNT;
@@ -701,7 +713,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = XWC8HFRCNT;

@@ -82,47 +82,56 @@ public final class AssetPickerViewController : UINavigationController {
 // MARK: Builder pattern
 
 extension AssetPickerViewController {
+    @discardableResult
     public func setSelectionMode(_ selectionMode: SelectionMode) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.selectionMode = selectionMode
         return self
     }
     
+    @discardableResult
     public func setSelectionMode(_ selectionColor: UIColor) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.selectionColor = selectionColor
         return self
     }
     
+    @discardableResult
     public func setSelectionColor(_ tintColor: UIColor) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.tintColor = tintColor
         return self
     }
     
+    @discardableResult
     public func setNumberOfItemsPerRow(_ numberOfItemsPerRow: Int) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.numberOfItemsPerRow = numberOfItemsPerRow
         return self
     }
     
+    @discardableResult
     public func setHeaderView(_ headerView: UIView, isHeaderFloating: Bool) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.headerView = headerView
         AssetPickerConfiguration.shared.isHeaderFloating = isHeaderFloating
         return self
     }
     
+    @discardableResult
     public func setCellRegistrator(_ cellRegistrator: AssetPickerCellRegistrator) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.cellRegistrator = cellRegistrator
         return self
     }
     
+    @discardableResult
     public func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType]) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.supportOnlyMediaType = supportOnlyMediaType
         return self
     }
     
+    @discardableResult
     public func disableOnLibraryScrollAnimation() -> AssetPickerViewController {
         AssetPickerConfiguration.shared.disableOnLibraryScrollAnimation = true
         return self
     }
     
+    @discardableResult
     public func localize(_ localize: LocalizedStrings) -> AssetPickerViewController {
         AssetPickerConfiguration.shared.localize = localize
         return self

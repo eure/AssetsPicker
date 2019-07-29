@@ -96,6 +96,7 @@ public final class AssetDetailViewController: UIViewController {
             title = viewModel.assetCollection.localizedTitle
         }
         loadPhotos()
+        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
     
     func loadPhotos() {
@@ -148,10 +149,19 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
         
         self.viewModel.toggle(item: cellViewModel)
-        if !viewModel.selectionContainer.selectedItems.contains(where: { $0.identifier == cellViewModel.identifier }) {
+        if case .notSelected = cellViewModel.selectionStatus() {
             collectionView.deselectItem(at: indexPath, animated: true)
         }
-        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.isFilled
+        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
+        
+        self.viewModel.toggle(item: cellViewModel)
+        
+        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -159,7 +169,7 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         let cellViewModel = viewModel.cellModel(at: indexPath.item)
         cellProtocol.bind(cellViewModel: cellViewModel)
         
-        cell.isSelected = viewModel.selectionContainer.selectedItems.contains(where: { $0.identifier == cellViewModel.identifier })
+        cell.isSelected = cellViewModel.selectionStatus() != .notSelected
         
         if (collectionView.isDragging || collectionView.isDecelerating), !AssetPickerConfiguration.shared.disableOnLibraryScrollAnimation {
             cell.alpha = 0.5
