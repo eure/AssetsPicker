@@ -13,7 +13,6 @@ public final class AssetDetailViewController: UIViewController {
     // MARK: Properties
     let viewModel: ViewModel
     var headerSizeCalculator: ViewSizeCalculator<UIView>?
-    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 1
@@ -66,9 +65,7 @@ public final class AssetDetailViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
-        
         setupView: do {
             view.addSubview(collectionView)
             collectionView.delegate = self
@@ -124,6 +121,13 @@ public final class AssetDetailViewController: UIViewController {
             //TODO Stop loader
         }
     }
+
+    @objc func resetSelection() {
+        collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: true) }
+        viewModel.reset(withAssetCollection: viewModel.assetCollection)
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.hidesBackButton = false
+    }
 }
 
 extension AssetDetailViewController: UICollectionViewDelegate {
@@ -143,14 +147,18 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         
         return true
     }
-    
+
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
-        
+
         self.viewModel.toggle(item: cellViewModel)
         if case .notSelected = cellViewModel.selectionStatus() {
             collectionView.deselectItem(at: indexPath, animated: true)
+        }
+
+        if (collectionView.indexPathsForSelectedItems ?? []).count > 0 {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(resetSelection))
         }
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
@@ -160,7 +168,10 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
         
         self.viewModel.toggle(item: cellViewModel)
-        
+        if (collectionView.indexPathsForSelectedItems ?? []).isEmpty {
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.hidesBackButton = false
+        }
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
     
@@ -256,7 +267,6 @@ public final class ViewModel {
         let selectedAssets = selectionContainer.selectedItems.map { $0.asset }
         return selectedAssets.compactMap { displayItems.contains($0) ? displayItems.index(of: $0) : nil }
     }
-    
 
     // MARK: Lifecycle
     
