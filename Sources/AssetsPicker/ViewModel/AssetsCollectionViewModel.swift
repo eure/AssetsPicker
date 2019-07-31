@@ -13,25 +13,9 @@ import Photos
 public final class AssetCollectionViewModel {
     
     // MARK: Lifecycle
-    
-    var cameraRollAssetCollection: PHAssetCollection?
     fileprivate(set) var displayItems: [AssetCollectionCellViewModel] = []
     
-    // MARK: Lifecycle
-    
-    func loadCameraRollAsset(onNext: @escaping (() -> ())) {
-        DispatchQueue.global(qos: .userInteractive).async {
-            self.cameraRollAssetCollection = PHAssetCollection.fetchAssetCollections(
-                with: .smartAlbum,
-                subtype: .smartAlbumUserLibrary,
-                options: nil
-                )
-                .firstObject
-            
-            onNext()
-        }
-    }
-    
+
     // MARK: Core
     
     func fetchAssetsCollections(onNext: @escaping (() -> ())) {

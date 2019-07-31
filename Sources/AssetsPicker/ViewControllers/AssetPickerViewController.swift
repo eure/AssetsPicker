@@ -20,7 +20,7 @@ let PhotoPickerCancelNotificationName = NSNotification.Name(rawValue: "PhotoPick
 public final class AssetPickerViewController : UINavigationController {
     
     // MARK: - Properties
-    
+    var configuration = AssetPickerConfiguration.shared
     public weak var pickerDelegate: AssetPickerDelegate?
     
     // MARK: - Lifecycle
@@ -84,56 +84,56 @@ public final class AssetPickerViewController : UINavigationController {
 extension AssetPickerViewController {
     @discardableResult
     public func setSelectionMode(_ selectionMode: SelectionMode) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.selectionMode = selectionMode
+        configuration.selectionMode = selectionMode
         return self
     }
     
     @discardableResult
     public func setSelectionMode(_ selectionColor: UIColor) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.selectionColor = selectionColor
+        configuration.selectionColor = selectionColor
         return self
     }
     
     @discardableResult
     public func setSelectionColor(_ tintColor: UIColor) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.tintColor = tintColor
+        configuration.tintColor = tintColor
         return self
     }
     
     @discardableResult
     public func setNumberOfItemsPerRow(_ numberOfItemsPerRow: Int) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.numberOfItemsPerRow = numberOfItemsPerRow
+        configuration.numberOfItemsPerRow = numberOfItemsPerRow
         return self
     }
     
     @discardableResult
     public func setHeaderView(_ headerView: UIView, isHeaderFloating: Bool) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.headerView = headerView
-        AssetPickerConfiguration.shared.isHeaderFloating = isHeaderFloating
+        configuration.headerView = headerView
+        configuration.isHeaderFloating = isHeaderFloating
         return self
     }
     
     @discardableResult
     public func setCellRegistrator(_ cellRegistrator: AssetPickerCellRegistrator) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.cellRegistrator = cellRegistrator
+        configuration.cellRegistrator = cellRegistrator
         return self
     }
     
     @discardableResult
     public func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType]) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.supportOnlyMediaType = supportOnlyMediaType
+        configuration.supportOnlyMediaType = supportOnlyMediaType
         return self
     }
     
     @discardableResult
     public func disableOnLibraryScrollAnimation() -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.disableOnLibraryScrollAnimation = true
+        configuration.disableOnLibraryScrollAnimation = true
         return self
     }
     
     @discardableResult
     public func localize(_ localize: LocalizedStrings) -> AssetPickerViewController {
-        AssetPickerConfiguration.shared.localize = localize
+        configuration.localize = localize
         return self
     }
 }

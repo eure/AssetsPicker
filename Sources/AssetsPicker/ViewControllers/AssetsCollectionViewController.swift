@@ -12,9 +12,11 @@ import Photos
 final class AssetsCollectionViewController: UIViewController {
     
     // MARK: Properties
-    
+    private var assetPickerViewController: AssetPickerViewController {
+        return navigationController as! AssetPickerViewController
+    }
     private let viewModel = AssetCollectionViewModel()
-    private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
+    private var selectionContainer: SelectionContainer<AssetDetailCellViewModel>!
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,7 +28,7 @@ final class AssetsCollectionViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        if let nib = AssetPickerConfiguration.shared.cellRegistrator.customAssetItemNibs[.assetCollection]?.0 {
+        if let nib = assetPickerViewController.configuration.cellRegistrator.customAssetItemNibs[.assetCollection]?.0 {
             collectionView.register(nib, forCellWithReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection))
         } else {
             collectionView.register(
@@ -41,16 +43,7 @@ final class AssetsCollectionViewController: UIViewController {
     }()
     
     init() {
-        setupConfiguration: do {
-            
-            switch AssetPickerConfiguration.shared.selectionMode {
-            case .single:
-                self.selectionContainer = SelectionContainer<AssetDetailCellViewModel>(withSize: 1)
-            case .multiple(let limit):
-                self.selectionContainer = SelectionContainer<AssetDetailCellViewModel>(withSize: limit)
-            }            
-            super.init(nibName: nil, bundle: nil)
-        }
+        super.init(nibName: nil, bundle: nil)
     }
     
     
@@ -62,7 +55,15 @@ final class AssetsCollectionViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupConfiguration: do {
+
+            switch assetPickerViewController.configuration.selectionMode {
+            case .single:
+                selectionContainer = SelectionContainer<AssetDetailCellViewModel>(withSize: 1)
+            case .multiple(let limit):
+                selectionContainer = SelectionContainer<AssetDetailCellViewModel>(withSize: limit)
+            }
+        }
         setupView: do {
             view.addSubview(collectionView)
         }
@@ -110,7 +111,7 @@ extension AssetsCollectionViewController: UICollectionViewDataSource {
 extension AssetsCollectionViewController: UICollectionViewDelegate {
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let assetCollection = viewModel.displayItems[indexPath.item].assetCollection
-        let assetDetailController = AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: self.selectionContainer)
+        let assetDetailController = AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: self.selectionContainer, configuration: assetPickerViewController.configuration)
         navigationController?.pushViewController(assetDetailController, animated: true)
     }
     

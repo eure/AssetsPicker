@@ -29,6 +29,7 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     public let asset: PHAsset
     private let imageManager: PHCachingImageManager
     private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
+    
     private var imageRequestId: PHImageRequestID?
     
     // MARK: Lifecycle

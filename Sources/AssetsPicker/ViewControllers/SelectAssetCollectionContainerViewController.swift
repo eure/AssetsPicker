@@ -11,10 +11,13 @@ import UIKit
 import Photos
 
 final class SelectAssetCollectionContainerViewController: UIViewController {
+    private var assetPickerViewController: AssetPickerViewController {
+        return navigationController as! AssetPickerViewController
+    }
     private lazy var changePermissionsButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-        button.setTitleColor(AssetPickerConfiguration.shared.tintColor, for: .normal)
+        button.setTitleColor(assetPickerViewController.configuration.tintColor, for: .normal)
         
         return button
     }()
@@ -75,7 +78,7 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
         view.addSubview(changePermissionsButton)
         
         changePermissionsButton.translatesAutoresizingMaskIntoConstraints = false
-        changePermissionsButton.setTitle(AssetPickerConfiguration.shared.localize.changePermissions, for: .normal)
+        changePermissionsButton.setTitle(assetPickerViewController.configuration.localize.changePermissions, for: .normal)
         changePermissionsButton.addTarget(self, action: #selector(openSettings(sender:)), for: .touchUpInside)
        
         NSLayoutConstraint.activate([
