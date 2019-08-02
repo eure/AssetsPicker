@@ -29,11 +29,11 @@ final class AssetsCollectionViewController: UIViewController {
         collectionView.dataSource = self
         
         if let nib = assetPickerViewController.configuration.cellRegistrator.customAssetItemNibs[.assetCollection]?.0 {
-            collectionView.register(nib, forCellWithReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection))
+            collectionView.register(nib, forCellWithReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection))
         } else {
             collectionView.register(
-                AssetPickerConfiguration.shared.cellRegistrator.cellType(forCellType: .assetCollection),
-                forCellWithReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection)
+                assetPickerViewController.configuration.cellRegistrator.cellType(forCellType: .assetCollection),
+                forCellWithReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection)
             )
         }
         
@@ -102,7 +102,7 @@ extension AssetsCollectionViewController: UICollectionViewDataSource {
     }
     
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AssetPickerConfiguration.shared.cellRegistrator.cellIdentifier(forCellType: .assetCollection), for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection), for: indexPath)
         
         return cell
     }

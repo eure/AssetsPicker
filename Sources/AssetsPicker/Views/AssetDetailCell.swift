@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
-    
+    var configuration: AssetPickerConfiguration!
     // MARK: Properties
     
     override var isSelected: Bool {
@@ -53,7 +53,7 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
     
     public func updateSelection(isItemSelected: Bool) {
         if isItemSelected {
-            imageView.layer.borderColor = AssetPickerConfiguration.shared.selectionColor.cgColor
+            imageView.layer.borderColor = configuration.selectionColor.cgColor
             imageView.layer.borderWidth = 4
         } else {
             imageView.layer.borderColor = nil

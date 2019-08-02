@@ -57,9 +57,9 @@ public final class AssetPickerViewController : UINavigationController {
                                                    object: nil)
         }
         setupNavigationBar: do {
-            let dismissBarButtonItem = UIBarButtonItem(title: AssetPickerConfiguration.shared.localize.dismiss, style: .plain, target: self, action: #selector(dismissPicker(sender:)))
+            let dismissBarButtonItem = UIBarButtonItem(title: configuration.localize.dismiss, style: .plain, target: self, action: #selector(dismissPicker(sender:)))
             navigationBar.topItem?.leftBarButtonItem = dismissBarButtonItem
-            navigationBar.tintColor = AssetPickerConfiguration.shared.tintColor
+            navigationBar.tintColor = configuration.tintColor
         }
     }
     
