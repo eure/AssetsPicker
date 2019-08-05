@@ -15,7 +15,8 @@ public final class AssetDetailViewController: UIViewController {
     let viewModel: ViewModel
     var headerSizeCalculator: ViewSizeCalculator<UIView>?
     private var collectionView: UICollectionView!
-
+    let configuration: AssetPickerConfiguration
+    
     private var gridCount: Int {
         return viewModel.configuration.numberOfItemsPerRow
     }
@@ -28,6 +29,8 @@ public final class AssetDetailViewController: UIViewController {
             selectionContainer: selectionContainer,
             configuration: configuration
         )
+        
+        self.configuration = configuration
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -201,9 +204,9 @@ extension AssetDetailViewController: UICollectionViewDelegate {
 
 extension AssetDetailViewController: UICollectionViewDataSource {
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.configuration.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
         if let cell = cell as? AssetDetailCell {
-            cell.configuration = assetPickerViewController.configuration
+            cell.configuration = viewModel.configuration
         }
         return cell
     }

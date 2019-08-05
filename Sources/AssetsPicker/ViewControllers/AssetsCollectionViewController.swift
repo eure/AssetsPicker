@@ -12,11 +12,10 @@ import Photos
 final class AssetsCollectionViewController: UIViewController {
     
     // MARK: Properties
-    private var assetPickerViewController: AssetPickerViewController {
-        return navigationController as! AssetPickerViewController
-    }
+
     private let viewModel = AssetCollectionViewModel()
     private var selectionContainer: SelectionContainer<AssetDetailCellViewModel>!
+    let configuration: AssetPickerConfiguration
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -28,12 +27,12 @@ final class AssetsCollectionViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        if let nib = assetPickerViewController.configuration.cellRegistrator.customAssetItemNibs[.assetCollection]?.0 {
-            collectionView.register(nib, forCellWithReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection))
+        if let nib = configuration.cellRegistrator.customAssetItemNibs[.assetCollection]?.0 {
+            collectionView.register(nib, forCellWithReuseIdentifier: configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection))
         } else {
             collectionView.register(
-                assetPickerViewController.configuration.cellRegistrator.cellType(forCellType: .assetCollection),
-                forCellWithReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection)
+                configuration.cellRegistrator.cellType(forCellType: .assetCollection),
+                forCellWithReuseIdentifier: configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection)
             )
         }
         
@@ -42,10 +41,10 @@ final class AssetsCollectionViewController: UIViewController {
         return collectionView
     }()
     
-    init() {
+    init(configuration: AssetPickerConfiguration) {
+        self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -57,7 +56,7 @@ final class AssetsCollectionViewController: UIViewController {
         super.viewDidLoad()
         setupConfiguration: do {
 
-            switch assetPickerViewController.configuration.selectionMode {
+            switch configuration.selectionMode {
             case .single:
                 selectionContainer = SelectionContainer<AssetDetailCellViewModel>(withSize: 1)
             case .multiple(let limit):
@@ -102,7 +101,7 @@ extension AssetsCollectionViewController: UICollectionViewDataSource {
     }
     
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection), for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: configuration.cellRegistrator.cellIdentifier(forCellType: .assetCollection), for: indexPath)
         
         return cell
     }
@@ -111,7 +110,7 @@ extension AssetsCollectionViewController: UICollectionViewDataSource {
 extension AssetsCollectionViewController: UICollectionViewDelegate {
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let assetCollection = viewModel.displayItems[indexPath.item].assetCollection
-        let assetDetailController = AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: self.selectionContainer, configuration: assetPickerViewController.configuration)
+        let assetDetailController = AssetDetailViewController(withAssetCollection: assetCollection, andSelectionContainer: self.selectionContainer, configuration: configuration)
         navigationController?.pushViewController(assetDetailController, animated: true)
     }
     
