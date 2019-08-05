@@ -200,7 +200,9 @@ extension AssetDetailViewController: UICollectionViewDelegate {
 extension AssetDetailViewController: UICollectionViewDataSource {
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
-        
+        if let cell = cell as? AssetDetailCell {
+            cell.configuration = assetPickerViewController.configuration
+        }
         return cell
     }
     
