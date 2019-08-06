@@ -41,7 +41,7 @@ public final class AssetPickerViewController : UINavigationController {
         super.viewDidLoad()
         
         setupRootController: do  {
-            let controller = SelectAssetCollectionContainerViewController()
+            let controller = SelectAssetCollectionContainerViewController(configuration: configuration)
             pushViewController(controller, animated: false)
         }
         

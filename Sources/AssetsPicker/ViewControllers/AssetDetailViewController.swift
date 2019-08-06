@@ -15,11 +15,10 @@ public final class AssetDetailViewController: UIViewController {
     let viewModel: ViewModel
     var headerSizeCalculator: ViewSizeCalculator<UIView>?
     private var collectionView: UICollectionView!
-    private var assetPickerViewController: AssetPickerViewController {
-        return navigationController as! AssetPickerViewController
-    }
+    let configuration: AssetPickerConfiguration
+    
     private var gridCount: Int {
-        return assetPickerViewController.configuration.numberOfItemsPerRow
+        return viewModel.configuration.numberOfItemsPerRow
     }
     
     // MARK: Lifecycle
@@ -30,6 +29,8 @@ public final class AssetDetailViewController: UIViewController {
             selectionContainer: selectionContainer,
             configuration: configuration
         )
+        
+        self.configuration = configuration
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -45,29 +46,29 @@ public final class AssetDetailViewController: UIViewController {
             let layout = UICollectionViewFlowLayout()
             layout.minimumLineSpacing = 1
             layout.minimumInteritemSpacing = 1
-            layout.sectionHeadersPinToVisibleBounds = assetPickerViewController.configuration.isHeaderFloating
+            layout.sectionHeadersPinToVisibleBounds = viewModel.configuration.isHeaderFloating
 
             let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.backgroundColor = .white
             collectionView.allowsSelection = true
 
-            switch assetPickerViewController.configuration.selectionMode {
+            switch viewModel.configuration.selectionMode {
             case .single:
                 collectionView.allowsMultipleSelection = false
             case .multiple(let size):
                 collectionView.allowsMultipleSelection = size > 1
             }
 
-            if let nib = assetPickerViewController.configuration.cellRegistrator.customAssetItemNibs[.asset]?.0 {
-                collectionView.register(nib, forCellWithReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .asset))
+            if let nib = viewModel.configuration.cellRegistrator.customAssetItemNibs[.asset]?.0 {
+                collectionView.register(nib, forCellWithReuseIdentifier: viewModel.configuration.cellRegistrator.cellIdentifier(forCellType: .asset))
             } else {
                 collectionView.register(
-                    assetPickerViewController.configuration.cellRegistrator.cellType(forCellType: .asset),
-                    forCellWithReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .asset)
+                    viewModel.configuration.cellRegistrator.cellType(forCellType: .asset),
+                    forCellWithReuseIdentifier: viewModel.configuration.cellRegistrator.cellIdentifier(forCellType: .asset)
                 )
             }
 
-            if assetPickerViewController.configuration.headerView != nil {
+            if viewModel.configuration.headerView != nil {
                 collectionView.register(AssetDetailHeaderContainerView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: AssetDetailHeaderContainerView.self))
             }
             self.collectionView = collectionView
@@ -75,7 +76,7 @@ public final class AssetDetailViewController: UIViewController {
             view.addSubview(collectionView)
             collectionView.delegate = self
             collectionView.dataSource = self
-            let doneBarButtonItem = UIBarButtonItem(title: assetPickerViewController.configuration.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
+            let doneBarButtonItem = UIBarButtonItem(title: viewModel.configuration.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
             doneBarButtonItem.isEnabled = viewModel.selectionContainer.isFilled
             navigationItem.rightBarButtonItem = doneBarButtonItem
         }
@@ -99,6 +100,10 @@ public final class AssetDetailViewController: UIViewController {
         }
         loadPhotos()
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     func loadPhotos() {
@@ -187,7 +192,7 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         
         cell.isSelected = cellViewModel.selectionStatus() != .notSelected
         
-        if (collectionView.isDragging || collectionView.isDecelerating), !assetPickerViewController.configuration.disableOnLibraryScrollAnimation {
+        if (collectionView.isDragging || collectionView.isDecelerating), !viewModel.configuration.disableOnLibraryScrollAnimation {
             cell.alpha = 0.5
             
             UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
@@ -199,9 +204,9 @@ extension AssetDetailViewController: UICollectionViewDelegate {
 
 extension AssetDetailViewController: UICollectionViewDataSource {
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: assetPickerViewController.configuration.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.configuration.cellRegistrator.cellIdentifier(forCellType: .asset), for: indexPath)
         if let cell = cell as? AssetDetailCell {
-            cell.configuration = assetPickerViewController.configuration
+            cell.configuration = viewModel.configuration
         }
         return cell
     }
@@ -218,7 +223,7 @@ extension AssetDetailViewController: UICollectionViewDataSource {
         if kind == UICollectionView.elementKindSectionHeader {
             guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: AssetDetailHeaderContainerView.self), for: indexPath) as? AssetDetailHeaderContainerView else { return UICollectionReusableView() }
             
-            guard let headerView = assetPickerViewController.configuration.headerView else { fatalError() }
+            guard let headerView = viewModel.configuration.headerView else { fatalError() }
             view.set(view: headerView)
             
             return view
@@ -249,7 +254,7 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
     }
     
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        guard let headerView = assetPickerViewController.configuration.headerView else {
+        guard let headerView = viewModel.configuration.headerView else {
             return .zero
         }
         
@@ -270,7 +275,7 @@ public final class ViewModel {
     private(set) var assetCollection: PHAssetCollection
     private(set) var selectionContainer: SelectionContainer<AssetDetailCellViewModel>
     private(set) var displayItems: PHFetchResult<PHAsset>
-    private let configuration: AssetPickerConfiguration
+    let configuration: AssetPickerConfiguration
     var selectedIndexs: [Int] {
         let selectedAssets = selectionContainer.selectedItems.map { $0.asset }
         return selectedAssets.compactMap { displayItems.contains($0) ? displayItems.index(of: $0) : nil }

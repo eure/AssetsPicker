@@ -11,19 +11,28 @@ import UIKit
 import Photos
 
 final class SelectAssetCollectionContainerViewController: UIViewController {
-    private var assetPickerViewController: AssetPickerViewController {
-        return navigationController as! AssetPickerViewController
-    }
+ 
+    let configuration: AssetPickerConfiguration
+    
     private lazy var changePermissionsButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
-        button.setTitleColor(assetPickerViewController.configuration.tintColor, for: .normal)
+        button.setTitleColor(configuration.tintColor, for: .normal)
         
         return button
     }()
  
     // MARK: Lifecycle
 
+    init(configuration: AssetPickerConfiguration) {
+        self.configuration = configuration
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,7 +69,7 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
     }
     
     private func setup() {
-        let assetsCollectionsViewController = AssetsCollectionViewController()
+        let assetsCollectionsViewController = AssetsCollectionViewController(configuration: configuration)
         addChild(assetsCollectionsViewController)
         view.addSubview(assetsCollectionsViewController.view)
         
@@ -78,7 +87,7 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
         view.addSubview(changePermissionsButton)
         
         changePermissionsButton.translatesAutoresizingMaskIntoConstraints = false
-        changePermissionsButton.setTitle(assetPickerViewController.configuration.localize.changePermissions, for: .normal)
+        changePermissionsButton.setTitle(configuration.localize.changePermissions, for: .normal)
         changePermissionsButton.addTarget(self, action: #selector(openSettings(sender:)), for: .touchUpInside)
        
         NSLayoutConstraint.activate([
