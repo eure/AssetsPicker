@@ -11,7 +11,7 @@ import UIKit
 import AssetsPicker
 
 public class Demo2AssetCell: UICollectionViewCell, AssetDetailCellBindable, AssetDetailCellViewModelDelegate {
-    
+
     // MARK: AssetCellProtocol
     
     public let imageView: UIImageView = {

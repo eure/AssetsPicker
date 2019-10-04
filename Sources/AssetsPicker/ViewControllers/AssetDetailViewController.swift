@@ -145,7 +145,7 @@ extension AssetDetailViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? AssetDetailCellBindable else { return }
         
-        cell.cellViewModel?.cancelImageIfNeeded()
+        cell.cellViewModel?.cancelPreviewImageIfNeeded()
         cell.cellViewModel?.delegate = nil
         cell.cellViewModel = nil
     }
