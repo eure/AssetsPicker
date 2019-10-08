@@ -103,7 +103,7 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         options.version = .current
         options.resizeMode = .exact
         isDownloading = true
-        self.taskID = UIApplication.shared.beginBackgroundTask(expirationHandler: { [weak self] in
+        self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
             self?.cancelBackgroundTaskIfNeed()
         })
         self.imageDownloadId = imageManager.requestImage(
