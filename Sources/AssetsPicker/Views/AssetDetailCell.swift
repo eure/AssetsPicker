@@ -12,6 +12,7 @@ import UIKit
 final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
     var configuration: AssetPickerConfiguration!
     // MARK: Properties
+    private var spinner: UIActivityIndicatorView?
     
     override var isSelected: Bool {
         didSet {
@@ -68,11 +69,25 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         
         self.cellViewModel?.delegate = self
         cellViewModel.fetchPreviewImage()
+        setDownloading(cellViewModel.isDownloading)
+    }
+
+    func setDownloading(_ isDownloading: Bool) {
+        if isDownloading, spinner == nil {
+            let spinner = UIActivityIndicatorView(style: .whiteLarge)
+            contentView.addSubview(spinner)
+            spinner.center = contentView.center
+            spinner.startAnimating()
+            self.spinner = spinner
+        } else {
+            spinner?.removeFromSuperview()
+            spinner = nil
+        }
     }
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        
+        spinner?.removeFromSuperview()
         imageView.image = nil
     }
 }
@@ -82,5 +97,9 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
 extension AssetDetailCell: AssetDetailCellViewModelDelegate {
     func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage) {
         imageView.image = image
+    }
+
+    func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, isDownloading: Bool) {
+        setDownloading(isDownloading)
     }
 }
