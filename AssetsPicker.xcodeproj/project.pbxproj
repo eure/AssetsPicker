@@ -43,6 +43,7 @@
 		5AC4ADFC218AEF6A001ED22E /* Demo2AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */; };
 		5AC4AE06218C5C18001ED22E /* AssetsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */; };
 		FC1A639322EE952000E1C38D /* Demo5MultipleAssetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */; };
+		FCA6D3D023827D490060AD6C /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA6D3CF23827D490060AD6C /* Lock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,7 @@
 		5AC4ADF8218AEF4E001ED22E /* CustomCellDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellDemoViewController.swift; sourceTree = "<group>"; };
 		5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsCollectionViewModel.swift; sourceTree = "<group>"; };
 		FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo5MultipleAssetSelection.swift; sourceTree = "<group>"; };
+		FCA6D3CF23827D490060AD6C /* Lock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 				5A5212A3218820A200DA0259 /* AssetPickerCellRegistrator.swift */,
 				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
 				5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */,
+				FCA6D3CF23827D490060AD6C /* Lock.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				5A5212972181B37B00DA0259 /* AssetCollectionCell.swift in Sources */,
 				5A5212A4218820A200DA0259 /* AssetPickerCellRegistrator.swift in Sources */,
 				5A5212A22186FFF200DA0259 /* AssetDetailHeaderContainerView.swift in Sources */,
+				FCA6D3D023827D490060AD6C /* Lock.swift in Sources */,
 				5A5212992181B38A00DA0259 /* AssetDetailCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

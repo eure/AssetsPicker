@@ -10,24 +10,46 @@ import Foundation
 import UIKit
 import Photos
 
-public final class AssetCollectionViewModel {
+protocol AssetCollectionViewModelDelegate: class {
+    func updatedCollections()
+}
+
+public final class AssetCollectionViewModel: NSObject {
     
     // MARK: Lifecycle
-    fileprivate(set) var displayItems: [AssetCollectionCellViewModel] = []
-    
+    private(set) var displayItems: [AssetCollectionCellViewModel] = [] {
+        didSet {
+            self.delegate?.updatedCollections()
+        }
+    }
+    private var assetCollectionsFetchResults = [PHFetchResult<PHAssetCollection>]()
+    private var collectionsFetchResults = [PHFetchResult<PHCollection>]()
+    weak var delegate: AssetCollectionViewModelDelegate?
+
+    required override init() {
+        super.init()
+        Lock.exec(lock: self) {
+            self.fetchCollections()
+        }
+        PHPhotoLibrary.shared().register(self)
+    }
 
     // MARK: Core
     
-    func fetchAssetsCollections(onNext: @escaping (() -> ())) {
+    private func fetchCollections() {
         DispatchQueue.global(qos: .userInteractive).async {
+            self.assetCollectionsFetchResults.removeAll()
+            self.collectionsFetchResults.removeAll()
             var assetCollections: [PHAssetCollection] = []
+            let options = PHFetchOptions()
+            options.predicate = NSPredicate(format: "estimatedAssetCount > 0")
             do {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
                     subtype: .smartAlbumUserLibrary,
-                    options: nil
+                    options: options
                 )
-                
+                self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
             }
             
@@ -35,9 +57,9 @@ public final class AssetCollectionViewModel {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
                     subtype: .smartAlbumFavorites,
-                    options: nil
+                    options: options
                 )
-                
+                self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
             }
             
@@ -45,15 +67,16 @@ public final class AssetCollectionViewModel {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
                     subtype: .smartAlbumScreenshots,
-                    options: nil
+                    options: options
                 )
-                
+                self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
             }
             
             do {
                 let library = PHCollection.fetchTopLevelUserCollections(with: nil)
-                
+                self.collectionsFetchResults.append(library)
+
                 library.enumerateObjects { (collection, _, _) in
                     if let assetCollection = collection as? PHAssetCollection {
                         assetCollections.append(assetCollection)
@@ -65,20 +88,41 @@ public final class AssetCollectionViewModel {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .album,
                     subtype: .albumCloudShared,
-                    options: nil
+                    options: options
                 )
-                
+                self.assetCollectionsFetchResults.append(library)
+
                 assetCollections += library.toArray()
             }
             
             self.displayItems = assetCollections
                 .filter( { $0.estimatedAssetCount != 0 } )
                 .map(AssetCollectionCellViewModel.init(assetCollection:))
-            onNext()
         }
     }
 }
 
+extension AssetCollectionViewModel: PHPhotoLibraryChangeObserver {
+    public func photoLibraryDidChange(_ changeInstance: PHChange) {
+        // assuming complexity for collections is low, reload everything
+        Lock.exec(lock: self) {
+            for collection in self.collectionsFetchResults {
+                let changeDetails = changeInstance.changeDetails(for: collection)
+                if changeDetails?.hasChanges == true {
+                    self.fetchCollections()
+                    return
+                }
+            }
+            for collection in self.assetCollectionsFetchResults {
+                let changeDetails = changeInstance.changeDetails(for: collection)
+                if changeDetails?.hasChanges == true {
+                    self.fetchCollections()
+                    return
+                }
+            }
+        }
+    }
+}
 
 extension PHFetchResult where ObjectType == PHAssetCollection {
     
@@ -90,5 +134,17 @@ extension PHFetchResult where ObjectType == PHAssetCollection {
         }
 
         return array
+    }
+}
+
+extension PHFetchResultChangeDetails where ObjectType == PHCollection {
+    var hasChanges: Bool {
+        return self.fetchResultAfterChanges != self.fetchResultBeforeChanges
+    }
+}
+
+extension PHFetchResultChangeDetails where ObjectType == PHAssetCollection {
+    var hasChanges: Bool {
+        return self.fetchResultAfterChanges != self.fetchResultBeforeChanges
     }
 }
