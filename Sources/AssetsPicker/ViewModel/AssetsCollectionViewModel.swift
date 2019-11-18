@@ -22,13 +22,14 @@ public final class AssetCollectionViewModel: NSObject {
             self.delegate?.updatedCollections()
         }
     }
+    private let lock = NSLock()
     private var assetCollectionsFetchResults = [PHFetchResult<PHAssetCollection>]()
     private var collectionsFetchResults = [PHFetchResult<PHCollection>]()
     weak var delegate: AssetCollectionViewModelDelegate?
 
     required override init() {
         super.init()
-        Lock.exec(lock: self) {
+        self.lock.exec {
             self.fetchCollections()
         }
         PHPhotoLibrary.shared().register(self)
@@ -103,7 +104,7 @@ public final class AssetCollectionViewModel: NSObject {
 extension AssetCollectionViewModel: PHPhotoLibraryChangeObserver {
     public func photoLibraryDidChange(_ changeInstance: PHChange) {
         // assuming complexity for collections is low, reload everything
-        Lock.exec(lock: self) {
+        self.lock.exec {
             for collection in self.collectionsFetchResults {
                 let changeDetails = changeInstance.changeDetails(for: collection)
                 if changeDetails?.hasChanges == true {

@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum Lock {
-    static func exec<T>(lock: AnyObject!, proc: () -> T) -> T {
-        objc_sync_enter(lock as Any)
+extension NSLock {
+    func exec<T>(proc: () -> T) -> T {
+        self.lock()
         let result = proc()
-        objc_sync_exit(lock as Any)
+        self.unlock()
         return result
     }
 }
