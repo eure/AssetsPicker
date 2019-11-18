@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Lock {
+enum Lock {
     static func exec<T>(lock: AnyObject!, proc: () -> T) -> T {
         objc_sync_enter(lock as Any)
         let result = proc()
