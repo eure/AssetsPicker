@@ -8,8 +8,9 @@
 
 import Foundation
 
-class Lock {
-    class func exec<T>(lock: AnyObject!, proc: () -> T) -> T {
+struct Lock {
+    static func exec<T>(lock: AnyObject!, proc: () -> T) -> T {
+        objc_sync_enter(lock as Any)
         let result = proc()
         objc_sync_exit(lock as Any)
         return result
