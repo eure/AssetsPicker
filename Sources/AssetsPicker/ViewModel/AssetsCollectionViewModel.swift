@@ -41,13 +41,11 @@ public final class AssetCollectionViewModel: NSObject {
             self.assetCollectionsFetchResults.removeAll()
             self.collectionsFetchResults.removeAll()
             var assetCollections: [PHAssetCollection] = []
-            let options = PHFetchOptions()
-            options.predicate = NSPredicate(format: "estimatedAssetCount > 0")
             do {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
                     subtype: .smartAlbumUserLibrary,
-                    options: options
+                    options: nil
                 )
                 self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
@@ -57,7 +55,7 @@ public final class AssetCollectionViewModel: NSObject {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
                     subtype: .smartAlbumFavorites,
-                    options: options
+                    options: nil
                 )
                 self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
@@ -67,7 +65,7 @@ public final class AssetCollectionViewModel: NSObject {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
                     subtype: .smartAlbumScreenshots,
-                    options: options
+                    options: nil
                 )
                 self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
@@ -88,7 +86,7 @@ public final class AssetCollectionViewModel: NSObject {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .album,
                     subtype: .albumCloudShared,
-                    options: options
+                    options: nil
                 )
                 self.assetCollectionsFetchResults.append(library)
 
