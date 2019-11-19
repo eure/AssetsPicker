@@ -12,7 +12,7 @@ import Photos
 public final class AssetDetailViewController: UIViewController {
     // MARK: Properties
     
-    let viewModel: ViewModel
+    let viewModel: AssetDetailViewModel
     var headerSizeCalculator: ViewSizeCalculator<UIView>?
     private var collectionView: UICollectionView!
     let configuration: AssetPickerConfiguration
@@ -24,15 +24,15 @@ public final class AssetDetailViewController: UIViewController {
     // MARK: Lifecycle
     
     init(withAssetCollection assetCollection: PHAssetCollection, andSelectionContainer selectionContainer: SelectionContainer<AssetDetailCellViewModel>, configuration: AssetPickerConfiguration) {
-        self.viewModel = ViewModel(
+        self.viewModel = AssetDetailViewModel(
             assetCollection: assetCollection,
             selectionContainer: selectionContainer,
             configuration: configuration
         )
-        
         self.configuration = configuration
         
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -266,118 +266,29 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
-public final class ViewModel {
-    
-    // MARK: Properties
-    
-    private let imageManager = PHCachingImageManager()
-    private(set) var assetCollection: PHAssetCollection
-    private(set) var selectionContainer: SelectionContainer<AssetDetailCellViewModel>
-    private(set) var displayItems: PHFetchResult<PHAsset>
-    let configuration: AssetPickerConfiguration
-    var selectedIndexs: [Int] {
-        let selectedAssets = selectionContainer.selectedItems.map { $0.asset }
-        return selectedAssets.compactMap { displayItems.contains($0) ? displayItems.index(of: $0) : nil }
-    }
-
-    // MARK: Lifecycle
-    
-    init(assetCollection: PHAssetCollection, selectionContainer: SelectionContainer<AssetDetailCellViewModel>, configuration: AssetPickerConfiguration) {
-        self.assetCollection = assetCollection
-        self.selectionContainer = selectionContainer
-        self.displayItems = PHFetchResult<PHAsset>()
-        self.configuration = configuration
-    }
-    
-    func fetchPhotos(onNext: @escaping (() -> ())) {
-        DispatchQueue.global(qos: .userInteractive).async {
-            
-            let fetchOptions = PHFetchOptions()
-            
-            if !self.configuration.supportOnlyMediaType.isEmpty {
-                let predicates = self.configuration.supportOnlyMediaType.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
-                fetchOptions.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
-            }
-            
-            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-            
-            let result = PHAsset.fetchAssets(
-                in: self.assetCollection,
-                options: fetchOptions
-            )
-            
-            self.displayItems = result
-            onNext()
-        }
-    }
-    
-    func downloadSelectedCells(onNext: @escaping (([UIImage]) -> Void)) {
-        let dispatchGroup = DispatchGroup()
-        var images: [UIImage] = []
-        
-        for cellModel in selectionContainer.selectedItems {
-            dispatchGroup.enter()
-            
-            cellModel.download(onNext: { image in
-                DispatchQueue.main.async {
-                    if let image = image {
-                        images.append(image)
-                    }
-                    dispatchGroup.leave()
+extension AssetDetailViewController: AssetDetailViewModelDelegate {
+    public func displayItemsChange(_ changes: PHFetchResultChangeDetails<PHAsset>) {
+        restoreSelectionState()
+        if changes.hasIncrementalChanges {
+            collectionView.performBatchUpdates({
+                if let removed = changes.removedIndexes, removed.count > 0 {
+                    collectionView.deleteItems(at: removed.map { IndexPath(item: $0, section:0) })
+                }
+                if let inserted = changes.insertedIndexes, inserted.count > 0 {
+                    collectionView.insertItems(at: inserted.map { IndexPath(item: $0, section:0) })
+                }
+                if let changed = changes.changedIndexes, changed.count > 0 {
+                    collectionView.reloadItems(at: changed.map { IndexPath(item: $0, section:0) })
+                }
+                changes.enumerateMoves { fromIndex, toIndex in
+                    self.collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
+                                                 to: IndexPath(item: toIndex, section: 0))
                 }
             })
-        }
-        
-        dispatchGroup.notify(queue: DispatchQueue.main) {
-            onNext(images)
-        }
-    }
-    
-    func reset(withAssetCollection assetCollection: PHAssetCollection) {
-        self.assetCollection = assetCollection
-        self.selectionContainer.purge()
-    }
-    
-    func cellModel(at index: Int) -> AssetDetailCellViewModel {
-        
-        let asset = displayItems.object(at: index)
-        
-        if let cellModel = selectionContainer.item(for: asset.localIdentifier) {
-            return cellModel
-        }
-        
-        let cellModel = makeCellModel(from: asset)
-        
-        return cellModel
-    }
-    
-    private func makeCellModel(from asset: PHAsset) -> AssetDetailCellViewModel {
-        
-        let cellModel = AssetDetailCellViewModel(
-            asset: asset,
-            imageManager: imageManager,
-            selectionContainer: selectionContainer
-        )
-        
-        return cellModel
-    }
-    
-    func toggle(item: AssetDetailCellViewModel) {
-        if case .notSelected = item.selectionStatus() {
-            select(item: item)
         } else {
-            unselect(item: item)
+            // Reload the collection view if incremental diffs are not available.
+            collectionView.reloadData()
         }
-    }
-    
-    private func select(item: AssetDetailCellViewModel) {
-        selectionContainer.append(item: item, removeFirstIfAlreadyFilled: selectionContainer.size == 1)
-    }
-    
-    private func unselect(item: AssetDetailCellViewModel) {
-        selectionContainer.remove(item: item)
+        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
 }
-
-

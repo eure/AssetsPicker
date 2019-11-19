@@ -62,7 +62,7 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
         }()
         
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             
             let result = PHAsset.fetchAssets(
                 in: self.assetCollection,
@@ -100,4 +100,3 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
         }
     }
 }
-

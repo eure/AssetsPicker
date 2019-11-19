@@ -87,13 +87,14 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         }
     }
 
+    private let lock = NSLock()
     private func cancelBackgroundTaskIfNeed() {
         guard self.taskID != .invalid else { return }
-        objc_sync_enter(self)
-        guard self.taskID != .invalid else { return }
-        UIApplication.shared.endBackgroundTask(self.taskID)
-        self.taskID = .invalid
-        objc_sync_exit(self)
+        self.lock.exec {
+            guard self.taskID != .invalid else { return }
+            UIApplication.shared.endBackgroundTask(self.taskID)
+            self.taskID = .invalid
+        }
     }
 
     func download(onNext: @escaping ((UIImage?) -> ())) {
