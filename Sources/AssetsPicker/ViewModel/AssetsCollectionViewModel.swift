@@ -29,9 +29,6 @@ public final class AssetCollectionViewModel: NSObject {
 
     required override init() {
         super.init()
-        self.lock.exec {
-            self.fetchCollections()
-        }
         PHPhotoLibrary.shared().register(self)
     }
 
@@ -39,6 +36,8 @@ public final class AssetCollectionViewModel: NSObject {
     
     private func fetchCollections() {
         DispatchQueue.global(qos: .userInteractive).async {
+            self.lock.lock()
+            defer { self.lock.unlock() }
             self.assetCollectionsFetchResults.removeAll()
             self.collectionsFetchResults.removeAll()
             var assetCollections: [PHAssetCollection] = []
@@ -105,19 +104,13 @@ extension AssetCollectionViewModel: PHPhotoLibraryChangeObserver {
     public func photoLibraryDidChange(_ changeInstance: PHChange) {
         // assuming complexity for collections is low, reload everything
         self.lock.exec {
-            for collection in self.collectionsFetchResults {
-                let changeDetails = changeInstance.changeDetails(for: collection)
-                if changeDetails?.hasChanges == true {
-                    self.fetchCollections()
-                    return
-                }
+            for collection in self.collectionsFetchResults where changeInstance.changeDetails(for: collection) != nil {
+                self.fetchCollections()
+                return
             }
-            for collection in self.assetCollectionsFetchResults {
-                let changeDetails = changeInstance.changeDetails(for: collection)
-                if changeDetails?.hasChanges == true {
-                    self.fetchCollections()
-                    return
-                }
+            for collection in self.assetCollectionsFetchResults where changeInstance.changeDetails(for: collection) != nil {
+                self.fetchCollections()
+                return
             }
         }
     }
@@ -133,17 +126,5 @@ extension PHFetchResult where ObjectType == PHAssetCollection {
         }
 
         return array
-    }
-}
-
-extension PHFetchResultChangeDetails where ObjectType == PHCollection {
-    var hasChanges: Bool {
-        return self.fetchResultAfterChanges != self.fetchResultBeforeChanges
-    }
-}
-
-extension PHFetchResultChangeDetails where ObjectType == PHAssetCollection {
-    var hasChanges: Bool {
-        return self.fetchResultAfterChanges != self.fetchResultBeforeChanges
     }
 }
