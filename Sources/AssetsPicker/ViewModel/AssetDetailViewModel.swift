@@ -132,7 +132,7 @@ public final class AssetDetailViewModel: NSObject {
 extension AssetDetailViewModel: PHPhotoLibraryChangeObserver {
     public func photoLibraryDidChange(_ changeInstance: PHChange) {
         guard let changeDetails = changeInstance.changeDetails(for: displayItems) else { return }
-        assert(Thread.isMainThread)
+        assert(!Thread.isMainThread)
         DispatchQueue.main.sync {
             self.displayItems = changeDetails.fetchResultAfterChanges
             self.selectionContainer.purge()
