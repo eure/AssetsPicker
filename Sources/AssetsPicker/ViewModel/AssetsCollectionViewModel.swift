@@ -30,6 +30,7 @@ public final class AssetCollectionViewModel: NSObject {
     required override init() {
         super.init()
         PHPhotoLibrary.shared().register(self)
+        self.fetchCollections()
     }
 
     // MARK: Core
