@@ -44,6 +44,7 @@ final class AssetsCollectionViewController: UIViewController {
     init(configuration: AssetPickerConfiguration) {
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -80,12 +81,6 @@ final class AssetsCollectionViewController: UIViewController {
         
         if PHPhotoLibrary.authorizationStatus() == .denied {
             fatalError("Permission denied for accessing to photos.")
-        }
-        
-        viewModel.fetchAssetsCollections() {
-            DispatchQueue.main.async(execute: { [weak self] in
-                self?.collectionView.reloadData()
-            })
         }
     }
 }
@@ -142,5 +137,13 @@ extension AssetsCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     @objc dynamic public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
+    }
+}
+
+extension AssetsCollectionViewController: AssetCollectionViewModelDelegate {
+    func updatedCollections() {
+        DispatchQueue.main.async(execute: { [weak self] in
+            self?.collectionView.reloadData()
+        })
     }
 }
