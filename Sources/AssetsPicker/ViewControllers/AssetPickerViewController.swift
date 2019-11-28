@@ -8,13 +8,70 @@
 
 import UIKit
 import enum Photos.PHAssetMediaType
+import Photos.PHAsset
 
 public protocol AssetPickerDelegate: class {
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetDownload])
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage])
     func photoPickerDidCancel(_ pickerController: AssetPickerViewController)
 }
 
-let PhotoPickerPickImageNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickImageNotification")
+public extension AssetPickerDelegate {
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetDownload]) {}
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {}
+}
+
+public class AssetDownload {
+    public let asset: PHAsset
+    public var completionBlock: ((UIImage?) -> Void)?
+    public var thumbnailCompletionBlock: ((UIImage?) -> Void)?
+    public internal(set) var thumbnail: UIImage? {
+        didSet {
+            thumbnailCompletionBlock?(thumbnail)
+            thumbnailRequestID = nil
+        }
+    }
+    public internal(set)var finalImage: UIImage? {
+        didSet {
+            completionBlock?(finalImage)
+            cancelBackgroundTaskIfNeed()
+            imageRequestID = nil
+        }
+    }
+    private let lock = NSLock()
+    private var taskID = UIBackgroundTaskIdentifier.invalid
+    internal var thumbnailRequestID: PHImageRequestID?
+    internal var imageRequestID: PHImageRequestID?
+
+    init(asset: PHAsset) {
+        self.asset = asset
+        self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
+            self?.cancelBackgroundTaskIfNeed()
+        })
+    }
+
+    deinit {
+        if let imageRequestID = self.imageRequestID {
+            PHCachingImageManager.default().cancelImageRequest(imageRequestID)
+        }
+        if let thumbnailRequestID = self.thumbnailRequestID {
+            PHCachingImageManager.default().cancelImageRequest(thumbnailRequestID)
+        }
+        cancelBackgroundTaskIfNeed()
+    }
+    
+    internal func cancelBackgroundTaskIfNeed() {
+        guard self.taskID != .invalid else { return }
+        self.lock.exec {
+            guard self.taskID != .invalid else { return }
+            UIApplication.shared.endBackgroundTask(self.taskID)
+            self.taskID = .invalid
+        }
+    }
+}
+
+let PhotoPickerPickImagesNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickImagesNotification")
+let PhotoPickerPickAssetsNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickAssestNotification")
 let PhotoPickerCancelNotificationName = NSNotification.Name(rawValue: "PhotoPickerCancelNotification")
 
 public final class AssetPickerViewController : UINavigationController {
@@ -48,7 +105,11 @@ public final class AssetPickerViewController : UINavigationController {
         setupPickImagesNotification: do {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(didPickImages(notification:)),
-                                                   name: PhotoPickerPickImageNotificationName,
+                                                   name: PhotoPickerPickImagesNotificationName,
+                                                   object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(didPickAssets(notification:)),
+                                                   name: PhotoPickerPickAssetsNotificationName,
                                                    object: nil)
             
             NotificationCenter.default.addObserver(self,
@@ -66,6 +127,12 @@ public final class AssetPickerViewController : UINavigationController {
     @objc func didPickImages(notification: Notification) {
         if let images = notification.object as? [UIImage] {
             self.pickerDelegate?.photoPicker(self, didPickImages: images)
+        }
+    }
+
+    @objc func didPickAssets(notification: Notification) {
+        if let downloads = notification.object as? [AssetDownload] {
+            self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
         }
     }
     
