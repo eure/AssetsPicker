@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Photos
+import enum Photos.PHAssetMediaType
 
 public protocol AssetPickerDelegate: class {
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage])
@@ -18,73 +18,6 @@ public protocol AssetPickerDelegate: class {
 public extension AssetPickerDelegate {
     func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetDownload]) {}
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {}
-}
-
-public class AssetDownload {
-    public let asset: PHAsset
-    public var completionBlock: ((UIImage?) -> Void)? {
-        didSet {
-            if hasSetImage {
-                completionBlock?(finalImage)
-                completionBlock = nil
-            }
-        }
-    }
-    public var thumbnailBlock: ((UIImage?) -> Void)? {
-        didSet {
-            if hasSetThumbnail {
-                thumbnailBlock?(thumbnail)
-                thumbnailBlock = nil
-            }
-        }
-    }
-    private var hasSetThumbnail = false
-    private var hasSetImage = false
-    public internal(set) var thumbnail: UIImage? {
-        didSet {
-            thumbnailBlock?(thumbnail)
-            thumbnailRequestID = nil
-            hasSetThumbnail = true
-        }
-    }
-    public internal(set) var finalImage: UIImage? {
-        didSet {
-            completionBlock?(finalImage)
-            cancelBackgroundTaskIfNeed()
-            imageRequestID = nil
-            hasSetImage = true
-        }
-    }
-    private let lock = NSLock()
-    private var taskID = UIBackgroundTaskIdentifier.invalid
-    internal var thumbnailRequestID: PHImageRequestID?
-    internal var imageRequestID: PHImageRequestID?
-
-    init(asset: PHAsset) {
-        self.asset = asset
-        self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
-            self?.cancelBackgroundTaskIfNeed()
-        })
-    }
-
-    deinit {
-        if let imageRequestID = self.imageRequestID {
-            PHCachingImageManager.default().cancelImageRequest(imageRequestID)
-        }
-        if let thumbnailRequestID = self.thumbnailRequestID {
-            PHCachingImageManager.default().cancelImageRequest(thumbnailRequestID)
-        }
-        cancelBackgroundTaskIfNeed()
-    }
-    
-    internal func cancelBackgroundTaskIfNeed() {
-        guard self.taskID != .invalid else { return }
-        self.lock.exec {
-            guard self.taskID != .invalid else { return }
-            UIApplication.shared.endBackgroundTask(self.taskID)
-            self.taskID = .invalid
-        }
-    }
 }
 
 let PhotoPickerPickAssetsNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickAssestNotification")
