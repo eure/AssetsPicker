@@ -7,13 +7,12 @@
 //
 
 import UIKit
-import enum Photos.PHAssetMediaType
-import Photos.PHAsset
+import Photos
 
 public protocol AssetPickerDelegate: class {
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetDownload])
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage])
     func photoPickerDidCancel(_ pickerController: AssetPickerViewController)
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetDownload])
 }
 
 public extension AssetPickerDelegate {
@@ -23,19 +22,37 @@ public extension AssetPickerDelegate {
 
 public class AssetDownload {
     public let asset: PHAsset
-    public var completionBlock: ((UIImage?) -> Void)?
-    public var thumbnailCompletionBlock: ((UIImage?) -> Void)?
-    public internal(set) var thumbnail: UIImage? {
+    public var completionBlock: ((UIImage?) -> Void)? {
         didSet {
-            thumbnailCompletionBlock?(thumbnail)
-            thumbnailRequestID = nil
+            if hasSetImage {
+                completionBlock?(finalImage)
+                completionBlock = nil
+            }
         }
     }
-    public internal(set)var finalImage: UIImage? {
+    public var thumbnailBlock: ((UIImage?) -> Void)? {
+        didSet {
+            if hasSetThumbnail {
+                thumbnailBlock?(thumbnail)
+                thumbnailBlock = nil
+            }
+        }
+    }
+    private var hasSetThumbnail = false
+    private var hasSetImage = false
+    public internal(set) var thumbnail: UIImage? {
+        didSet {
+            thumbnailBlock?(thumbnail)
+            thumbnailRequestID = nil
+            hasSetThumbnail = true
+        }
+    }
+    public internal(set) var finalImage: UIImage? {
         didSet {
             completionBlock?(finalImage)
             cancelBackgroundTaskIfNeed()
             imageRequestID = nil
+            hasSetImage = true
         }
     }
     private let lock = NSLock()
@@ -70,8 +87,8 @@ public class AssetDownload {
     }
 }
 
-let PhotoPickerPickImagesNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickImagesNotification")
 let PhotoPickerPickAssetsNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickAssestNotification")
+let PhotoPickerPickImagesNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickImagesNotification")
 let PhotoPickerCancelNotificationName = NSNotification.Name(rawValue: "PhotoPickerCancelNotification")
 
 public final class AssetPickerViewController : UINavigationController {
@@ -129,12 +146,6 @@ public final class AssetPickerViewController : UINavigationController {
             self.pickerDelegate?.photoPicker(self, didPickImages: images)
         }
     }
-
-    @objc func didPickAssets(notification: Notification) {
-        if let downloads = notification.object as? [AssetDownload] {
-            self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
-        }
-    }
     
     @objc func didCancel(notification: Notification) {
         self.pickerDelegate?.photoPickerDidCancel(self)
@@ -142,6 +153,12 @@ public final class AssetPickerViewController : UINavigationController {
     
     @objc func dismissPicker(sender: Any) {
         NotificationCenter.default.post(name: PhotoPickerCancelNotificationName, object: nil)
+    }
+
+    @objc func didPickAssets(notification: Notification) {
+        if let downloads = notification.object as? [AssetDownload] {
+            self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
+        }
     }
 }
 

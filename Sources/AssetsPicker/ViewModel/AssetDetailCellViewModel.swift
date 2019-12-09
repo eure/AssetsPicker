@@ -79,14 +79,16 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         })
     }
 
-    private func _fetchPreviewImage(onNext: @escaping (UIImage?, [AnyHashable: Any]?) -> Void) -> PHImageRequestID {
+    private func _fetchPreviewImage(
+        onNext: @escaping (UIImage?, [AnyHashable: Any]?) -> Void,
+        size: CGSize = CGSize(width: 360, height: 360)) -> PHImageRequestID {
         let options = PHImageRequestOptions()
         options.deliveryMode = .opportunistic
         options.isNetworkAccessAllowed = true
         options.version = .current
         options.resizeMode = .fast
         return imageManager.requestImage(for: asset,
-                                         targetSize: CGSize(width: 360, height: 360),
+                                         targetSize: size,
                                          contentMode: .aspectFill,
                                          options: options,
                                          resultHandler: onNext)
@@ -112,7 +114,7 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         }
         assetDownload.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetDownload] (image, _) in
             assetDownload?.thumbnail = image
-        })
+            }, size: .init(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
         assetDownload.imageRequestID = imageRequestID
         return assetDownload
     }
