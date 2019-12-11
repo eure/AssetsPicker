@@ -158,7 +158,9 @@
 				4BCA98682171E9E80048826A /* Products */,
 				4BCA989B2171ED560048826A /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		4BCA98682171E9E80048826A /* Products */ = {
 			isa = PBXGroup;
