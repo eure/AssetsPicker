@@ -43,7 +43,7 @@
 		5AC4ADFC218AEF6A001ED22E /* Demo2AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */; };
 		5AC4AE06218C5C18001ED22E /* AssetsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */; };
 		FC1A639322EE952000E1C38D /* Demo5MultipleAssetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */; };
-		FC5DAE6B23A72D7300DD51E6 /* NotificationCenter+assetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DAE6A23A72D7300DD51E6 /* NotificationCenter+assetPicker.swift */; };
+		FC5DAE7023A75DB100DD51E6 /* NotificationCenter+assetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */; };
 		FCA6D3D023827D490060AD6C /* NSLock+exec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */; };
 		FCA6D4402383CBE00060AD6C /* AssetDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA6D43F2383CBE00060AD6C /* AssetDetailViewModel.swift */; };
 		FCF71B1F239E258600E6D75C /* AssetDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF71B1E239E258600E6D75C /* AssetDownload.swift */; };
@@ -120,7 +120,7 @@
 		5AC4ADF8218AEF4E001ED22E /* CustomCellDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellDemoViewController.swift; sourceTree = "<group>"; };
 		5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsCollectionViewModel.swift; sourceTree = "<group>"; };
 		FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo5MultipleAssetSelection.swift; sourceTree = "<group>"; };
-		FC5DAE6A23A72D7300DD51E6 /* NotificationCenter+assetPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NotificationCenter+assetPicker.swift"; path = "../../../../../.Trash/NotificationCenter+assetPicker.swift"; sourceTree = "<group>"; };
+		FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+assetPicker.swift"; sourceTree = "<group>"; };
 		FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLock+exec.swift"; sourceTree = "<group>"; };
 		FCA6D43F2383CBE00060AD6C /* AssetDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailViewModel.swift; sourceTree = "<group>"; };
 		FCF71B1E239E258600E6D75C /* AssetDownload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDownload.swift; sourceTree = "<group>"; };
@@ -284,9 +284,9 @@
 		5A52129E2186DE8000DA0259 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */,
 				5A5212A3218820A200DA0259 /* AssetPickerCellRegistrator.swift */,
 				FCF71B1E239E258600E6D75C /* AssetDownload.swift */,
-				FC5DAE6A23A72D7300DD51E6 /* NotificationCenter+assetPicker.swift */,
 				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
 				5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */,
 				FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */,
@@ -496,7 +496,7 @@
 				5A5212852181B2A400DA0259 /* AssetPickerConfiguration.swift in Sources */,
 				5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */,
 				5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */,
-				FC5DAE6B23A72D7300DD51E6 /* NotificationCenter+assetPicker.swift in Sources */,
+				FC5DAE7023A75DB100DD51E6 /* NotificationCenter+assetPicker.swift in Sources */,
 				4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */,
 				5A5212872181B2C900DA0259 /* AssetPickerViewController.swift in Sources */,
 				5AC4AE06218C5C18001ED22E /* AssetsCollectionViewModel.swift in Sources */,
