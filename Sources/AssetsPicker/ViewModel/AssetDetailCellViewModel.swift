@@ -110,10 +110,20 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
             options: options) { [weak self, weak assetDownload] (image, userInfo) in
                 onNext(image)
                 self?.isDownloading = false
-                assetDownload?.finalImage = image
+                if let image = image {
+                    assetDownload?.finalImageResult = .success(image)
+                } else {
+                    let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
+                    assetDownload?.finalImageResult = .failure(error)
+                }
         }
-        assetDownload.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetDownload] (image, _) in
-            assetDownload?.thumbnail = image
+        assetDownload.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetDownload] (image, userInfo) in
+            if let image = image {
+                assetDownload?.finalImageResult = .success(image)
+            } else {
+                let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
+                assetDownload?.finalImageResult = .failure(error)
+            }
             }, size: .init(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
         assetDownload.imageRequestID = imageRequestID
         return assetDownload

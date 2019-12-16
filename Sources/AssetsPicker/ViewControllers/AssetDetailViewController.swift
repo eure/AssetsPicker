@@ -126,9 +126,9 @@ public final class AssetDetailViewController: UIViewController {
     @IBAction func didPickAssets(sender: Any) {
         let downloads = viewModel.downloadSelectedCells { [weak self] images in
             guard self != nil else { return } //User cancelled the request
-            NotificationCenter.default.post(name: PhotoPickerPickImagesNotificationName, object: images)
+            NotificationCenter.assetPicker.post(name: PhotoPickerPickImagesNotificationName, object: images)
         }
-        NotificationCenter.default.post(name: PhotoPickerPickAssetsNotificationName, object: downloads)
+        NotificationCenter.assetPicker.post(name: PhotoPickerPickAssetsNotificationName, object: downloads)
     }
 
     @objc func resetSelection() {

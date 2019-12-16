@@ -11,44 +11,44 @@ import Photos
 
 public class AssetDownload {
     public let asset: PHAsset
-    public var completionBlock: ((UIImage?) -> Void)? {
+    public var onComplete: ((Result<UIImage, NSError>) -> Void)? {
         didSet {
+            guard onComplete != nil else { return }
             lock.exec {
-                if hasSetImage {
-                    completionBlock?(finalImage)
-                    completionBlock = nil
+                if let finalImageResult = self.finalImageResult {
+                    onComplete?(finalImageResult)
+                    onComplete = nil
                 }
             }
         }
     }
-    public var thumbnailBlock: ((UIImage?) -> Void)? {
+    public var onThumbnailCompletion: ((Result<UIImage, NSError>) -> Void)? {
         didSet {
+            guard onThumbnailCompletion != nil else { return }
             lock.exec {
-                if hasSetThumbnail {
-                    thumbnailBlock?(thumbnail)
-                    thumbnailBlock = nil
+                if let thumbnailResult = self.thumbnailResult {
+                    onThumbnailCompletion?(thumbnailResult)
+                    onThumbnailCompletion = nil
                 }
             }
         }
     }
-    private var hasSetThumbnail = false
-    private var hasSetImage = false
-    public internal(set) var thumbnail: UIImage? {
+    public internal(set) var thumbnailResult: Result<UIImage, NSError>? {
         didSet {
+            guard let thumbnailResult = thumbnailResult else { preconditionFailure("thumbnailResult must not be set to nil") }
             lock.exec {
-                thumbnailBlock?(thumbnail)
+                onThumbnailCompletion?(thumbnailResult)
                 thumbnailRequestID = nil
-                hasSetThumbnail = true
             }
         }
     }
-    public internal(set) var finalImage: UIImage? {
+    public internal(set) var finalImageResult: Result<UIImage, NSError>? {
         didSet {
             lock.exec {
-                completionBlock?(finalImage)
+                guard let finalImageResult = finalImageResult else { preconditionFailure("finalImageResult must not be set to nil") }
+                onComplete?(finalImageResult)
                 cancelBackgroundTaskIfNeed()
                 imageRequestID = nil
-                hasSetImage = true
             }
         }
     }
