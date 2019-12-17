@@ -20,6 +20,7 @@ public class AssetDownload {
                     onComplete = nil
                 }
             }
+            cancelBackgroundTaskIfNeed()
         }
     }
     public var onThumbnailCompletion: ((Result<UIImage, NSError>) -> Void)? {
@@ -47,9 +48,9 @@ public class AssetDownload {
             lock.exec {
                 guard let finalImageResult = finalImageResult else { preconditionFailure("finalImageResult must not be set to nil") }
                 onComplete?(finalImageResult)
-                cancelBackgroundTaskIfNeed()
                 imageRequestID = nil
             }
+            cancelBackgroundTaskIfNeed()
         }
     }
     private let lock = NSLock()
