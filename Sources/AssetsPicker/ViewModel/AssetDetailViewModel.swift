@@ -60,7 +60,7 @@ public final class AssetDetailViewModel: NSObject {
         }
     }
 
-    func downloadSelectedCells(onNext: @escaping (([UIImage]) -> Void)) -> [AssetFuture]{
+    func downloadSelectedCells(onNext: @escaping (([UIImage]) -> Void)) -> [AssetFuture] {
         let dispatchGroup = DispatchGroup()
         var images: [UIImage] = []
 

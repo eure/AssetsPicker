@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import UIKit
 
 public class AssetFuture {
     public let asset: PHAsset
