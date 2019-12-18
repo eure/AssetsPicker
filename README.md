@@ -30,7 +30,7 @@ Swift 4.2+
 ```swift
 let photoPicker = AssetPickerViewController()
 photoPicker.pickerDelegate = self
-        
+
 present(photoPicker, animated: true, completion: nil)
 ```
 
@@ -116,23 +116,18 @@ public struct LocalizedStrings {
 
 ### CocoaPods
 
-TODO
+XXXX
 
-### Carthage
-
-TODO
 
 ### What's using AssetsPicker
 
+- Pairs Engage
 
-TODO
-## Author
+## Authors
 
-TODO
-
-## Contributors
-
-TODO
+- Muukii <muukii.app@gmail.com>
+- Aymen Rebouh <aymenmse@gmail.com>
+- Antoine Marandon <antoine@marandon.fr>
 
 ## License
 
