@@ -9,7 +9,7 @@
 import Foundation
 import Photos
 
-public class AssetPromise {
+public class AssetFuture {
     public let asset: PHAsset
     public var onComplete: ((Result<UIImage, NSError>) -> Void)? {
         didSet {

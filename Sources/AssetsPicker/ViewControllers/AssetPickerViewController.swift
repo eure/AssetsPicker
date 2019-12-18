@@ -15,11 +15,11 @@ public protocol AssetPickerDelegate: class {
     /// [Optional] Will be called when the user press the done button. At this point, you can either:
     /// - Keep or dissmiss the view controller and continue forward with the `AssetDownload` object
     /// - Wait for the images to be ready (will be provided with by the `didPickImages`
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetPromise])
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetFuture])
 }
 
 public extension AssetPickerDelegate {
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetPromise]) {}
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetFuture]) {}
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {}
 }
 
@@ -88,7 +88,7 @@ public final class AssetPickerViewController : UINavigationController {
     }
 
     @objc func didPickAssets(notification: Notification) {
-        if let downloads = notification.object as? [AssetPromise] {
+        if let downloads = notification.object as? [AssetFuture] {
             self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
         }
     }
