@@ -60,11 +60,11 @@ public final class AssetDetailViewModel: NSObject {
         }
     }
 
-    func downloadSelectedCells(onNext: @escaping (([UIImage]) -> Void)) -> [AssetDownload]{
+    func downloadSelectedCells(onNext: @escaping (([UIImage]) -> Void)) -> [AssetFuture] {
         let dispatchGroup = DispatchGroup()
         var images: [UIImage] = []
 
-        let assetsDownloads = selectionContainer.selectedItems.map { (cellViewModel) -> AssetDownload in
+        let assetsDownloads = selectionContainer.selectedItems.map { (cellViewModel) -> AssetFuture in
             dispatchGroup.enter()
             return cellViewModel.download(onNext: { image in
                 DispatchQueue.main.async {

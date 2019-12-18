@@ -39,7 +39,7 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     private let imageManager: PHCachingImageManager
     private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
     private var imagePreviewId: PHImageRequestID?
-    private var assetDownload: AssetDownload?
+    private var assetDownload: AssetFuture?
     private weak var weakThumbnail: UIImage?
     private var thumbnail: UIImage?
 
@@ -95,14 +95,14 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
 
     }
 
-    func download(onNext: @escaping ((UIImage?) -> ())) -> AssetDownload {
+    func download(onNext: @escaping ((UIImage?) -> ())) -> AssetFuture {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
         options.version = .current
         options.resizeMode = .exact
         isDownloading = true
-        let assetDownload = AssetDownload(asset: asset)
+        let assetDownload = AssetFuture(asset: asset)
         let imageRequestID = imageManager.requestImage(
             for: asset,
             targetSize: CGSize(width: 1920, height: 1920),
