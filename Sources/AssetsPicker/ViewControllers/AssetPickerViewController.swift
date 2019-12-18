@@ -12,10 +12,16 @@ import enum Photos.PHAssetMediaType
 public protocol AssetPickerDelegate: class {
     func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage])
     func photoPickerDidCancel(_ pickerController: AssetPickerViewController)
+    /// [Optional] Will be called when the user press the done button. At this point, you can either:
+    /// - Keep or dissmiss the view controller and continue forward with the `AssetDownload` object
+    /// - Wait for the images to be ready (will be provided with by the `didPickImages`
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetPromise])
 }
 
-let PhotoPickerPickImageNotificationName = NSNotification.Name(rawValue: "PhotoPickerPickImageNotification")
-let PhotoPickerCancelNotificationName = NSNotification.Name(rawValue: "PhotoPickerCancelNotification")
+public extension AssetPickerDelegate {
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickAssets assets: [AssetPromise]) {}
+    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {}
+}
 
 public final class AssetPickerViewController : UINavigationController {
     
@@ -46,12 +52,16 @@ public final class AssetPickerViewController : UINavigationController {
         }
         
         setupPickImagesNotification: do {
-            NotificationCenter.default.addObserver(self,
+            NotificationCenter.assetPicker.addObserver(self,
                                                    selector: #selector(didPickImages(notification:)),
-                                                   name: PhotoPickerPickImageNotificationName,
+                                                   name: PhotoPickerPickImagesNotificationName,
+                                                   object: nil)
+            NotificationCenter.assetPicker.addObserver(self,
+                                                   selector: #selector(didPickAssets(notification:)),
+                                                   name: PhotoPickerPickAssetsNotificationName,
                                                    object: nil)
             
-            NotificationCenter.default.addObserver(self,
+            NotificationCenter.assetPicker.addObserver(self,
                                                    selector: #selector(didCancel(notification:)),
                                                    name: PhotoPickerCancelNotificationName,
                                                    object: nil)
@@ -74,7 +84,13 @@ public final class AssetPickerViewController : UINavigationController {
     }
     
     @objc func dismissPicker(sender: Any) {
-        NotificationCenter.default.post(name: PhotoPickerCancelNotificationName, object: nil)
+        NotificationCenter.assetPicker.post(name: PhotoPickerCancelNotificationName, object: nil)
+    }
+
+    @objc func didPickAssets(notification: Notification) {
+        if let downloads = notification.object as? [AssetPromise] {
+            self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
+        }
     }
 }
 

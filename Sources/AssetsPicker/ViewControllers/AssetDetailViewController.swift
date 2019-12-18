@@ -124,12 +124,11 @@ public final class AssetDetailViewController: UIViewController {
     // MARK: User Interaction
     
     @IBAction func didPickAssets(sender: Any) {
-        //TODO Display loader
-        viewModel.downloadSelectedCells { [weak self] images in
+        let downloads = viewModel.downloadSelectedCells { [weak self] images in
             guard self != nil else { return } //User cancelled the request
-            NotificationCenter.default.post(name: PhotoPickerPickImageNotificationName, object: images)
-            //TODO Stop loader
+            NotificationCenter.assetPicker.post(name: PhotoPickerPickImagesNotificationName, object: images)
         }
+        NotificationCenter.assetPicker.post(name: PhotoPickerPickAssetsNotificationName, object: downloads)
     }
 
     @objc func resetSelection() {

@@ -60,14 +60,13 @@ public final class AssetDetailViewModel: NSObject {
         }
     }
 
-    func downloadSelectedCells(onNext: @escaping (([UIImage]) -> Void)) {
+    func downloadSelectedCells(onNext: @escaping (([UIImage]) -> Void)) -> [AssetPromise]{
         let dispatchGroup = DispatchGroup()
         var images: [UIImage] = []
 
-        for cellModel in selectionContainer.selectedItems {
+        let assetsDownloads = selectionContainer.selectedItems.map { (cellViewModel) -> AssetPromise in
             dispatchGroup.enter()
-
-            cellModel.download(onNext: { image in
+            return cellViewModel.download(onNext: { image in
                 DispatchQueue.main.async {
                     if let image = image {
                         images.append(image)
@@ -76,10 +75,10 @@ public final class AssetDetailViewModel: NSObject {
                 }
             })
         }
-
         dispatchGroup.notify(queue: DispatchQueue.main) {
             onNext(images)
         }
+        return assetsDownloads
     }
 
     func reset(withAssetCollection assetCollection: PHAssetCollection) {

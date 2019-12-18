@@ -39,8 +39,9 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     private let imageManager: PHCachingImageManager
     private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
     private var imagePreviewId: PHImageRequestID?
-    private var imageDownloadId: PHImageRequestID?
-    private var taskID = UIBackgroundTaskIdentifier.invalid
+    private var assetDownload: AssetPromise?
+    private weak var weakThumbnail: UIImage?
+    private var thumbnail: UIImage?
 
     // MARK: Lifecycle
     
@@ -68,61 +69,64 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     // MARK: Network
     
     public func fetchPreviewImage() {
+        self.imagePreviewId = _fetchPreviewImage(onNext: { [weak self] (image, _) in
+            if let image = image {
+                guard let self = self else { return }
+                self.delegate?.cellViewModel(self, didFetchImage: image)
+            } else {
+                print("cannot download image for id = \(String(describing: self?.asset.localIdentifier))")
+            }
+        })
+    }
+
+    private func _fetchPreviewImage(
+        onNext: @escaping (UIImage?, [AnyHashable: Any]?) -> Void,
+        size: CGSize = CGSize(width: 360, height: 360)) -> PHImageRequestID {
         let options = PHImageRequestOptions()
         options.deliveryMode = .opportunistic
         options.isNetworkAccessAllowed = true
         options.version = .current
         options.resizeMode = .fast
-        self.imagePreviewId = imageManager.requestImage(
-            for: asset,
-            targetSize: CGSize(width: 360, height: 360),
-            contentMode: .aspectFill,
-            options: options) { [weak self] image, _ in
-                if let image = image {
-                    guard let self = self else { return }
-                    self.delegate?.cellViewModel(self, didFetchImage: image)
-                } else {
-                    print("cannot download image for id = \(String(describing: self?.asset.localIdentifier))")
-                }
-        }
+        return imageManager.requestImage(for: asset,
+                                         targetSize: size,
+                                         contentMode: .aspectFill,
+                                         options: options,
+                                         resultHandler: onNext)
+
     }
 
-    private let lock = NSLock()
-    private func cancelBackgroundTaskIfNeed() {
-        guard self.taskID != .invalid else { return }
-        self.lock.exec {
-            guard self.taskID != .invalid else { return }
-            UIApplication.shared.endBackgroundTask(self.taskID)
-            self.taskID = .invalid
-        }
-    }
-
-    func download(onNext: @escaping ((UIImage?) -> ())) {
+    func download(onNext: @escaping ((UIImage?) -> ())) -> AssetPromise {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
         options.version = .current
         options.resizeMode = .exact
         isDownloading = true
-        self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
-            self?.cancelBackgroundTaskIfNeed()
-        })
-        self.imageDownloadId = imageManager.requestImage(
+        let assetDownload = AssetPromise(asset: asset)
+        let imageRequestID = imageManager.requestImage(
             for: asset,
             targetSize: CGSize(width: 1920, height: 1920),
             contentMode: .default,
-            options: options) { [weak self] (image, userInfo) in
+            options: options) { [weak self, weak assetDownload] (image, userInfo) in
                 onNext(image)
                 self?.isDownloading = false
-                self?.cancelBackgroundTaskIfNeed()
+                if let image = image {
+                    assetDownload?.finalImageResult = .success(image)
+                } else {
+                    let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
+                    assetDownload?.finalImageResult = .failure(error)
+                }
         }
-    }
-
-    public func cancelDownloadImageIfNeeded() {
-        guard let imageRequestId = imageDownloadId else { return }
-        PHCachingImageManager.default().cancelImageRequest(imageRequestId)
-        cancelBackgroundTaskIfNeed()
-        self.imagePreviewId = nil
+        assetDownload.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetDownload] (image, userInfo) in
+            if let image = image {
+                assetDownload?.finalImageResult = .success(image)
+            } else {
+                let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
+                assetDownload?.finalImageResult = .failure(error)
+            }
+            }, size: .init(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+        assetDownload.imageRequestID = imageRequestID
+        return assetDownload
     }
     
     public func cancelPreviewImageIfNeeded() {
@@ -135,9 +139,5 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     
     public var identifier: String {
         return asset.localIdentifier
-    }
-
-    deinit {
-        cancelBackgroundTaskIfNeed()
     }
 }
