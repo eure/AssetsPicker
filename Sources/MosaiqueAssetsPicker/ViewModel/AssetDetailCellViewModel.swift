@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import UIKit.UIImage
 
 public protocol AssetDetailCellViewModelDelegate: class {
     func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage)

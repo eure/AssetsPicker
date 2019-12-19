@@ -6,9 +6,8 @@
 //  Copyright © 2018 eure. All rights reserved.
 //
 
-import Foundation
-import UIKit
-import AssetsPicker
+import UIKit.UIImage
+import MosaiqueAssetsPicker
 
 class Demo3ViewController: UIViewController {
     
@@ -28,7 +27,7 @@ class Demo3ViewController: UIViewController {
         cellRegistrator.register(nib: assetNib, forCellType: .asset)
         cellRegistrator.register(nib: assetCollectionNib, forCellType: .assetCollection)
         
-        let photoPicker = AssetPickerViewController()
+        let photoPicker = MosaiqueAssetPickerViewController()
                             .setCellRegistrator(cellRegistrator)
 
         photoPicker.pickerDelegate = self
@@ -37,13 +36,13 @@ class Demo3ViewController: UIViewController {
     }
 }
 
-extension Demo3ViewController: AssetPickerDelegate {
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
+extension Demo3ViewController: MosaiqueAssetPickerDelegate {
+    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
     
-    func photoPickerDidCancel(_ pickerController: AssetPickerViewController) {
+    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {
         print("photoPickerDidCancel")
         self.dismiss(animated: true, completion: nil)
     }

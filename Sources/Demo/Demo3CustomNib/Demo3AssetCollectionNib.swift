@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import AssetsPicker
+import MosaiqueAssetsPicker
 
 class Demo3AssetCollectionNib: UICollectionViewCell, AssetCollectionCellBindable, AssetsCollectionCellViewModelDelegate {
     

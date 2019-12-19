@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AssetsPicker
+import MosaiqueAssetsPicker
 
 class Demo4ViewController: UIViewController {
 
@@ -23,7 +23,7 @@ class Demo4ViewController: UIViewController {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
-        let photoPicker = AssetPickerViewController()
+        let photoPicker = MosaiqueAssetPickerViewController()
                             .setHeaderView(headerView, isHeaderFloating: true)
                             .setNumberOfItemsPerRow(5)
         
@@ -33,13 +33,13 @@ class Demo4ViewController: UIViewController {
     }
 }
 
-extension Demo4ViewController: AssetPickerDelegate {
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
+extension Demo4ViewController: MosaiqueAssetPickerDelegate {
+    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
     
-    func photoPickerDidCancel(_ pickerController: AssetPickerViewController) {
+    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {
         print("photoPickerDidCancel")
         self.dismiss(animated: true, completion: nil)
     }
