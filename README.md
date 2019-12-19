@@ -1,4 +1,4 @@
-# 📸 AssetsPicker
+# 📸 MosaiqueAssetsPicker
 
 Your customizable asset picker.
 
@@ -28,7 +28,7 @@ Swift 4.2+
 ### Default value
 
 ```swift
-let photoPicker = AssetPickerViewController()
+let photoPicker = MosaiqueAssetPickerViewController()
 photoPicker.pickerDelegate = self
 
 present(photoPicker, animated: true, completion: nil)
@@ -43,7 +43,7 @@ let cellRegistrator = AssetPickerCellRegistrator()
 cellRegistrator.register(cellClass: Demo2AssetCell.self, forCellType: .asset)
 cellRegistrator.register(cellClass: Demo2AssetCollectionCell.self, forCellType: .assetCollection)
 
-let photoPicker = AssetPickerViewController()
+let photoPicker = MosaiqueAssetPickerViewController()
                     .setCellRegistrator(cellRegistrator)
 
 photoPicker.pickerDelegate = self
@@ -61,7 +61,7 @@ let cellRegistrator = AssetPickerCellRegistrator()
 cellRegistrator.register(nib: assetNib, forCellType: .asset)
 cellRegistrator.register(nib: assetCollectionNib, forCellType: .assetCollection)
 
-let photoPicker = AssetPickerViewController()
+let photoPicker = MosaiqueAssetPickerViewController()
                     .setCellRegistrator(cellRegistrator)
 
 photoPicker.pickerDelegate = self
@@ -77,7 +77,7 @@ headerView.backgroundColor = .orange
 headerView.translatesAutoresizingMaskIntoConstraints = false
 headerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
 
-let photoPicker = AssetPickerViewController()
+let photoPicker = MosaiqueAssetPickerViewController()
                     .setHeaderView(headerView, isHeaderFloating: true)
 
 photoPicker.pickerDelegate = self
@@ -119,7 +119,7 @@ public struct LocalizedStrings {
 XXXX
 
 
-### What's using AssetsPicker
+### What's using MosaiqueAssetsPicker
 
 - Pairs Engage
 

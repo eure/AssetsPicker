@@ -9,13 +9,11 @@
 /* Begin PBXBuildFile section */
 		4BCA98712171E9E80048826A /* MosaiqueAssetsPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* MosaiqueAssetsPicker.framework */; };
 		4BCA98762171E9E80048826A /* AssetsPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA98752171E9E80048826A /* AssetsPickerTests.swift */; };
-		4BCA98782171E9E80048826A /* AssetsPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BCA986A2171E9E80048826A /* AssetsPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4BCA98882171EA3D0048826A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA98872171EA3D0048826A /* AppDelegate.swift */; };
 		4BCA988A2171EA3D0048826A /* DefaultDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA98892171EA3D0048826A /* DefaultDemoViewController.swift */; };
 		4BCA988D2171EA3D0048826A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA988B2171EA3D0048826A /* Main.storyboard */; };
 		4BCA988F2171EA400048826A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA988E2171EA400048826A /* Assets.xcassets */; };
 		4BCA98922171EA400048826A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA98902171EA400048826A /* LaunchScreen.storyboard */; };
-		4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA98992171EBFA0048826A /* AssetsPicker.swift */; };
 		4BCA989D2171ED560048826A /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA989C2171ED560048826A /* Photos.framework */; };
 		4BCA989E2171ED5E0048826A /* MosaiqueAssetsPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* MosaiqueAssetsPicker.framework */; };
 		4BCA989F2171ED5E0048826A /* MosaiqueAssetsPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCA98672171E9E80048826A /* MosaiqueAssetsPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -82,7 +80,6 @@
 
 /* Begin PBXFileReference section */
 		4BCA98672171E9E80048826A /* MosaiqueAssetsPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MosaiqueAssetsPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4BCA986A2171E9E80048826A /* AssetsPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssetsPicker.h; sourceTree = "<group>"; };
 		4BCA986B2171E9E80048826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BCA98702171E9E80048826A /* MosaiqueAssetsPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MosaiqueAssetsPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BCA98752171E9E80048826A /* AssetsPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsPickerTests.swift; sourceTree = "<group>"; };
@@ -94,7 +91,6 @@
 		4BCA988E2171EA400048826A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4BCA98912171EA400048826A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4BCA98932171EA400048826A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BCA98992171EBFA0048826A /* AssetsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsPicker.swift; sourceTree = "<group>"; };
 		4BCA989C2171ED560048826A /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		5A5212782181B23A00DA0259 /* SelectionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionContainer.swift; sourceTree = "<group>"; };
 		5A5212842181B2A400DA0259 /* MosaiqueAssetPickerConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MosaiqueAssetPickerConfiguration.swift; sourceTree = "<group>"; };
@@ -179,8 +175,6 @@
 		4BCA98692171E9E80048826A /* MosaiqueAssetsPicker */ = {
 			isa = PBXGroup;
 			children = (
-				4BCA98992171EBFA0048826A /* AssetsPicker.swift */,
-				4BCA986A2171E9E80048826A /* AssetsPicker.h */,
 				4BCA986B2171E9E80048826A /* Info.plist */,
 				5A5212832181B2A400DA0259 /* Configuration */,
 				5A5212952181B36F00DA0259 /* Views */,
@@ -356,7 +350,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BCA98782171E9E80048826A /* AssetsPicker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,7 +492,6 @@
 				5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */,
 				5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */,
 				FC5DAE7023A75DB100DD51E6 /* NotificationCenter+assetPicker.swift in Sources */,
-				4BCA989A2171EBFA0048826A /* AssetsPicker.swift in Sources */,
 				5A5212872181B2C900DA0259 /* MosaiqueAssetPickerViewController.swift in Sources */,
 				5AC4AE06218C5C18001ED22E /* AssetsCollectionViewModel.swift in Sources */,
 				5A5212942181B36800DA0259 /* AssetDetailViewController.swift in Sources */,
