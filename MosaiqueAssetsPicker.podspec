@@ -14,8 +14,8 @@ Pod::Spec.new do |spec|
 
   spec.source       = { :git => "https://github.com/eure/AssetsPicker.git", :tag => "#{spec.version}" }
 
-  spec.source_files  = ['Sources/AssetsPicker/**/*.{swift,h}']
-  spec.public_header_files = 'Sources/AssetsPicker/**/*.h'
+  spec.source_files  = ['Sources/MosaiqueAssetsPicker/**/*.{swift,h}']
+  spec.public_header_files = 'Sources/MosaiqueAssetsPicker/**/*.h'
   spec.requires_arc = true
   spec.ios.deployment_target = '10.0'
   spec.swift_version = "5.0"
