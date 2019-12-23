@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
 
-  spec.name         = "AssetsPicker"
+  spec.name         = "MosaiqueAssetsPicker"
   spec.version      = "1.0.0"
   spec.summary      = "Your customizable asset picker."
 
