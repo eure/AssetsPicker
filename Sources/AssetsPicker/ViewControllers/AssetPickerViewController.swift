@@ -28,6 +28,7 @@ public final class AssetPickerViewController : UINavigationController {
     // MARK: - Properties
     var configuration = AssetPickerConfiguration.shared
     public weak var pickerDelegate: AssetPickerDelegate?
+    private var assetFutures: [AssetFuture]?
     
     // MARK: - Lifecycle
     
@@ -77,10 +78,12 @@ public final class AssetPickerViewController : UINavigationController {
         if let images = notification.object as? [UIImage] {
             self.pickerDelegate?.photoPicker(self, didPickImages: images)
         }
+        assetFutures = nil
     }
     
     @objc func didCancel(notification: Notification) {
         self.pickerDelegate?.photoPickerDidCancel(self)
+        assetFutures = nil
     }
     
     @objc func dismissPicker(sender: Any) {
@@ -90,6 +93,7 @@ public final class AssetPickerViewController : UINavigationController {
     @objc func didPickAssets(notification: Notification) {
         if let downloads = notification.object as? [AssetFuture] {
             self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
+            assetFutures = downloads
         }
     }
 }
