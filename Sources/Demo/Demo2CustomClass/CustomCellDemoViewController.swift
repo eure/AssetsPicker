@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import AssetsPicker
+import MosaiqueAssetsPicker
 
 class Demo2ViewController: UIViewController {
     
@@ -26,7 +26,7 @@ class Demo2ViewController: UIViewController {
         cellRegistrator.register(cellClass: Demo2AssetCell.self, forCellType: .asset)
         cellRegistrator.register(cellClass: Demo2AssetCollectionCell.self, forCellType: .assetCollection)
         
-        let photoPicker = AssetPickerViewController()
+        let photoPicker = MosaiqueAssetPickerViewController()
                             .setCellRegistrator(cellRegistrator)
                             .setSelectionMode(.multiple(limit: 5))
         
@@ -36,13 +36,13 @@ class Demo2ViewController: UIViewController {
     }
 }
 
-extension Demo2ViewController: AssetPickerDelegate {
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
+extension Demo2ViewController: MosaiqueAssetPickerDelegate {
+    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
     
-    func photoPickerDidCancel(_ pickerController: AssetPickerViewController) {
+    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {
         print("photoPickerDidCancel")
         self.dismiss(animated: true, completion: nil)
     }

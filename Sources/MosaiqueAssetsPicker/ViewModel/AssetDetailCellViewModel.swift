@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import UIKit.UIImage
 
 public protocol AssetDetailCellViewModelDelegate: class {
     func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage)
@@ -119,15 +120,16 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         }
         assetDownload.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetDownload] (image, userInfo) in
             if let image = image {
-                assetDownload?.finalImageResult = .success(image)
+                assetDownload?.thumbnailResult = .success(image)
             } else {
                 let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
-                assetDownload?.finalImageResult = .failure(error)
+                assetDownload?.thumbnailResult = .failure(error)
             }
             }, size: .init(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
         assetDownload.imageRequestID = imageRequestID
         return assetDownload
     }
+
     
     public func cancelPreviewImageIfNeeded() {
         guard let imageRequestId = imagePreviewId else { return }

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:AssetsPicker.xcodeproj">
+      location = "self:/Users/antoine.marandon/eureka/AssetsPicker/MosaiqueAssetsPicker.xcodeproj">
    </FileRef>
 </Workspace>

@@ -6,8 +6,8 @@
 //  Copyright © 2018 eure. All rights reserved.
 //
 
-import Foundation
 import Photos
+import UIKit
 
 public final class AssetDetailViewController: UIViewController {
     // MARK: Properties
@@ -15,7 +15,7 @@ public final class AssetDetailViewController: UIViewController {
     let viewModel: AssetDetailViewModel
     var headerSizeCalculator: ViewSizeCalculator<UIView>?
     private var collectionView: UICollectionView!
-    let configuration: AssetPickerConfiguration
+    let configuration: MosaiqueAssetPickerConfiguration
     
     private var gridCount: Int {
         return viewModel.configuration.numberOfItemsPerRow
@@ -23,7 +23,7 @@ public final class AssetDetailViewController: UIViewController {
     
     // MARK: Lifecycle
     
-    init(withAssetCollection assetCollection: PHAssetCollection, andSelectionContainer selectionContainer: SelectionContainer<AssetDetailCellViewModel>, configuration: AssetPickerConfiguration) {
+    init(withAssetCollection assetCollection: PHAssetCollection, andSelectionContainer selectionContainer: SelectionContainer<AssetDetailCellViewModel>, configuration: MosaiqueAssetPickerConfiguration) {
         self.viewModel = AssetDetailViewModel(
             assetCollection: assetCollection,
             selectionContainer: selectionContainer,

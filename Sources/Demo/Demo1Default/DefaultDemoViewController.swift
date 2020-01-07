@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AssetsPicker
+import MosaiqueAssetsPicker
 
 class DemoDefaultViewController: UIViewController {
     
@@ -20,20 +20,20 @@ class DemoDefaultViewController: UIViewController {
     // MARK: User Interaction
 
     @IBAction func didTapPresentButton(_ sender: Any) {
-        let photoPicker = AssetPickerViewController()
+        let photoPicker = MosaiqueAssetPickerViewController()
         photoPicker.pickerDelegate = self
         
         present(photoPicker, animated: true, completion: nil)
     }
 }
 
-extension DemoDefaultViewController: AssetPickerDelegate {
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
+extension DemoDefaultViewController: MosaiqueAssetPickerDelegate {
+    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
     
-    func photoPickerDidCancel(_ pickerController: AssetPickerViewController) {
+    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {
         print("photoPickerDidCancel")
         self.dismiss(animated: true, completion: nil)
     }

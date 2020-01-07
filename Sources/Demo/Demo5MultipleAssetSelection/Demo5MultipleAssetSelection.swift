@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AssetsPicker
+import MosaiqueAssetsPicker
 
 class Demo5MultipleAssetSelection: UIViewController {
     
@@ -20,7 +20,7 @@ class Demo5MultipleAssetSelection: UIViewController {
     // MARK: User Interaction
     
     @IBAction func didTapPresentButton(_ sender: Any) {
-        let photoPicker = AssetPickerViewController()
+        let photoPicker = MosaiqueAssetPickerViewController()
         photoPicker.setSelectionMode(.multiple(limit: 3))
         photoPicker.pickerDelegate = self
         
@@ -28,13 +28,13 @@ class Demo5MultipleAssetSelection: UIViewController {
     }
 }
 
-extension Demo5MultipleAssetSelection: AssetPickerDelegate {
-    func photoPicker(_ pickerController: AssetPickerViewController, didPickImages images: [UIImage]) {
+extension Demo5MultipleAssetSelection: MosaiqueAssetPickerDelegate {
+    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
     
-    func photoPickerDidCancel(_ pickerController: AssetPickerViewController) {
+    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {
         print("photoPickerDidCancel")
         self.dismiss(animated: true, completion: nil)
     }
