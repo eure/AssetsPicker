@@ -3,7 +3,7 @@
 //  AssetsPicker
 //
 //  Created by Aymen Rebouh on 2018/10/16.
-//  Copyright © 2018 eure. All rights reserved.
+//  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
 import Foundation

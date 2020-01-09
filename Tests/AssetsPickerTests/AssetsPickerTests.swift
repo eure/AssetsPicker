@@ -3,7 +3,7 @@
 //  AssetsPickerTests
 //
 //  Created by muukii on 10/13/18.
-//  Copyright © 2018 eure. All rights reserved.
+//  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
 import XCTest

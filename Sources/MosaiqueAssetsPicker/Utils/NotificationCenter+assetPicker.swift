@@ -3,7 +3,7 @@
 //  AssetsPicker
 //
 //  Created by Antoine Marandon on 16/12/2019.
-//  Copyright © 2019 eure. All rights reserved.
+//  Copyright © 2019 eureka, Inc. All rights reserved.
 //
 
 import Foundation
