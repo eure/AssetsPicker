@@ -419,7 +419,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 1030;
-				ORGANIZATIONNAME = eure;
+				ORGANIZATIONNAME = "eureka, Inc.";
 				TargetAttributes = {
 					4BCA98662171E9E80048826A = {
 						CreatedOnToolsVersion = 10.0;
