@@ -129,8 +129,7 @@ As long as the `AssetFuture` is retained by you or the `MosaiqueAssetPickerViewC
 
 ### CocoaPods
 
-XXXX
-
+```pod 'MosaiqueAssetsPicker'```
 
 ### What's using MosaiqueAssetsPicker
 
