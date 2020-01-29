@@ -4,6 +4,7 @@ Your customizable asset picker.
 
 ## Overview
 
+![Whimsical AssetPicker](./AssetPicker.gif)
 ![Whimsical AssetPicker](./AssetPicker.png)
 
 ## 🔶 Requirements
@@ -115,7 +116,7 @@ public struct LocalizedStrings {
 
 ### AssetFuture usage
 
-`AssetFuture` can be used to dismiss the view controller once the asset is selected but before the asset is ready/downloaded. It can be optained through the (optional)  delegate: 
+`AssetFuture` can be used to dismiss the view controller once the asset is selected but before the asset is ready/downloaded. It can be optained through the (optional)  delegate:
 
 `    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickAssets assets: [AssetFuture])`
 
