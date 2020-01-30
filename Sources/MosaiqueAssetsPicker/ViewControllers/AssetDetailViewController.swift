@@ -168,6 +168,8 @@ extension AssetDetailViewController: UICollectionViewDelegate {
 
         if (collectionView.indexPathsForSelectedItems ?? []).count > 0 {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(resetSelection))
+        } else {
+            navigationItem.leftBarButtonItem = nil
         }
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
