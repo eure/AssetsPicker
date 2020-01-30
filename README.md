@@ -5,7 +5,6 @@ Your customizable asset picker.
 ## Overview
 
 ![Whimsical AssetPicker](./AssetPicker.gif)
-![Whimsical AssetPicker](./AssetPicker.png)
 
 ## 🔶 Requirements
 
