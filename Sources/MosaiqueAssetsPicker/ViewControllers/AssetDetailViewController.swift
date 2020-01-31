@@ -264,7 +264,7 @@ extension AssetDetailViewController: AssetDetailViewModelDelegate {
                 if let removed = changes.removedIndexes, removed.count > 0 {
                     collectionView.deleteItems(at: removed.map { IndexPath(item: $0, section:0) })
                 }
-                if let inserted = changes.insertedIndexes, inserted.count > 0 {
+                if let inserted = changes.insertedIndexes?.filter({ !(changes.removedIndexes?.contains($0) ?? true) }), inserted.count > 0 {
                     collectionView.insertItems(at: inserted.map { IndexPath(item: $0, section:0) })
                 }
                 if let changed = changes.changedIndexes, changed.count > 0 {
