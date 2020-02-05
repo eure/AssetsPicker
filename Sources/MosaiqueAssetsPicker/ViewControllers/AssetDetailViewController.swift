@@ -135,6 +135,7 @@ public final class AssetDetailViewController: UIViewController {
         collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: true) }
         viewModel.reset(withAssetCollection: viewModel.assetCollection)
         navigationItem.leftBarButtonItem = nil
+        navigationItem.rightBarButtonItem?.isEnabled = false
         navigationItem.hidesBackButton = false
     }
 }
