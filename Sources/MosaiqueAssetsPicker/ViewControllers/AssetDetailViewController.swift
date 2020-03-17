@@ -262,26 +262,7 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
 extension AssetDetailViewController: AssetDetailViewModelDelegate {
     public func displayItemsChange(_ changes: PHFetchResultChangeDetails<PHAsset>) {
         restoreSelectionState()
-        if changes.hasIncrementalChanges {
-            collectionView.performBatchUpdates({
-                if let removed = changes.removedIndexes, removed.count > 0 {
-                    collectionView.deleteItems(at: removed.map { IndexPath(item: $0, section:0) })
-                }
-                if let inserted = changes.insertedIndexes?.filter({ !(changes.removedIndexes?.contains($0) ?? true) }), inserted.count > 0 {
-                    collectionView.insertItems(at: inserted.map { IndexPath(item: $0, section:0) })
-                }
-                if let changed = changes.changedIndexes, changed.count > 0 {
-                    collectionView.reloadItems(at: changed.map { IndexPath(item: $0, section:0) })
-                }
-                changes.enumerateMoves { fromIndex, toIndex in
-                    self.collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
-                                                 to: IndexPath(item: toIndex, section: 0))
-                }
-            })
-        } else {
-            // Reload the collection view if incremental diffs are not available.
-            collectionView.reloadData()
-        }
+        collectionView.reloadData()
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
 }
