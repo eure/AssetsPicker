@@ -127,6 +127,12 @@ extension MosaiqueAssetPickerViewController {
     }
     
     @discardableResult
+    public func setCellSpacing(_ spacing: CGFloat) -> MosaiqueAssetPickerViewController {
+        configuration.cellSpacing = spacing
+        return self
+    }
+    
+    @discardableResult
     public func setHeaderView(_ headerView: UIView, isHeaderFloating: Bool) -> MosaiqueAssetPickerViewController {
         configuration.headerView = headerView
         configuration.isHeaderFloating = isHeaderFloating
