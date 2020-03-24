@@ -30,15 +30,22 @@ final class AssetCollectionCell: UICollectionViewCell, AssetCollectionCellBindab
         super.init(frame: frame)
         
         appareance: do {
-            assetImageView.backgroundColor = UIColor(white: 0, alpha: 0.05)
+            
             assetImageView.contentMode = .scaleAspectFill
             assetImageView.layer.cornerRadius = 2
             assetImageView.layer.masksToBounds = true
             
-            assetTitleLabel.textColor = .black
+            if #available(iOS 13.0, *) {
+                assetImageView.backgroundColor = UIColor.tertiarySystemFill
+                assetTitleLabel.textColor = UIColor.label
+                assetNumberOfItemsLabel.textColor = UIColor.secondaryLabel
+            } else {
+                assetImageView.backgroundColor = UIColor(white: 0, alpha: 0.05)
+                assetTitleLabel.textColor = .black
+                assetNumberOfItemsLabel.textColor = .lightGray
+            }
+            
             assetTitleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-
-            assetNumberOfItemsLabel.textColor = .lightGray
             assetNumberOfItemsLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         }
         

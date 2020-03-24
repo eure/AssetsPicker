@@ -41,16 +41,29 @@ public final class AssetDetailViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        
+        
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = UIColor.systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
+        
         setupView: do {
             let layout = UICollectionViewFlowLayout()
-            layout.minimumLineSpacing = 1
-            layout.minimumInteritemSpacing = 1
+            layout.minimumLineSpacing = configuration.cellSpacing
+            layout.minimumInteritemSpacing = configuration.cellSpacing
             layout.sectionHeadersPinToVisibleBounds = viewModel.configuration.isHeaderFloating
 
             let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            collectionView.backgroundColor = .white
+            
             collectionView.allowsSelection = true
+            
+            if #available(iOS 13.0, *) {
+                collectionView.backgroundColor = UIColor.systemBackground
+            } else {
+                collectionView.backgroundColor = .white
+            }
 
             switch viewModel.configuration.selectionMode {
             case .single:
@@ -240,7 +253,7 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
         
         return HorizontalStackItemSizeCalculator.square(
             width: collectionView.bounds.width,
-            spacing: 1,
+            spacing: configuration.cellSpacing,
             itemCount: gridCount,
             itemIndex: indexPath.item
         )
