@@ -56,7 +56,13 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
             fetchOptions.sortDescriptors = [
                 NSSortDescriptor(key: "creationDate", ascending: false),
             ]
-            fetchOptions.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+            
+            print(MosaiqueAssetPickerConfiguration.shared.supportOnlyMediaTypes)
+            if !MosaiqueAssetPickerConfiguration.shared.supportOnlyMediaTypes.isEmpty {
+                let predicates = MosaiqueAssetPickerConfiguration.shared.supportOnlyMediaTypes.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
+                fetchOptions.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
+                
+            }
             
             return fetchOptions
         }()

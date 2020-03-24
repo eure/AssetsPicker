@@ -25,9 +25,9 @@ public struct LocalizedStrings {
 }
 
 
-struct MosaiqueAssetPickerConfiguration {
+class MosaiqueAssetPickerConfiguration {
     
-    static var shared = MosaiqueAssetPickerConfiguration()
+    static let shared = MosaiqueAssetPickerConfiguration()
     
     /// Single of multiple select
     public var selectionMode: SelectionMode = .single
@@ -54,7 +54,7 @@ struct MosaiqueAssetPickerConfiguration {
     public var headerView: UIView?
     
     /// The media type that will be displayed
-    public var supportOnlyMediaType: [PHAssetMediaType] = [.image]
+    public var supportOnlyMediaTypes: [PHAssetMediaType] = [.image]
     
     /// Set this property to true if you want to disable animations when scrolling through the assets
     public var disableOnLibraryScrollAnimation = false

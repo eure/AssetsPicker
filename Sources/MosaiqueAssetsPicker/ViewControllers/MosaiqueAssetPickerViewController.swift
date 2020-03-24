@@ -147,7 +147,7 @@ extension MosaiqueAssetPickerViewController {
     
     @discardableResult
     public func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType]) -> MosaiqueAssetPickerViewController {
-        configuration.supportOnlyMediaType = supportOnlyMediaType
+        configuration.supportOnlyMediaTypes = supportOnlyMediaType
         return self
     }
     
