@@ -19,11 +19,15 @@ final class AssetsCollectionViewController: UIViewController {
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 1
-        layout.minimumInteritemSpacing = 1
+        layout.minimumLineSpacing = configuration.cellSpacing
+        layout.minimumInteritemSpacing = configuration.cellSpacing
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            collectionView.backgroundColor = UIColor.systemBackground
+        } else {
+            collectionView.backgroundColor = .white
+        }
         collectionView.delegate = self
         collectionView.dataSource = self
         

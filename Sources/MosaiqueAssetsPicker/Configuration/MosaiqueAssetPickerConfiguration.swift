@@ -24,6 +24,7 @@ public struct LocalizedStrings {
     public init() {}
 }
 
+
 struct MosaiqueAssetPickerConfiguration {
     
     static var shared = MosaiqueAssetPickerConfiguration()
@@ -32,10 +33,10 @@ struct MosaiqueAssetPickerConfiguration {
     public var selectionMode: SelectionMode = .single
     
     /// Color of asset selection
-    public var selectionColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
+    public var selectionColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Tint color used for navigation items color ( done button, etc )
-    public var tintColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
+    public var tintColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Number of items in a row for the assets list within an asset collection
     public var numberOfItemsPerRow = 3
@@ -45,6 +46,9 @@ struct MosaiqueAssetPickerConfiguration {
     
     /// Custom cells
     public var cellRegistrator = AssetPickerCellRegistrator()
+    
+    /// Custom cell spacing
+    public var cellSpacing: CGFloat = 2
     
     /// Custom header view for assets collection
     public var headerView: UIView?
