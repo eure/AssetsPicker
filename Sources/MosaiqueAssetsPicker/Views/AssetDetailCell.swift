@@ -27,6 +27,19 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         return imageView
     }()
     
+    private let assetVideoIndicatorLabel: UILabel = {
+        let label = UILabel()
+        label.clipsToBounds = true
+        label.textAlignment = .center
+        label.textColor = UIColor.white.withAlphaComponent(0.9)
+        label.font = UIFont.systemFont(ofSize: 34)
+        label.text = "▶"
+        label.alpha = 0.9
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        label.isEnabled = true
+        return label
+    }()
+    
     var cellViewModel: AssetDetailCellViewModel?
     
     // MARK: Lifecycle
@@ -36,14 +49,22 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         
         layout: do {
             contentView.addSubview(imageView)
+            contentView.addSubview(assetVideoIndicatorLabel)
             
             imageView.translatesAutoresizingMaskIntoConstraints = false
+            assetVideoIndicatorLabel.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
                 imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
                 imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
                 imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-                imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+                imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                assetVideoIndicatorLabel.widthAnchor.constraint(equalTo: imageView.widthAnchor,
+                                                                multiplier: 0.5),
+                assetVideoIndicatorLabel.heightAnchor.constraint(equalTo: assetVideoIndicatorLabel.widthAnchor,
+                                                                 multiplier: 1.0),
+                assetVideoIndicatorLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+                assetVideoIndicatorLabel.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
             ])
         }
     }
@@ -69,6 +90,10 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         
         self.cellViewModel?.delegate = self
         cellViewModel.fetchPreviewImage()
+        
+        let isVideo = (cellViewModel.asset.mediaType == .video)
+        assetVideoIndicatorLabel.isHidden = !isVideo
+        
         setDownloading(cellViewModel.isDownloading)
     }
 
@@ -89,6 +114,11 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         super.prepareForReuse()
         spinner?.removeFromSuperview()
         imageView.image = nil
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        assetVideoIndicatorLabel.layer.cornerRadius = assetVideoIndicatorLabel.bounds.width / 2
     }
 }
 
