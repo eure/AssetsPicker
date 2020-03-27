@@ -61,8 +61,8 @@ final class AssetCollectionCell: UICollectionViewCell, AssetCollectionCellBindab
             NSLayoutConstraint.activate([
                 assetImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0),
                 assetImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-                assetImageView.widthAnchor.constraint(equalToConstant: 64),
-                assetImageView.heightAnchor.constraint(equalToConstant: 64),
+                assetImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
+                assetImageView.widthAnchor.constraint(equalTo: assetImageView.heightAnchor, multiplier: 1.0),
                 
                 assetTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
                 assetTitleLabel.leftAnchor.constraint(equalTo: assetImageView.rightAnchor, constant: 16),
