@@ -95,7 +95,7 @@ public final class AssetCollectionViewModel: NSObject {
             }
             
             self.displayItems = assetCollections
-                .filter( { $0.estimatedAssetCount != 0 } )
+                .filter( { $0.assetCount != 0 } )
                 .map(AssetCollectionCellViewModel.init(assetCollection:))
         }
     }
@@ -127,5 +127,18 @@ extension PHFetchResult where ObjectType == PHAssetCollection {
         }
 
         return array
+    }
+}
+
+extension PHAssetCollection {
+    var assetCount: Int {
+        let fetchOptions = PHFetchOptions()
+        
+        if !MosaiqueAssetPickerConfiguration.shared.supportOnlyMediaTypes.isEmpty {
+            let predicates = MosaiqueAssetPickerConfiguration.shared.supportOnlyMediaTypes.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
+            fetchOptions.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
+        }
+        let result = PHAsset.fetchAssets(in: self, options: fetchOptions)
+        return result.count
     }
 }
