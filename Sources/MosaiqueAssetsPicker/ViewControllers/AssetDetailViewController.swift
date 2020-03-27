@@ -143,14 +143,17 @@ public final class AssetDetailViewController: UIViewController {
         }
         NotificationCenter.assetPicker.post(name: PhotoPickerPickAssetsNotificationName, object: downloads)
     }
-
-    @objc func resetSelection() {
-        collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: true) }
-        viewModel.reset(withAssetCollection: viewModel.assetCollection)
-        navigationItem.leftBarButtonItem = nil
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        navigationItem.hidesBackButton = false
+    
+    func updateNavigationItems() {
+        
+        guard let doneButton = navigationItem.rightBarButtonItem else { return }
+        
+        let selectedCount = (collectionView.indexPathsForSelectedItems ?? []).count
+        doneButton.isEnabled = selectedCount > 0
+        let suffix = (doneButton.isEnabled && configuration.selectionMode.case != .single) ? "(\(selectedCount))" : ""
+        doneButton.title = configuration.localize.done + suffix
     }
+
 }
 
 extension AssetDetailViewController: UICollectionViewDelegate {
@@ -179,13 +182,8 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         if case .notSelected = cellViewModel.selectionStatus() {
             collectionView.deselectItem(at: indexPath, animated: true)
         }
-
-        if (collectionView.indexPathsForSelectedItems ?? []).count > 0 {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(resetSelection))
-        } else {
-            navigationItem.leftBarButtonItem = nil
-        }
-        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
+        
+        self.updateNavigationItems()
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -193,11 +191,7 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
         
         self.viewModel.toggle(item: cellViewModel)
-        if (collectionView.indexPathsForSelectedItems ?? []).isEmpty {
-            navigationItem.leftBarButtonItem = nil
-            navigationItem.hidesBackButton = false
-        }
-        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
+        self.updateNavigationItems()
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

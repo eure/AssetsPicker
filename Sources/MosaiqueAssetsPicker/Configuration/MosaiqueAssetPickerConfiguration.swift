@@ -13,6 +13,18 @@ import enum Photos.PHAssetMediaType
 public enum SelectionMode {
     case single
     case multiple(limit: Int)
+    
+    // Introspection
+    enum Case {
+      case single
+      case multiple
+    }
+    var `case`: Case {
+    switch self {
+        case .single: return .single
+        case .multiple: return .multiple
+        }
+    }
 }
 
 public struct LocalizedStrings {
@@ -23,7 +35,6 @@ public struct LocalizedStrings {
     
     public init() {}
 }
-
 
 class MosaiqueAssetPickerConfiguration {
     
