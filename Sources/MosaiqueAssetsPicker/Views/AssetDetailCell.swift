@@ -10,9 +10,19 @@ import Foundation
 import UIKit
 
 final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
+    
     var configuration: MosaiqueAssetPickerConfiguration!
     // MARK: Properties
     private var spinner: UIActivityIndicatorView?
+    private let gradientLayer = CAGradientLayer()
+    
+    private lazy var timeFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.second, .minute]
+        formatter.zeroFormattingBehavior = .pad
+        return formatter
+    }()
     
     override var isSelected: Bool {
         didSet {
@@ -27,17 +37,23 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         return imageView
     }()
     
-    private let assetVideoIndicatorLabel: UILabel = {
+    private lazy var assetVideoLabel: UILabel = {
         let label = UILabel()
-        label.clipsToBounds = true
-        label.textAlignment = .center
-        label.textColor = UIColor.white.withAlphaComponent(0.9)
-        label.font = UIFont.systemFont(ofSize: 34)
-        label.text = "▶"
-        label.alpha = 0.9
-        label.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        label.isEnabled = true
+        label.textAlignment = .right
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 12)
         return label
+    }()
+    
+    private lazy var assetVideoGradientView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.6).cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.2, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0.8, y: 1)
+        gradientLayer.frame = view.bounds
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        return view
     }()
     
     var cellViewModel: AssetDetailCellViewModel?
@@ -49,22 +65,25 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         
         layout: do {
             contentView.addSubview(imageView)
-            contentView.addSubview(assetVideoIndicatorLabel)
+            contentView.addSubview(assetVideoGradientView)
+            contentView.addSubview(assetVideoLabel)
             
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            assetVideoIndicatorLabel.translatesAutoresizingMaskIntoConstraints = false
+            assetVideoGradientView.translatesAutoresizingMaskIntoConstraints = false
+            assetVideoLabel.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
                 imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
                 imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
                 imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
                 imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-                assetVideoIndicatorLabel.widthAnchor.constraint(equalTo: imageView.widthAnchor,
-                                                                multiplier: 0.5),
-                assetVideoIndicatorLabel.heightAnchor.constraint(equalTo: assetVideoIndicatorLabel.widthAnchor,
-                                                                 multiplier: 1.0),
-                assetVideoIndicatorLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-                assetVideoIndicatorLabel.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+                assetVideoGradientView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+                assetVideoGradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+                assetVideoGradientView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+                assetVideoGradientView.heightAnchor.constraint(equalToConstant: 30),
+                assetVideoLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor, constant: 4),
+                assetVideoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -4),
+                assetVideoLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
             ])
         }
     }
@@ -92,7 +111,11 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         cellViewModel.fetchPreviewImage()
         
         let isVideo = (cellViewModel.asset.mediaType == .video)
-        assetVideoIndicatorLabel.isHidden = !isVideo
+        assetVideoLabel.isHidden = !isVideo
+        if isVideo {
+            let timeString = timeFormatter.string(from: cellViewModel.asset.duration) ?? "00:00"
+            assetVideoLabel.text = timeString
+        }
         
         setDownloading(cellViewModel.isDownloading)
     }
@@ -118,7 +141,7 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        assetVideoIndicatorLabel.layer.cornerRadius = assetVideoIndicatorLabel.bounds.width / 2
+        gradientLayer.frame = assetVideoGradientView.bounds
     }
 }
 
