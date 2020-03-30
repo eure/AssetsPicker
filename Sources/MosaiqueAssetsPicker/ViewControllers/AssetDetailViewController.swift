@@ -42,7 +42,6 @@ public final class AssetDetailViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         if #available(iOS 13.0, *) {
             view.backgroundColor = UIColor.systemBackground
         } else {
@@ -89,7 +88,7 @@ public final class AssetDetailViewController: UIViewController {
             view.addSubview(collectionView)
             collectionView.delegate = self
             collectionView.dataSource = self
-            let doneBarButtonItem = UIBarButtonItem(title: viewModel.configuration.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
+            let doneBarButtonItem = UIBarButtonItem(title: viewModel.configuration.localize.done, style: .done, target: self, action: #selector(didPickAssets))
             doneBarButtonItem.isEnabled = viewModel.selectionContainer.isFilled
             navigationItem.rightBarButtonItem = doneBarButtonItem
         }
@@ -136,7 +135,7 @@ public final class AssetDetailViewController: UIViewController {
     
     // MARK: User Interaction
     
-    @IBAction func didPickAssets(sender: Any) {
+    @IBAction func didPickAssets() {
         let downloads = viewModel.downloadSelectedCells { [weak self] images in
             guard self != nil else { return } //User cancelled the request
             NotificationCenter.assetPicker.post(name: PhotoPickerPickImagesNotificationName, object: images)
@@ -170,7 +169,6 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         if collectionView.allowsMultipleSelection, self.viewModel.selectionContainer.isFilled {
             return false
         }
-        
         return true
     }
 
@@ -183,7 +181,11 @@ extension AssetDetailViewController: UICollectionViewDelegate {
             collectionView.deselectItem(at: indexPath, animated: true)
         }
         
-        self.updateNavigationItems()
+        if configuration.selectionMode.case == .single {
+            self.didPickAssets()
+        } else {
+            self.updateNavigationItems()
+        }
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
