@@ -13,7 +13,7 @@ final class AssetsCollectionViewController: UIViewController {
     
     // MARK: Properties
 
-    private let viewModel = AssetCollectionViewModel()
+    private let viewModel: AssetCollectionViewModel
     private var selectionContainer: SelectionContainer<AssetDetailCellViewModel>!
     let configuration: MosaiqueAssetPickerConfiguration
 
@@ -47,6 +47,7 @@ final class AssetsCollectionViewController: UIViewController {
     
     init(configuration: MosaiqueAssetPickerConfiguration) {
         self.configuration = configuration
+        self.viewModel = AssetCollectionViewModel(configuration: configuration)
         super.init(nibName: nil, bundle: nil)
         self.viewModel.delegate = self
     }

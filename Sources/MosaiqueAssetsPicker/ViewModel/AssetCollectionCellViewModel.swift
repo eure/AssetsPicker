@@ -19,21 +19,19 @@ public protocol AssetsCollectionCellViewModelDelegate: class {
 public final class AssetCollectionCellViewModel: ItemIdentifier {
     
     // MARK: Properties
-    
+
+    private let configuration: MosaiqueAssetPickerConfiguration
     public weak var delegate: AssetsCollectionCellViewModelDelegate?
     public var assetCollection: PHAssetCollection
     private var imageRequestId: PHImageRequestID?
     
     // MARK: Lifecycle
     
-    init(assetCollection: PHAssetCollection) {
+    init(assetCollection: PHAssetCollection, configuration: MosaiqueAssetPickerConfiguration) {
         self.assetCollection = assetCollection
+        self.configuration = configuration
     }
-    
-    init(withAssetCollection assetCollection: PHAssetCollection) {
-        self.assetCollection = assetCollection
-    }
-    
+
     // MARK: ItemIdentifier
     
     public var identifier: String {
@@ -57,8 +55,8 @@ public final class AssetCollectionCellViewModel: ItemIdentifier {
                 NSSortDescriptor(key: "creationDate", ascending: false),
             ]
             
-            if !MosaiqueAssetPickerConfiguration.shared.supportOnlyMediaTypes.isEmpty {
-                let predicates = MosaiqueAssetPickerConfiguration.shared.supportOnlyMediaTypes.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
+            if !configuration.supportOnlyMediaTypes.isEmpty {
+                let predicates = configuration.supportOnlyMediaTypes.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
                 fetchOptions.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
             }
             

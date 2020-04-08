@@ -26,7 +26,7 @@ public extension MosaiqueAssetPickerDelegate {
 public final class MosaiqueAssetPickerViewController : UINavigationController {
     
     // MARK: - Properties
-    var configuration = MosaiqueAssetPickerConfiguration.shared
+    var configuration = MosaiqueAssetPickerConfiguration()
     public weak var pickerDelegate: MosaiqueAssetPickerDelegate?
     private var assetFutures: [AssetFuture]?
 

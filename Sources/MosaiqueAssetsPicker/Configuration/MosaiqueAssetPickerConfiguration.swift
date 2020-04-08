@@ -37,9 +37,11 @@ public struct LocalizedStrings {
 }
 
 class MosaiqueAssetPickerConfiguration {
-    
-    static let shared = MosaiqueAssetPickerConfiguration()
-    
+
+    /// false if you want to skip the "done" button for single asset selection
+
+    public var singleSelectionNeedsConfirmation = true
+
     /// Single of multiple select
     public var selectionMode: SelectionMode = .single
     

@@ -149,7 +149,7 @@ public final class AssetDetailViewController: UIViewController {
         
         let selectedCount = (collectionView.indexPathsForSelectedItems ?? []).count
         doneButton.isEnabled = selectedCount > 0
-        let suffix = (doneButton.isEnabled && configuration.selectionMode.case != .single) ? "(\(selectedCount))" : ""
+        let suffix = (doneButton.isEnabled && configuration.selectionMode.case != .single) ? " (\(selectedCount))" : ""
         doneButton.title = configuration.localize.done + suffix
     }
 
@@ -181,7 +181,7 @@ extension AssetDetailViewController: UICollectionViewDelegate {
             collectionView.deselectItem(at: indexPath, animated: true)
         }
         
-        if configuration.selectionMode.case == .single {
+        if configuration.selectionMode.case == .single, configuration.singleSelectionNeedsConfirmation == false {
             self.didPickAssets()
         } else {
             self.updateNavigationItems()
