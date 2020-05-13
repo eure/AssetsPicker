@@ -45,6 +45,7 @@
 		FC934BFB23AA2D70002839A8 /* AssetFuture.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF71B1E239E258600E6D75C /* AssetFuture.swift */; };
 		FCA6D3D023827D490060AD6C /* NSLock+exec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */; };
 		FCA6D4402383CBE00060AD6C /* AssetDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA6D43F2383CBE00060AD6C /* AssetDetailViewModel.swift */; };
+		FCB197AC246BA419000EF707 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB197AB246BA419000EF707 /* GradientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+assetPicker.swift"; sourceTree = "<group>"; };
 		FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLock+exec.swift"; sourceTree = "<group>"; };
 		FCA6D43F2383CBE00060AD6C /* AssetDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailViewModel.swift; sourceTree = "<group>"; };
+		FCB197AB246BA419000EF707 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		FCF71B1E239E258600E6D75C /* AssetFuture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFuture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -273,6 +275,7 @@
 				5A5212982181B38A00DA0259 /* AssetDetailCell.swift */,
 				5A5212962181B37B00DA0259 /* AssetCollectionCell.swift */,
 				5A5212A12186FFF200DA0259 /* AssetDetailHeaderContainerView.swift */,
+				FCB197AB246BA419000EF707 /* GradientView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCB197AC246BA419000EF707 /* GradientView.swift in Sources */,
 				5A5212852181B2A400DA0259 /* MosaiqueAssetPickerConfiguration.swift in Sources */,
 				5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */,
 				5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */,
