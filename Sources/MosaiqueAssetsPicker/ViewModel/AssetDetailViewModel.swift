@@ -43,8 +43,8 @@ public final class AssetDetailViewModel: NSObject {
 
             let fetchOptions = PHFetchOptions()
 
-            if !self.configuration.supportOnlyMediaType.isEmpty {
-                let predicates = self.configuration.supportOnlyMediaType.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
+            if !self.configuration.supportOnlyMediaTypes.isEmpty {
+                let predicates = self.configuration.supportOnlyMediaTypes.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
                 fetchOptions.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
             }
 

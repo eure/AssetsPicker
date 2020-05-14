@@ -41,16 +41,28 @@ public final class AssetDetailViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = UIColor.systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
+        
         setupView: do {
             let layout = UICollectionViewFlowLayout()
-            layout.minimumLineSpacing = 1
-            layout.minimumInteritemSpacing = 1
+            layout.minimumLineSpacing = configuration.cellSpacing
+            layout.minimumInteritemSpacing = configuration.cellSpacing
             layout.sectionHeadersPinToVisibleBounds = viewModel.configuration.isHeaderFloating
 
             let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            collectionView.backgroundColor = .white
+            
             collectionView.allowsSelection = true
+            
+            if #available(iOS 13.0, *) {
+                collectionView.backgroundColor = UIColor.systemBackground
+            } else {
+                collectionView.backgroundColor = .white
+            }
 
             switch viewModel.configuration.selectionMode {
             case .single:
@@ -76,7 +88,7 @@ public final class AssetDetailViewController: UIViewController {
             view.addSubview(collectionView)
             collectionView.delegate = self
             collectionView.dataSource = self
-            let doneBarButtonItem = UIBarButtonItem(title: viewModel.configuration.localize.done, style: .done, target: self, action: #selector(didPickAssets(sender:)))
+            let doneBarButtonItem = UIBarButtonItem(title: viewModel.configuration.localize.done, style: .done, target: self, action: #selector(didPickAssets))
             doneBarButtonItem.isEnabled = viewModel.selectionContainer.isFilled
             navigationItem.rightBarButtonItem = doneBarButtonItem
         }
@@ -123,21 +135,24 @@ public final class AssetDetailViewController: UIViewController {
     
     // MARK: User Interaction
     
-    @IBAction func didPickAssets(sender: Any) {
+    @IBAction func didPickAssets() {
         let downloads = viewModel.downloadSelectedCells { [weak self] images in
             guard self != nil else { return } //User cancelled the request
             NotificationCenter.assetPicker.post(name: PhotoPickerPickImagesNotificationName, object: images)
         }
         NotificationCenter.assetPicker.post(name: PhotoPickerPickAssetsNotificationName, object: downloads)
     }
-
-    @objc func resetSelection() {
-        collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: true) }
-        viewModel.reset(withAssetCollection: viewModel.assetCollection)
-        navigationItem.leftBarButtonItem = nil
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        navigationItem.hidesBackButton = false
+    
+    func updateNavigationItems() {
+        
+        guard let doneButton = navigationItem.rightBarButtonItem else { return }
+        
+        let selectedCount = (collectionView.indexPathsForSelectedItems ?? []).count
+        doneButton.isEnabled = selectedCount > 0
+        let suffix = (doneButton.isEnabled && configuration.selectionMode.case != .single) ? " (\(selectedCount))" : ""
+        doneButton.title = configuration.localize.done + suffix
     }
+
 }
 
 extension AssetDetailViewController: UICollectionViewDelegate {
@@ -154,7 +169,6 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         if collectionView.allowsMultipleSelection, self.viewModel.selectionContainer.isFilled {
             return false
         }
-        
         return true
     }
 
@@ -166,13 +180,12 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         if case .notSelected = cellViewModel.selectionStatus() {
             collectionView.deselectItem(at: indexPath, animated: true)
         }
-
-        if (collectionView.indexPathsForSelectedItems ?? []).count > 0 {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(resetSelection))
+        
+        if configuration.selectionMode.case == .single, configuration.singleSelectionNeedsConfirmation == false {
+            self.didPickAssets()
         } else {
-            navigationItem.leftBarButtonItem = nil
+            self.updateNavigationItems()
         }
-        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -180,11 +193,7 @@ extension AssetDetailViewController: UICollectionViewDelegate {
         guard let cellViewModel = (cell as? AssetDetailCellBindable)?.cellViewModel else { return }
         
         self.viewModel.toggle(item: cellViewModel)
-        if (collectionView.indexPathsForSelectedItems ?? []).isEmpty {
-            navigationItem.leftBarButtonItem = nil
-            navigationItem.hidesBackButton = false
-        }
-        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectionContainer.selectedCount > 0
+        self.updateNavigationItems()
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -240,7 +249,7 @@ extension AssetDetailViewController: UICollectionViewDelegateFlowLayout {
         
         return HorizontalStackItemSizeCalculator.square(
             width: collectionView.bounds.width,
-            spacing: 1,
+            spacing: configuration.cellSpacing,
             itemCount: gridCount,
             itemIndex: indexPath.item
         )

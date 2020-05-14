@@ -22,7 +22,8 @@ class DemoDefaultViewController: UIViewController {
     @IBAction func didTapPresentButton(_ sender: Any) {
         let photoPicker = MosaiqueAssetPickerViewController()
         photoPicker.pickerDelegate = self
-        
+        photoPicker.setMediaTypes([.image, .video])
+        photoPicker.setCellSpacing(2.0)
         present(photoPicker, animated: true, completion: nil)
     }
 }

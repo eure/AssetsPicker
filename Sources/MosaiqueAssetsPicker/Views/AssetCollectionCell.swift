@@ -30,15 +30,22 @@ final class AssetCollectionCell: UICollectionViewCell, AssetCollectionCellBindab
         super.init(frame: frame)
         
         appareance: do {
-            assetImageView.backgroundColor = UIColor(white: 0, alpha: 0.05)
+            
             assetImageView.contentMode = .scaleAspectFill
             assetImageView.layer.cornerRadius = 2
             assetImageView.layer.masksToBounds = true
             
-            assetTitleLabel.textColor = .black
+            if #available(iOS 13.0, *) {
+                assetImageView.backgroundColor = UIColor.tertiarySystemFill
+                assetTitleLabel.textColor = UIColor.label
+                assetNumberOfItemsLabel.textColor = UIColor.secondaryLabel
+            } else {
+                assetImageView.backgroundColor = UIColor(white: 0, alpha: 0.05)
+                assetTitleLabel.textColor = .black
+                assetNumberOfItemsLabel.textColor = .lightGray
+            }
+            
             assetTitleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-
-            assetNumberOfItemsLabel.textColor = .lightGray
             assetNumberOfItemsLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         }
         
@@ -54,8 +61,8 @@ final class AssetCollectionCell: UICollectionViewCell, AssetCollectionCellBindab
             NSLayoutConstraint.activate([
                 assetImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 0),
                 assetImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-                assetImageView.widthAnchor.constraint(equalToConstant: 64),
-                assetImageView.heightAnchor.constraint(equalToConstant: 64),
+                assetImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
+                assetImageView.widthAnchor.constraint(equalTo: assetImageView.heightAnchor, multiplier: 1.0),
                 
                 assetTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
                 assetTitleLabel.leftAnchor.constraint(equalTo: assetImageView.rightAnchor, constant: 16),

@@ -26,7 +26,7 @@ public extension MosaiqueAssetPickerDelegate {
 public final class MosaiqueAssetPickerViewController : UINavigationController {
     
     // MARK: - Properties
-    var configuration = MosaiqueAssetPickerConfiguration.shared
+    var configuration = MosaiqueAssetPickerConfiguration()
     public weak var pickerDelegate: MosaiqueAssetPickerDelegate?
     private var assetFutures: [AssetFuture]?
 
@@ -127,6 +127,12 @@ extension MosaiqueAssetPickerViewController {
     }
     
     @discardableResult
+    public func setCellSpacing(_ spacing: CGFloat) -> MosaiqueAssetPickerViewController {
+        configuration.cellSpacing = spacing
+        return self
+    }
+    
+    @discardableResult
     public func setHeaderView(_ headerView: UIView, isHeaderFloating: Bool) -> MosaiqueAssetPickerViewController {
         configuration.headerView = headerView
         configuration.isHeaderFloating = isHeaderFloating
@@ -141,7 +147,7 @@ extension MosaiqueAssetPickerViewController {
     
     @discardableResult
     public func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType]) -> MosaiqueAssetPickerViewController {
-        configuration.supportOnlyMediaType = supportOnlyMediaType
+        configuration.supportOnlyMediaTypes = supportOnlyMediaType
         return self
     }
     

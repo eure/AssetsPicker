@@ -13,6 +13,18 @@ import enum Photos.PHAssetMediaType
 public enum SelectionMode {
     case single
     case multiple(limit: Int)
+    
+    // Introspection
+    enum Case {
+      case single
+      case multiple
+    }
+    var `case`: Case {
+    switch self {
+        case .single: return .single
+        case .multiple: return .multiple
+        }
+    }
 }
 
 public struct LocalizedStrings {
@@ -24,18 +36,20 @@ public struct LocalizedStrings {
     public init() {}
 }
 
-struct MosaiqueAssetPickerConfiguration {
-    
-    static var shared = MosaiqueAssetPickerConfiguration()
-    
+class MosaiqueAssetPickerConfiguration {
+
+    /// false if you want to skip the "done" button for single asset selection
+
+    public var singleSelectionNeedsConfirmation = true
+
     /// Single of multiple select
     public var selectionMode: SelectionMode = .single
     
     /// Color of asset selection
-    public var selectionColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
+    public var selectionColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Tint color used for navigation items color ( done button, etc )
-    public var tintColor: UIColor = #colorLiteral(red: 0.4156862745, green: 0.768627451, blue: 0.8117647059, alpha: 1)
+    public var tintColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Number of items in a row for the assets list within an asset collection
     public var numberOfItemsPerRow = 3
@@ -46,11 +60,14 @@ struct MosaiqueAssetPickerConfiguration {
     /// Custom cells
     public var cellRegistrator = AssetPickerCellRegistrator()
     
+    /// Custom cell spacing
+    public var cellSpacing: CGFloat = 2
+    
     /// Custom header view for assets collection
     public var headerView: UIView?
     
     /// The media type that will be displayed
-    public var supportOnlyMediaType: [PHAssetMediaType] = [.image]
+    public var supportOnlyMediaTypes: [PHAssetMediaType] = [.image]
     
     /// Set this property to true if you want to disable animations when scrolling through the assets
     public var disableOnLibraryScrollAnimation = false

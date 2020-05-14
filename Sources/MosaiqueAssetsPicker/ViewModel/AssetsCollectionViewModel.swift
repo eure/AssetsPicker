@@ -6,7 +6,6 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import Photos
 
@@ -22,12 +21,14 @@ public final class AssetCollectionViewModel: NSObject {
             self.delegate?.updatedCollections()
         }
     }
+    private let configuration: MosaiqueAssetPickerConfiguration
     private let lock = NSLock()
     private var assetCollectionsFetchResults = [PHFetchResult<PHAssetCollection>]()
     private var collectionsFetchResults = [PHFetchResult<PHCollection>]()
     weak var delegate: AssetCollectionViewModelDelegate?
 
-    required override init() {
+    required init(configuration: MosaiqueAssetPickerConfiguration) {
+        self.configuration = configuration
         super.init()
         PHPhotoLibrary.shared().register(self)
         self.fetchCollections()
@@ -95,9 +96,20 @@ public final class AssetCollectionViewModel: NSObject {
             }
             
             self.displayItems = assetCollections
-                .filter( { $0.estimatedAssetCount != 0 } )
-                .map(AssetCollectionCellViewModel.init(assetCollection:))
+                .filter( { self.assetCount(collection: $0) != 0 } )
+                .map { AssetCollectionCellViewModel(assetCollection: $0, configuration: self.configuration) }
         }
+    }
+
+    func assetCount(collection: PHAssetCollection) -> Int {
+        let fetchOptions = PHFetchOptions()
+
+        if !configuration.supportOnlyMediaTypes.isEmpty {
+            let predicates = configuration.supportOnlyMediaTypes.map { NSPredicate(format: "mediaType = %d", $0.rawValue) }
+            fetchOptions.predicate = NSCompoundPredicate(type: .or, subpredicates: predicates)
+        }
+        let result = PHAsset.fetchAssets(in: collection, options: fetchOptions)
+        return result.count
     }
 }
 

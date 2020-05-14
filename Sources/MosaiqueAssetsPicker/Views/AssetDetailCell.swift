@@ -10,9 +10,18 @@ import Foundation
 import UIKit
 
 final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
-    var configuration: MosaiqueAssetPickerConfiguration!
+
     // MARK: Properties
     private var spinner: UIActivityIndicatorView?
+    var configuration: MosaiqueAssetPickerConfiguration!
+
+    private lazy var timeFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.second, .minute]
+        formatter.zeroFormattingBehavior = .pad
+        return formatter
+    }()
     
     override var isSelected: Bool {
         didSet {
@@ -27,6 +36,27 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         return imageView
     }()
     
+    private lazy var assetVideoLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        return label
+    }()
+
+    private lazy var assetVideoGradientView: GradiantView = {
+        GradiantView(
+            colors:
+            [
+                UIColor.black.withAlphaComponent(0.5).cgColor,
+                UIColor.clear.cgColor,
+            ],
+            startPoint: CGPoint(x: 1, y: 1),
+            endPoint: CGPoint(x: 0, y: 0),
+            type: .radial,
+            locations: [0, 1]
+        )
+    }()
     var cellViewModel: AssetDetailCellViewModel?
     
     // MARK: Lifecycle
@@ -36,14 +66,24 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         
         layout: do {
             contentView.addSubview(imageView)
-            
+            contentView.addSubview(assetVideoGradientView)
+            contentView.addSubview(assetVideoLabel)
             imageView.translatesAutoresizingMaskIntoConstraints = false
+            assetVideoGradientView.translatesAutoresizingMaskIntoConstraints = false
+            assetVideoLabel.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
                 imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
                 imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
                 imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-                imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+                imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                assetVideoGradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+                assetVideoGradientView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+                assetVideoGradientView.heightAnchor.constraint(equalTo: assetVideoLabel.heightAnchor, multiplier: 2),
+                assetVideoGradientView.widthAnchor.constraint(equalTo: assetVideoLabel.widthAnchor, multiplier: 1.8),
+                assetVideoLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor, constant: 4),
+                assetVideoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -4),
+                assetVideoLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
             ])
         }
     }
@@ -69,6 +109,15 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         
         self.cellViewModel?.delegate = self
         cellViewModel.fetchPreviewImage()
+        
+        let isVideo = (cellViewModel.asset.mediaType == .video)
+        assetVideoLabel.isHidden = !isVideo
+        assetVideoGradientView.isHidden = !isVideo
+        if isVideo {
+            let timeString = timeFormatter.string(from: cellViewModel.asset.duration) ?? "00:00"
+            assetVideoLabel.text = timeString
+        }
+        
         setDownloading(cellViewModel.isDownloading)
     }
 
@@ -89,7 +138,7 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         super.prepareForReuse()
         spinner?.removeFromSuperview()
         imageView.image = nil
-    }
+    }   
 }
 
 // MARK: AssetDetailCellViewModelDelegate
