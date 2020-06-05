@@ -128,17 +128,20 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
 
     func setDownloading(_ isDownloading: Bool) {
         if isDownloading {
-            let _spinner: UIActivityIndicatorView
-            if let c = self.spinner {
-                _spinner = c
-            } else {
-                _spinner = UIActivityIndicatorView(style: .whiteLarge)
-                self.spinner = _spinner
+
+            let spinner = self.spinner ?? {
+                let spinner = UIActivityIndicatorView(style: .whiteLarge)
+                self.spinner = spinner
+                return spinner
+                }()
+
+            if spinner.superview != contentView {
+                contentView.addSubview(spinner)
             }
-            contentView.addSubview(_spinner)
+
             // TODO: It might be good to Use AutoLayout
-            _spinner.center = contentView.center
-            _spinner.startAnimating()
+            spinner.center = contentView.center
+            spinner.startAnimating()
         } else {
             spinner?.removeFromSuperview()
             spinner = nil
