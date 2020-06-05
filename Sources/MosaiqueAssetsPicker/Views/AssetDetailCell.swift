@@ -13,7 +13,7 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
 
     // MARK: Properties
     private var spinner: UIActivityIndicatorView?
-    var configuration: MosaiqueAssetPickerConfiguration!
+    var configuration: MosaiqueAssetPickerConfiguration?
 
     private lazy var timeFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
@@ -94,7 +94,7 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
     
     public func updateSelection(isItemSelected: Bool) {
         if isItemSelected {
-            imageView.layer.borderColor = configuration.selectionColor.cgColor
+            imageView.layer.borderColor = configuration?.selectionColor.cgColor
             imageView.layer.borderWidth = 4
         } else {
             imageView.layer.borderColor = nil
