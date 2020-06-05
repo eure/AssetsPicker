@@ -36,45 +36,45 @@ public struct LocalizedStrings {
     public init() {}
 }
 
-class MosaiqueAssetPickerConfiguration {
+struct MosaiqueAssetPickerConfiguration {
 
     /// false if you want to skip the "done" button for single asset selection
 
-    public var singleSelectionNeedsConfirmation = true
+    var singleSelectionNeedsConfirmation = true
 
     /// Single of multiple select
-    public var selectionMode: SelectionMode = .single
+    var selectionMode: SelectionMode = .single
     
     /// Color of asset selection
-    public var selectionColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
+    var selectionColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Tint color used for navigation items color ( done button, etc )
-    public var tintColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
+    var tintColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Number of items in a row for the assets list within an asset collection
-    public var numberOfItemsPerRow = 3
+    var numberOfItemsPerRow = 3
     
     /// Localization of buttons
-    public var localize = LocalizedStrings()
+    var localize = LocalizedStrings()
     
     /// Custom cells
-    public var cellRegistrator = AssetPickerCellRegistrator()
+    var cellRegistrator = AssetPickerCellRegistrator()
     
     /// Custom cell spacing
-    public var cellSpacing: CGFloat = 2
+    var cellSpacing: CGFloat = 2
     
     /// Custom header view for assets collection
-    public var headerView: UIView?
+    var headerView: UIView?
     
     /// The media type that will be displayed
-    public var supportOnlyMediaTypes: [PHAssetMediaType] = [.image]
+    var supportOnlyMediaTypes: [PHAssetMediaType] = [.image]
     
     /// Set this property to true if you want to disable animations when scrolling through the assets
-    public var disableOnLibraryScrollAnimation = false
+    var disableOnLibraryScrollAnimation = false
     
     /// Custom header view for assets collection
-    public var isHeaderFloating = false
+    var isHeaderFloating = false
     
-    public init() {}
+    init() {}
 }
 

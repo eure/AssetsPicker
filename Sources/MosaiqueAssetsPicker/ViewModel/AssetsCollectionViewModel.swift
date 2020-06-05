@@ -27,7 +27,7 @@ public final class AssetCollectionViewModel: NSObject {
     private var collectionsFetchResults = [PHFetchResult<PHCollection>]()
     weak var delegate: AssetCollectionViewModelDelegate?
 
-    required init(configuration: MosaiqueAssetPickerConfiguration) {
+    init(configuration: MosaiqueAssetPickerConfiguration) {
         self.configuration = configuration
         super.init()
         PHPhotoLibrary.shared().register(self)

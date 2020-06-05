@@ -13,7 +13,12 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
 
     // MARK: Properties
     private var spinner: UIActivityIndicatorView?
-    var configuration: MosaiqueAssetPickerConfiguration!
+
+    var selectionColor: UIColor = .clear {
+        didSet {
+            updateSelection(isItemSelected: isSelected)
+        }
+    }
 
     private lazy var timeFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
@@ -92,9 +97,9 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func updateSelection(isItemSelected: Bool) {
+    private func updateSelection(isItemSelected: Bool) {
         if isItemSelected {
-            imageView.layer.borderColor = configuration.selectionColor.cgColor
+            imageView.layer.borderColor = selectionColor.cgColor
             imageView.layer.borderWidth = 4
         } else {
             imageView.layer.borderColor = nil
@@ -122,12 +127,18 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
     }
 
     func setDownloading(_ isDownloading: Bool) {
-        if isDownloading, spinner == nil {
-            let spinner = UIActivityIndicatorView(style: .whiteLarge)
-            contentView.addSubview(spinner)
-            spinner.center = contentView.center
-            spinner.startAnimating()
-            self.spinner = spinner
+        if isDownloading {
+            let _spinner: UIActivityIndicatorView
+            if let c = self.spinner {
+                _spinner = c
+            } else {
+                _spinner = UIActivityIndicatorView(style: .whiteLarge)
+                self.spinner = _spinner
+            }
+            contentView.addSubview(_spinner)
+            // TODO: It might be good to Use AutoLayout
+            _spinner.center = contentView.center
+            _spinner.startAnimating()
         } else {
             spinner?.removeFromSuperview()
             spinner = nil
