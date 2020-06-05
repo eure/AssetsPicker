@@ -13,7 +13,12 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
 
     // MARK: Properties
     private var spinner: UIActivityIndicatorView?
-    var configuration: MosaiqueAssetPickerConfiguration!
+
+    var selectionColor: UIColor = .clear {
+        didSet {
+            updateSelection(isItemSelected: isSelected)
+        }
+    }
 
     private lazy var timeFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
@@ -92,9 +97,9 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func updateSelection(isItemSelected: Bool) {
+    private func updateSelection(isItemSelected: Bool) {
         if isItemSelected {
-            imageView.layer.borderColor = configuration.selectionColor.cgColor
+            imageView.layer.borderColor = selectionColor.cgColor
             imageView.layer.borderWidth = 4
         } else {
             imageView.layer.borderColor = nil
@@ -122,12 +127,21 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
     }
 
     func setDownloading(_ isDownloading: Bool) {
-        if isDownloading, spinner == nil {
-            let spinner = UIActivityIndicatorView(style: .whiteLarge)
-            contentView.addSubview(spinner)
+        if isDownloading {
+
+            let spinner = self.spinner ?? {
+                let spinner = UIActivityIndicatorView(style: .whiteLarge)
+                self.spinner = spinner
+                return spinner
+                }()
+
+            if spinner.superview != contentView {
+                contentView.addSubview(spinner)
+            }
+
+            // TODO: It might be good to Use AutoLayout
             spinner.center = contentView.center
             spinner.startAnimating()
-            self.spinner = spinner
         } else {
             spinner?.removeFromSuperview()
             spinner = nil
