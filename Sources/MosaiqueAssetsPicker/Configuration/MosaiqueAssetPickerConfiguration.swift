@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import enum Photos.PHAssetMediaType
+import PhotosUI
 
 public enum SelectionMode {
     case single
@@ -36,7 +37,7 @@ public struct LocalizedStrings {
     public init() {}
 }
 
-struct MosaiqueAssetPickerConfiguration {
+public struct MosaiqueAssetPickerConfiguration {
 
     /// false if you want to skip the "done" button for single asset selection
 
@@ -74,7 +75,38 @@ struct MosaiqueAssetPickerConfiguration {
     
     /// Custom header view for assets collection
     var isHeaderFloating = false
-    
-    init() {}
+
+    @available(iOS 14, *)
+    var assetPickerConfiguration: PHPickerConfiguration {
+        var configuation = PHPickerConfiguration()
+        configuation.filter = {
+            if supportOnlyMediaTypes.count > 1 {
+                return nil
+            }
+            switch supportOnlyMediaTypes[0] {
+            case .unknown, .audio:
+                assertionFailure("Unsupported types")
+                return nil
+            case .image:
+                return .images
+            case .video:
+                return .videos
+            @unknown default:
+                assertionFailure("Unsupported types")
+                return nil
+            }
+        }()
+        configuation.selectionLimit = {
+            switch selectionMode {
+            case .single:
+                return 1
+            case .multiple(limit: let limit):
+                return limit
+            }
+        }()
+        return configuation
+    }
+
+    public init() {}
 }
 
