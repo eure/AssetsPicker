@@ -41,43 +41,43 @@ public struct MosaiqueAssetPickerConfiguration {
 
     /// false if you want to skip the "done" button for single asset selection
 
-    var singleSelectionNeedsConfirmation = true
+    public var singleSelectionNeedsConfirmation = true
 
     /// Single of multiple select
-    var selectionMode: SelectionMode = .single
+    public var selectionMode: SelectionMode = .single
     
     /// Color of asset selection
-    var selectionColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
+    public var selectionColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Tint color used for navigation items color ( done button, etc )
-    var tintColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
+    public var tintColor: UIColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
     
     /// Number of items in a row for the assets list within an asset collection
-    var numberOfItemsPerRow = 3
+    public var numberOfItemsPerRow = 3
     
     /// Localization of buttons
-    var localize = LocalizedStrings()
+    public var localize = LocalizedStrings()
     
     /// Custom cells
-    var cellRegistrator = AssetPickerCellRegistrator()
+    public var cellRegistrator = AssetPickerCellRegistrator()
     
     /// Custom cell spacing
-    var cellSpacing: CGFloat = 2
+    public var cellSpacing: CGFloat = 2
     
     /// Custom header view for assets collection
-    var headerView: UIView?
+    public var headerView: UIView?
     
     /// The media type that will be displayed
-    var supportOnlyMediaTypes: [PHAssetMediaType] = [.image]
+    public var supportOnlyMediaTypes: [PHAssetMediaType] = [.image]
     
     /// Set this property to true if you want to disable animations when scrolling through the assets
-    var disableOnLibraryScrollAnimation = false
+    public var disableOnLibraryScrollAnimation = false
     
     /// Custom header view for assets collection
-    var isHeaderFloating = false
+    public var isHeaderFloating = false
 
     @available(iOS 14, *)
-    var assetPickerConfiguration: PHPickerConfiguration {
+    public var assetPickerConfiguration: PHPickerConfiguration {
         var configuation = PHPickerConfiguration()
         configuation.filter = {
             if supportOnlyMediaTypes.count > 1 {
