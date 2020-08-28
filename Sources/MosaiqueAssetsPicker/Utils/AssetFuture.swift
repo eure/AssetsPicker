@@ -13,9 +13,20 @@ import PhotosUI
 
 public class AssetFuture {
     public enum AssetRepresentation {
+        public struct PHPickerResultWrapper {
+            private let result: Any
+            @available(iOS 14, *)
+            public var value: PHPickerResult {
+                return result as! PHPickerResult
+            }
+            @available(iOS 14, *)
+            fileprivate init(_ result: PHPickerResult) {
+                self.result = result
+            }
+        }
         case asset(asset: PHAsset)
         @available(iOS 14, *)
-        case result(result: PHPickerResult)
+        case result(object: PHPickerResultWrapper)
     }
     @available(*, deprecated, message: "Use assetRepresentation instead")
     public var asset: PHAsset! {
@@ -83,7 +94,7 @@ public class AssetFuture {
 
     @available(iOS 14, *)
     init(pickerResult: PHPickerResult) {
-        self.assetRepresentation = .result(result: pickerResult)
+        self.assetRepresentation = .result(object: .init(pickerResult))
         self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
             self?.cancelBackgroundTaskIfNeed()
         })

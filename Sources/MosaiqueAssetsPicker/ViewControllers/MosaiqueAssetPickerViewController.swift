@@ -100,7 +100,7 @@ public final class MosaiqueAssetPickerViewController : UINavigationController {
     
     @objc func didPickImages(notification: Notification) {
         if let images = notification.object as? [UIImage] {
-            self.pickerDelegate?.photoPicker(self, didPickImages: images)
+            self.pickerDelegate?.photoPicker(self, pickedImages: images)
         }
         assetFutures = nil
     }
@@ -116,7 +116,7 @@ public final class MosaiqueAssetPickerViewController : UINavigationController {
 
     @objc func didPickAssets(notification: Notification) {
         if let downloads = notification.object as? [AssetFuture] {
-            self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
+            self.pickerDelegate?.photoPicker(self, pickedAssets: downloads)
             assetFutures = downloads
         }
     }
