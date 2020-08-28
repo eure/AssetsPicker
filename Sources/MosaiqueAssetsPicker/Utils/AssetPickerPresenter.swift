@@ -44,7 +44,7 @@ public final class AssetPickerPresenter: PHPickerViewControllerDelegate {
     @available(iOS 14, *)
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         let assetsDownloads: [AssetFuture] = results.map { .init(pickerResult: $0) }
-        delegate?.photoPicker(picker, didPickAssets: assetsDownloads)
+        delegate?.photoPicker(picker, pickedAssets: assetsDownloads)
 
         let dispatchGroup = DispatchGroup()
         var images: [UIImage] = []
@@ -66,7 +66,7 @@ public final class AssetPickerPresenter: PHPickerViewControllerDelegate {
             }
         }
          dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
-            self?.delegate?.photoPicker(picker, didPickImages: images)
+            self?.delegate?.photoPicker(picker, pickedImages: images)
         }
    }
 }
