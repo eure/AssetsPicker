@@ -40,7 +40,7 @@
 		5AC4ADFB218AEF62001ED22E /* Demo2AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A521882AAF00DA0259 /* Demo2AssetCell.swift */; };
 		5AC4ADFC218AEF6A001ED22E /* Demo2AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */; };
 		5AC4AE06218C5C18001ED22E /* AssetsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */; };
-		FC13776624F7A2C4007F37DC /* AssetPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC13776524F7A2C4007F37DC /* AssetPickerPresenter.swift */; };
+		FC13776624F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC13776524F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift */; };
 		FC1A639322EE952000E1C38D /* Demo5MultipleAssetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */; };
 		FC5DAE7023A75DB100DD51E6 /* NotificationCenter+assetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */; };
 		FC934BFB23AA2D70002839A8 /* AssetFuture.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF71B1E239E258600E6D75C /* AssetFuture.swift */; };
@@ -118,7 +118,7 @@
 		5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo2AssetCollectionCell.swift; sourceTree = "<group>"; };
 		5AC4ADF8218AEF4E001ED22E /* CustomCellDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellDemoViewController.swift; sourceTree = "<group>"; };
 		5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsCollectionViewModel.swift; sourceTree = "<group>"; };
-		FC13776524F7A2C4007F37DC /* AssetPickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPickerPresenter.swift; sourceTree = "<group>"; };
+		FC13776524F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaiqueAssetPickerPresenter.swift; sourceTree = "<group>"; };
 		FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo5MultipleAssetSelection.swift; sourceTree = "<group>"; };
 		FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+assetPicker.swift"; sourceTree = "<group>"; };
 		FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLock+exec.swift"; sourceTree = "<group>"; };
@@ -294,7 +294,7 @@
 				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
 				5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */,
 				FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */,
-				FC13776524F7A2C4007F37DC /* AssetPickerPresenter.swift */,
+				FC13776524F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -508,7 +508,7 @@
 				FCB197AC246BA419000EF707 /* GradientView.swift in Sources */,
 				5A5212852181B2A400DA0259 /* MosaiqueAssetPickerConfiguration.swift in Sources */,
 				5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */,
-				FC13776624F7A2C4007F37DC /* AssetPickerPresenter.swift in Sources */,
+				FC13776624F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift in Sources */,
 				5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */,
 				FC5DAE7023A75DB100DD51E6 /* NotificationCenter+assetPicker.swift in Sources */,
 				5A5212872181B2C900DA0259 /* MosaiqueAssetPickerViewController.swift in Sources */,

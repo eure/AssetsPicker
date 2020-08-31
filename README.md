@@ -115,15 +115,24 @@ public struct LocalizedStrings {
 
 ### AssetFuture usage
 
-`AssetFuture` can be used to dismiss the view controller once the asset is selected but before the asset is ready/downloaded. It can be optained through the (optional)  delegate:
+`AssetFuture` can be used to dismiss the view controller once the asset is selected but before the asset is ready/downloaded. It can be optained through the delegate:
 
-`    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickAssets assets: [AssetFuture])`
+`    func photoPicker(_ pickerController: UIViewController, didPickAssets assets: [AssetFuture])`
 
 You can retreive asynchronously a thumbnail with `onThumbnailCompletion: ((Result<UIImage, NSError>) -> Void)?`
 And the final image  with `finalImageResult: Result<UIImage, NSError>?`
 
 As long as the `AssetFuture` is retained by you or the `MosaiqueAssetPickerViewController`, the asset will be fetched, using the network if needed, even if the app enters background. The fetch request is cancelled on release.
 
+
+### iOS14
+
+The new iOS version introduce lots of improvements on the traditional image picker.
+You can default to it if the user runs iOS 14 by using the new API:
+
+```
+   MosaiqueAssetPickerPresenter.controller(delegate: self)
+```
 
 ## Installation
 

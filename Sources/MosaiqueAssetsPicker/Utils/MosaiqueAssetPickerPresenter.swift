@@ -11,7 +11,7 @@ import Photos
 import PhotosUI
 
 /// Use this class to present the default `PHPickerViewController` instead of `MosaiqueAssetPicker` if available.
-public final class AssetPickerPresenter: PHPickerViewControllerDelegate {
+public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate {
     private weak var delegate: MosaiqueAssetPickerDelegate?
     private let configuration: MosaiqueAssetPickerConfiguration
 
@@ -44,7 +44,7 @@ public final class AssetPickerPresenter: PHPickerViewControllerDelegate {
     @available(iOS 14, *)
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         let assetsDownloads: [AssetFuture] = results.map { .init(pickerResult: $0) }
-        delegate?.photoPicker(picker, pickedAssets: assetsDownloads)
+        delegate?.photoPicker(picker, didPickAssets: assetsDownloads)
 
         let dispatchGroup = DispatchGroup()
         var images: [UIImage] = []
@@ -66,7 +66,7 @@ public final class AssetPickerPresenter: PHPickerViewControllerDelegate {
             }
         }
          dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
-            self?.delegate?.photoPicker(picker, pickedImages: images)
+            self?.delegate?.photoPicker(picker, didPickImages: images)
         }
    }
 }

@@ -11,40 +11,13 @@ import enum Photos.PHAssetMediaType
 
 public protocol MosaiqueAssetPickerDelegate: class {
 
-    func photoPicker(_ controller: UIViewController, pickedImages images: [UIImage])
+    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage])
     /// [Optional] Will be called when the user press the done button. At this point, you can either:
     /// - Keep or dissmiss the view controller and continue forward with the `AssetDownload` object
     /// - Wait for the images to be ready (will be provided with by the `didPickImages`
-    func photoPicker(_ controller: UIViewController, pickedAssets assets: [AssetFuture])
+    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture])
 
     func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController)
-
-
-    // Renamed protocols :
-    @available(*, deprecated, renamed: "photoPicker(_:pickedImages:)")
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage])
-    @available(*, deprecated, renamed: "photoPicker(_:pickedImages:)")
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickAssets assets: [AssetFuture])
-}
-
-public extension MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, pickedImages images: [UIImage]) {
-        if let controller = controller as? MosaiqueAssetPickerViewController {
-            /// Call the old function if not overriden in case someone ignored a deprecated warning...
-            photoPicker(controller, didPickImages: images)
-        }
-    }
-
-    func photoPicker(_ controller: UIViewController, pickedAssets assets: [AssetFuture]) {
-        if let controller = controller as? MosaiqueAssetPickerViewController {
-            /// Call the old function if not overriden in case someone ignored a deprecated warning...
-            photoPicker(controller, didPickAssets: assets)
-        }
-    }
-
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {}
-    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {}
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickAssets assets: [AssetFuture]) {}
 }
 
 public final class MosaiqueAssetPickerViewController : UINavigationController {
@@ -100,7 +73,7 @@ public final class MosaiqueAssetPickerViewController : UINavigationController {
     
     @objc func didPickImages(notification: Notification) {
         if let images = notification.object as? [UIImage] {
-            self.pickerDelegate?.photoPicker(self, pickedImages: images)
+            self.pickerDelegate?.photoPicker(self, didPickImages: images)
         }
         assetFutures = nil
     }
@@ -116,7 +89,7 @@ public final class MosaiqueAssetPickerViewController : UINavigationController {
 
     @objc func didPickAssets(notification: Notification) {
         if let downloads = notification.object as? [AssetFuture] {
-            self.pickerDelegate?.photoPicker(self, pickedAssets: downloads)
+            self.pickerDelegate?.photoPicker(self, didPickAssets: downloads)
             assetFutures = downloads
         }
     }

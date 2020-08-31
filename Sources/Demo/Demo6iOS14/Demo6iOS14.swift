@@ -19,12 +19,16 @@ class Demo6iOS14: UIViewController {
     // MARK: User Interaction
 
     @IBAction func didTapPresentButton(_ sender: Any) {
-        present(AssetPickerPresenter.controller(delegate: self), animated: true, completion: nil)
+        present(MosaiqueAssetPickerPresenter.controller(delegate: self), animated: true, completion: nil)
     }
 }
 
 extension Demo6iOS14: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, pickedImages images: [UIImage]) {
+    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {
+
+    }
+
+    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
