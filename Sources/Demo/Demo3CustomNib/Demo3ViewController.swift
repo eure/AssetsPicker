@@ -37,9 +37,11 @@ class Demo3ViewController: UIViewController {
 }
 
 extension Demo3ViewController: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {
-        self.dismiss(animated: true, completion: nil)
+    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) { }
+
+    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
         print("main didPickImages = \(images)")
+        self.dismiss(animated: true, completion: nil)
     }
     
     func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {

@@ -9,8 +9,7 @@
 import UIKit
 import MosaiqueAssetsPicker
 
-class Demo5MultipleAssetSelection: UIViewController {
-
+class Demo6iOS14: UIViewController {
     // MARK: Lifecycle
 
     override func viewDidLoad() {
@@ -20,16 +19,14 @@ class Demo5MultipleAssetSelection: UIViewController {
     // MARK: User Interaction
 
     @IBAction func didTapPresentButton(_ sender: Any) {
-        let photoPicker = MosaiqueAssetPickerViewController()
-        photoPicker.setSelectionMode(.multiple(limit: 3))
-        photoPicker.pickerDelegate = self
-
-        present(photoPicker, animated: true, completion: nil)
+        present(MosaiqueAssetPickerPresenter.controller(delegate: self), animated: true, completion: nil)
     }
 }
 
-extension Demo5MultipleAssetSelection: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) { }
+extension Demo6iOS14: MosaiqueAssetPickerDelegate {
+    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {
+
+    }
 
     func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
         self.dismiss(animated: true, completion: nil)

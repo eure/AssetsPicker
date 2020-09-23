@@ -9,9 +9,35 @@
 import Foundation
 import Photos
 import UIKit
+import PhotosUI
 
 public class AssetFuture {
-    public let asset: PHAsset
+    public enum AssetRepresentation {
+        public struct PHPickerResultWrapper {
+            private let result: Any
+            @available(iOS 14, *)
+            public var value: PHPickerResult {
+                return result as! PHPickerResult
+            }
+            @available(iOS 14, *)
+            fileprivate init(_ result: PHPickerResult) {
+                self.result = result
+            }
+        }
+        case asset(asset: PHAsset)
+        @available(iOS 14, *)
+        case result(object: PHPickerResultWrapper)
+    }
+    @available(*, deprecated, message: "Use assetRepresentation instead")
+    public var asset: PHAsset! {
+        switch assetRepresentation {
+        case .asset(asset: let asset):
+            return asset
+        default:
+            return nil
+        }
+    }
+    public let assetRepresentation: AssetRepresentation
     public var onComplete: ((Result<UIImage, NSError>) -> Void)? {
         didSet {
             guard onComplete != nil else { return }
@@ -60,10 +86,38 @@ public class AssetFuture {
     internal var imageRequestID: PHImageRequestID?
 
     init(asset: PHAsset) {
-        self.asset = asset
+        self.assetRepresentation = .asset(asset: asset)
         self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
             self?.cancelBackgroundTaskIfNeed()
         })
+    }
+
+    @available(iOS 14, *)
+    init(pickerResult: PHPickerResult) {
+        self.assetRepresentation = .result(object: .init(pickerResult))
+        self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
+            self?.cancelBackgroundTaskIfNeed()
+        })
+        if pickerResult.itemProvider.canLoadObject(ofClass: UIImage.self) {
+            pickerResult.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] in
+                guard let self = self else { return }
+                if let result = $0 as? UIImage {
+                    self.finalImageResult = .success(result)
+                } else {
+                    self.finalImageResult = .failure($1 as NSError? ?? .init())
+                }
+            }
+            pickerResult.itemProvider.loadPreviewImage(options: [:]) { [weak self] in
+                guard let self = self else { return }
+                if let result = $0 as? UIImage {
+                    self.finalImageResult = .success(result)
+                } else {
+                    self.finalImageResult = .failure($1 as NSError? ?? .init())
+                }
+            }
+        } else {
+            finalImageResult = .failure(.init())
+        }
     }
 
     deinit {

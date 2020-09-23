@@ -10,17 +10,14 @@ import UIKit
 import enum Photos.PHAssetMediaType
 
 public protocol MosaiqueAssetPickerDelegate: class {
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage])
-    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController)
+
+    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage])
     /// [Optional] Will be called when the user press the done button. At this point, you can either:
     /// - Keep or dissmiss the view controller and continue forward with the `AssetDownload` object
     /// - Wait for the images to be ready (will be provided with by the `didPickImages`
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickAssets assets: [AssetFuture])
-}
+    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture])
 
-public extension MosaiqueAssetPickerDelegate {
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickAssets assets: [AssetFuture]) {}
-    func photoPicker(_ pickerController: MosaiqueAssetPickerViewController, didPickImages images: [UIImage]) {}
+    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController)
 }
 
 public final class MosaiqueAssetPickerViewController : UINavigationController {

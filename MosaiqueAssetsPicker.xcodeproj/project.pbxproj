@@ -40,12 +40,14 @@
 		5AC4ADFB218AEF62001ED22E /* Demo2AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5212A521882AAF00DA0259 /* Demo2AssetCell.swift */; };
 		5AC4ADFC218AEF6A001ED22E /* Demo2AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */; };
 		5AC4AE06218C5C18001ED22E /* AssetsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */; };
+		FC13776624F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC13776524F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift */; };
 		FC1A639322EE952000E1C38D /* Demo5MultipleAssetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */; };
 		FC5DAE7023A75DB100DD51E6 /* NotificationCenter+assetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */; };
 		FC934BFB23AA2D70002839A8 /* AssetFuture.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF71B1E239E258600E6D75C /* AssetFuture.swift */; };
 		FCA6D3D023827D490060AD6C /* NSLock+exec.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */; };
 		FCA6D4402383CBE00060AD6C /* AssetDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA6D43F2383CBE00060AD6C /* AssetDetailViewModel.swift */; };
 		FCB197AC246BA419000EF707 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB197AB246BA419000EF707 /* GradientView.swift */; };
+		FCE81CEA24F8A63C00965C33 /* Demo6iOS14.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE81CE824F8A5ED00965C33 /* Demo6iOS14.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,11 +118,13 @@
 		5AC4ADF421894A87001ED22E /* Demo2AssetCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo2AssetCollectionCell.swift; sourceTree = "<group>"; };
 		5AC4ADF8218AEF4E001ED22E /* CustomCellDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellDemoViewController.swift; sourceTree = "<group>"; };
 		5AC4AE05218C5C18001ED22E /* AssetsCollectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsCollectionViewModel.swift; sourceTree = "<group>"; };
+		FC13776524F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaiqueAssetPickerPresenter.swift; sourceTree = "<group>"; };
 		FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo5MultipleAssetSelection.swift; sourceTree = "<group>"; };
 		FC5DAE6F23A75DB100DD51E6 /* NotificationCenter+assetPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+assetPicker.swift"; sourceTree = "<group>"; };
 		FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLock+exec.swift"; sourceTree = "<group>"; };
 		FCA6D43F2383CBE00060AD6C /* AssetDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailViewModel.swift; sourceTree = "<group>"; };
 		FCB197AB246BA419000EF707 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		FCE81CE824F8A5ED00965C33 /* Demo6iOS14.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo6iOS14.swift; sourceTree = "<group>"; };
 		FCF71B1E239E258600E6D75C /* AssetFuture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFuture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,6 +209,7 @@
 				5A700D712192E40800DF8880 /* Demo3CustomNib */,
 				5A700D832192EED500DF8880 /* Demo4CustomHeader */,
 				FC1A639022EE94BC00E1C38D /* Demo5MultipleAssetSelection */,
+				FCE81CE724F8A5A600965C33 /* Demo6iOS14 */,
 				4BCA98872171EA3D0048826A /* AppDelegate.swift */,
 				4BCA988B2171EA3D0048826A /* Main.storyboard */,
 				4BCA988E2171EA400048826A /* Assets.xcassets */,
@@ -289,6 +294,7 @@
 				5A5212782181B23A00DA0259 /* SelectionContainer.swift */,
 				5A52129F2186DE9100DA0259 /* ViewSizeCalculator.swift */,
 				FCA6D3CF23827D490060AD6C /* NSLock+exec.swift */,
+				FC13776524F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -344,6 +350,14 @@
 				FC1A639122EE94EE00E1C38D /* Demo5MultipleAssetSelection.swift */,
 			);
 			path = Demo5MultipleAssetSelection;
+			sourceTree = "<group>";
+		};
+		FCE81CE724F8A5A600965C33 /* Demo6iOS14 */ = {
+			isa = PBXGroup;
+			children = (
+				FCE81CE824F8A5ED00965C33 /* Demo6iOS14.swift */,
+			);
+			path = Demo6iOS14;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -421,7 +435,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "eureka, Inc.";
 				TargetAttributes = {
 					4BCA98662171E9E80048826A = {
@@ -494,6 +508,7 @@
 				FCB197AC246BA419000EF707 /* GradientView.swift in Sources */,
 				5A5212852181B2A400DA0259 /* MosaiqueAssetPickerConfiguration.swift in Sources */,
 				5A52127C2181B23A00DA0259 /* SelectionContainer.swift in Sources */,
+				FC13776624F7A2C4007F37DC /* MosaiqueAssetPickerPresenter.swift in Sources */,
 				5A5212A02186DE9100DA0259 /* ViewSizeCalculator.swift in Sources */,
 				FC5DAE7023A75DB100DD51E6 /* NotificationCenter+assetPicker.swift in Sources */,
 				5A5212872181B2C900DA0259 /* MosaiqueAssetPickerViewController.swift in Sources */,
@@ -527,6 +542,7 @@
 			files = (
 				5AC4ADFA218AEF5C001ED22E /* CustomCellDemoViewController.swift in Sources */,
 				5A700D792192E8C500DF8880 /* Demo3AssetCollectionNib.swift in Sources */,
+				FCE81CEA24F8A63C00965C33 /* Demo6iOS14.swift in Sources */,
 				5A700D782192E8C000DF8880 /* Demo3ViewController.swift in Sources */,
 				4BCA988A2171EA3D0048826A /* DefaultDemoViewController.swift in Sources */,
 				5AC4ADFC218AEF6A001ED22E /* Demo2AssetCollectionCell.swift in Sources */,
@@ -599,6 +615,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -663,6 +680,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
