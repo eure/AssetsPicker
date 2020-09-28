@@ -112,7 +112,7 @@ public class AssetFuture {
                 if let result = $0 as? UIImage {
                     self.thumbnailResult = .success(result)
                 } else if let error = $1 { // If the full size image is readily available, this will fail without error.
-                    self.thumbnailResult = .failure($1 as NSError? ?? .init())
+                    self.thumbnailResult = .failure(error as NSError)
                 }
             }
         } else {
