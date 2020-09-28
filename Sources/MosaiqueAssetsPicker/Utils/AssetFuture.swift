@@ -110,9 +110,9 @@ public class AssetFuture {
             pickerResult.itemProvider.loadPreviewImage(options: [:]) { [weak self] in
                 guard let self = self else { return }
                 if let result = $0 as? UIImage {
-                    self.finalImageResult = .success(result)
-                } else {
-                    self.finalImageResult = .failure($1 as NSError? ?? .init())
+                    self.thumbnailResult = .success(result)
+                } else if let error = $1 { // If the full size image is readily available, this will fail without error.
+                    self.thumbnailResult = .failure($1 as NSError? ?? .init())
                 }
             }
         } else {
