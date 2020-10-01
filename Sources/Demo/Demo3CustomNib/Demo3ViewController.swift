@@ -44,7 +44,7 @@ extension Demo3ViewController: MosaiqueAssetPickerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func photoPickerDidCancel(_ pickerController: MosaiqueAssetPickerViewController) {
+    func photoPickerDidCancel(_ controller: UIViewController) {
         print("photoPickerDidCancel")
         self.dismiss(animated: true, completion: nil)
     }
