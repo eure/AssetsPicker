@@ -65,8 +65,12 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
                 dispatchGroup.leave()
             }
         }
-         dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
-            self?.delegate?.photoPicker(picker, didPickImages: images)
+        dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
+            if images.isEmpty {
+                self?.delegate?.photoPickerDidCancel(picker)
+            } else {
+                self?.delegate?.photoPicker(picker, didPickImages: images)
+            }
         }
    }
 }
