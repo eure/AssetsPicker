@@ -6,21 +6,22 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
-import UIKit
 import Photos
+import UIKit
 
-protocol AssetCollectionViewModelDelegate: class {
+protocol AssetCollectionViewModelDelegate: AnyObject {
     func updatedCollections()
 }
 
 public final class AssetCollectionViewModel: NSObject {
-    
     // MARK: Lifecycle
+
     private(set) var displayItems: [AssetCollectionCellViewModel] = [] {
         didSet {
-            self.delegate?.updatedCollections()
+            delegate?.updatedCollections()
         }
     }
+
     private let configuration: MosaiqueAssetPickerConfiguration
     private let lock = NSLock()
     private var assetCollectionsFetchResults = [PHFetchResult<PHAssetCollection>]()
@@ -31,11 +32,11 @@ public final class AssetCollectionViewModel: NSObject {
         self.configuration = configuration
         super.init()
         PHPhotoLibrary.shared().register(self)
-        self.fetchCollections()
+        fetchCollections()
     }
 
     // MARK: Core
-    
+
     private func fetchCollections() {
         DispatchQueue.global(qos: .userInteractive).async {
             self.lock.lock()
@@ -52,7 +53,7 @@ public final class AssetCollectionViewModel: NSObject {
                 self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
             }
-            
+
             do {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
@@ -62,7 +63,7 @@ public final class AssetCollectionViewModel: NSObject {
                 self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
             }
-            
+
             do {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .smartAlbum,
@@ -72,18 +73,18 @@ public final class AssetCollectionViewModel: NSObject {
                 self.assetCollectionsFetchResults.append(library)
                 assetCollections += library.toArray()
             }
-            
+
             do {
                 let library = PHCollection.fetchTopLevelUserCollections(with: nil)
                 self.collectionsFetchResults.append(library)
 
-                library.enumerateObjects { (collection, _, _) in
+                library.enumerateObjects { collection, _, _ in
                     if let assetCollection = collection as? PHAssetCollection {
                         assetCollections.append(assetCollection)
                     }
                 }
             }
-        
+
             do {
                 let library = PHAssetCollection.fetchAssetCollections(
                     with: .album,
@@ -94,9 +95,9 @@ public final class AssetCollectionViewModel: NSObject {
 
                 assetCollections += library.toArray()
             }
-            
+
             self.displayItems = assetCollections
-                .filter( { self.assetCount(collection: $0) != 0 } )
+                .filter { self.assetCount(collection: $0) != 0 }
                 .map { AssetCollectionCellViewModel(assetCollection: $0, configuration: self.configuration) }
         }
     }
@@ -116,7 +117,7 @@ public final class AssetCollectionViewModel: NSObject {
 extension AssetCollectionViewModel: PHPhotoLibraryChangeObserver {
     public func photoLibraryDidChange(_ changeInstance: PHChange) {
         // assuming complexity for collections is low, reload everything
-        self.lock.exec {
+        lock.exec {
             for collection in self.collectionsFetchResults where changeInstance.changeDetails(for: collection) != nil {
                 self.fetchCollections()
                 return
@@ -130,11 +131,10 @@ extension AssetCollectionViewModel: PHPhotoLibraryChangeObserver {
 }
 
 extension PHFetchResult where ObjectType == PHAssetCollection {
-    
     fileprivate func toArray() -> [PHAssetCollection] {
         var array: [PHAssetCollection] = []
         array.reserveCapacity(count)
-        self.enumerateObjects { (asset, _, _) in
+        enumerateObjects { asset, _, _ in
             array.append(asset)
         }
 

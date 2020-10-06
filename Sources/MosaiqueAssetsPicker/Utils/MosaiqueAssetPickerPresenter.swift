@@ -72,5 +72,5 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
                 self?.delegate?.photoPicker(picker, didPickImages: images)
             }
         }
-   }
+    }
 }

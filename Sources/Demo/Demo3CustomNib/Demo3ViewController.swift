@@ -6,46 +6,45 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
-import UIKit.UIImage
 import MosaiqueAssetsPicker
+import UIKit.UIImage
 
 class Demo3ViewController: UIViewController {
-    
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     // MARK: User Interaction
-    
-    @IBAction func didTapPresentButton(_ sender: Any) {
+
+    @IBAction func didTapPresentButton(_: Any) {
         let assetNib = UINib(nibName: String(describing: Demo3AssetNib.self), bundle: nil)
         let assetCollectionNib = UINib(nibName: String(describing: Demo3AssetCollectionNib.self), bundle: nil)
 
         let cellRegistrator = AssetPickerCellRegistrator()
         cellRegistrator.register(nib: assetNib, forCellType: .asset)
         cellRegistrator.register(nib: assetCollectionNib, forCellType: .assetCollection)
-        
+
         let photoPicker = MosaiqueAssetPickerViewController()
-                            .setCellRegistrator(cellRegistrator)
+            .setCellRegistrator(cellRegistrator)
 
         photoPicker.pickerDelegate = self
-        
+
         present(photoPicker, animated: true, completion: nil)
     }
 }
 
 extension Demo3ViewController: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) { }
+    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
 
-    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
+    func photoPicker(_: UIViewController, didPickImages images: [UIImage]) {
         print("main didPickImages = \(images)")
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
-    
-    func photoPickerDidCancel(_ controller: UIViewController) {
+
+    func photoPickerDidCancel(_: UIViewController) {
         print("photoPickerDidCancel")
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

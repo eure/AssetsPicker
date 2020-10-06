@@ -9,20 +9,17 @@
 import Foundation
 import UIKit
 
-final class AssetDetailHeaderContainerView : UICollectionReusableView {
-    
+final class AssetDetailHeaderContainerView: UICollectionReusableView {
     func set(view: UIView) {
-        
         subviews.forEach { $0.removeFromSuperview() }
-        
+
         addSubview(view)
-        
+
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: topAnchor),
             view.leadingAnchor.constraint(equalTo: leadingAnchor),
             view.trailingAnchor.constraint(equalTo: trailingAnchor),
-            view.bottomAnchor.constraint(equalTo: bottomAnchor)
+            view.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
-    
 }

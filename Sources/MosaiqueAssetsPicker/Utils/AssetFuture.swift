@@ -8,8 +8,8 @@
 
 import Foundation
 import Photos
-import UIKit
 import PhotosUI
+import UIKit
 
 /// Represent a picked asset
 /// The relevant images might not be available (ie: downloading, resizing) yet.
@@ -19,26 +19,30 @@ public class AssetFuture {
             private let result: Any
             @available(iOS 14, *)
             public var value: PHPickerResult {
-                return result as! PHPickerResult
+                result as! PHPickerResult
             }
+
             @available(iOS 14, *)
             fileprivate init(_ result: PHPickerResult) {
                 self.result = result
             }
         }
+
         case asset(asset: PHAsset)
         @available(iOS 14, *)
         case result(object: PHPickerResultWrapper)
     }
+
     @available(*, deprecated, message: "Use assetRepresentation instead")
     public var asset: PHAsset! {
         switch assetRepresentation {
-        case .asset(asset: let asset):
+        case let .asset(asset: asset):
             return asset
         default:
             return nil
         }
     }
+
     public let assetRepresentation: AssetRepresentation
     /// Set this callback to get the final UIImage.
     /// Might be called from a background thread
@@ -55,6 +59,7 @@ public class AssetFuture {
             cancelBackgroundTaskIfNeed()
         }
     }
+
     /// Set this callback to get the thumbnail UIImage.
     /// Might be called from a background thread
     /// Might be called immediately if the image is already available.
@@ -69,6 +74,7 @@ public class AssetFuture {
             }
         }
     }
+
     public internal(set) var thumbnailResult: Result<UIImage, NSError>? {
         didSet {
             guard let thumbnailResult = thumbnailResult else { preconditionFailure("thumbnailResult must not be set to nil") }
@@ -78,6 +84,7 @@ public class AssetFuture {
             }
         }
     }
+
     public internal(set) var finalImageResult: Result<UIImage, NSError>? {
         didSet {
             lock.exec {
@@ -88,22 +95,23 @@ public class AssetFuture {
             cancelBackgroundTaskIfNeed()
         }
     }
+
     private let lock = NSLock()
     private var taskID = UIBackgroundTaskIdentifier.invalid
     internal var thumbnailRequestID: PHImageRequestID?
     internal var imageRequestID: PHImageRequestID?
 
     init(asset: PHAsset) {
-        self.assetRepresentation = .asset(asset: asset)
-        self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
+        assetRepresentation = .asset(asset: asset)
+        taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
             self?.cancelBackgroundTaskIfNeed()
         })
     }
 
     @available(iOS 14, *)
     init(pickerResult: PHPickerResult) {
-        self.assetRepresentation = .result(object: .init(pickerResult))
-        self.taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
+        assetRepresentation = .result(object: .init(pickerResult))
+        taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
             self?.cancelBackgroundTaskIfNeed()
         })
         if pickerResult.itemProvider.canLoadObject(ofClass: UIImage.self) {
@@ -139,8 +147,8 @@ public class AssetFuture {
     }
 
     internal func cancelBackgroundTaskIfNeed() {
-        guard self.taskID != .invalid else { return }
-        self.lock.exec {
+        guard taskID != .invalid else { return }
+        lock.exec {
             guard self.taskID != .invalid else { return }
             UIApplication.shared.endBackgroundTask(self.taskID)
             self.taskID = .invalid

@@ -144,6 +144,21 @@ You can default to it if the user runs iOS 14 by using the new API:
 
 - Pairs Engage
 
+## Contributing
+
+Feel free to contribute.
+You can format your code using swiftformat:
+
+```
+swiftformat .
+```
+
+Install it with
+
+```
+brew install swiftformat
+```
+
 ## Authors
 
 - Muukii <muukii.app@gmail.com>

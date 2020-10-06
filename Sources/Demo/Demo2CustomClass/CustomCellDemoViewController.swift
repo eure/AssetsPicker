@@ -7,46 +7,43 @@
 //
 
 import Foundation
-import UIKit
 import MosaiqueAssetsPicker
+import UIKit
 
 class Demo2ViewController: UIViewController {
-    
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    // MARK: User Interaction
-    
-    @IBAction func didTapPresentButton(_ sender: Any) {
 
+    // MARK: User Interaction
+
+    @IBAction func didTapPresentButton(_: Any) {
         let cellRegistrator = AssetPickerCellRegistrator()
         cellRegistrator.register(cellClass: Demo2AssetCell.self, forCellType: .asset)
         cellRegistrator.register(cellClass: Demo2AssetCollectionCell.self, forCellType: .assetCollection)
-        
+
         let photoPicker = MosaiqueAssetPickerViewController()
-                            .setCellRegistrator(cellRegistrator)
-                            .setSelectionMode(.multiple(limit: 5))
-        
+            .setCellRegistrator(cellRegistrator)
+            .setSelectionMode(.multiple(limit: 5))
+
         photoPicker.pickerDelegate = self
-        
+
         present(photoPicker, animated: true, completion: nil)
     }
 }
 
 extension Demo2ViewController: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) { }
+    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
 
-
-    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
-        self.dismiss(animated: true, completion: nil)
+    func photoPicker(_: UIViewController, didPickImages images: [UIImage]) {
+        dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
-    
-    func photoPickerDidCancel(_ controller: UIViewController) {
+
+    func photoPickerDidCancel(_: UIViewController) {
         print("photoPickerDidCancel")
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

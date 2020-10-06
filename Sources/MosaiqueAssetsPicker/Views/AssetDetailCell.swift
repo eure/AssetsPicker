@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
-
     // MARK: Properties
+
     private var spinner: UIActivityIndicatorView?
 
     var selectionColor: UIColor = .clear {
@@ -27,20 +27,20 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
         formatter.zeroFormattingBehavior = .pad
         return formatter
     }()
-    
+
     override var isSelected: Bool {
         didSet {
             updateSelection(isItemSelected: isSelected)
         }
-    }        
-    
+    }
+
     public let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    
+
     private lazy var assetVideoLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
@@ -62,13 +62,14 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
             locations: [0, 1]
         )
     }()
+
     var cellViewModel: AssetDetailCellViewModel?
-    
+
     // MARK: Lifecycle
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         layout: do {
             contentView.addSubview(imageView)
             contentView.addSubview(assetVideoGradientView)
@@ -76,27 +77,28 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
             imageView.translatesAutoresizingMaskIntoConstraints = false
             assetVideoGradientView.translatesAutoresizingMaskIntoConstraints = false
             assetVideoLabel.translatesAutoresizingMaskIntoConstraints = false
-            
+
             NSLayoutConstraint.activate([
                 imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
                 imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
                 imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
                 imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-                assetVideoGradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                assetVideoGradientView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+                assetVideoGradientView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                assetVideoGradientView.bottomAnchor.constraint(equalTo: bottomAnchor),
                 assetVideoGradientView.heightAnchor.constraint(equalTo: assetVideoLabel.heightAnchor, multiplier: 2),
                 assetVideoGradientView.widthAnchor.constraint(equalTo: assetVideoLabel.widthAnchor, multiplier: 1.8),
-                assetVideoLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor, constant: 4),
-                assetVideoLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -4),
-                assetVideoLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
+                assetVideoLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 4),
+                assetVideoLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+                assetVideoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
             ])
         }
     }
-    
-    required init?(coder aDecoder: NSCoder) {
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func updateSelection(isItemSelected: Bool) {
         if isItemSelected {
             imageView.layer.borderColor = selectionColor.cgColor
@@ -106,15 +108,15 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
             imageView.layer.borderWidth = 0
         }
     }
-    
+
     // MARK: Core
-    
+
     func bind(cellViewModel: AssetDetailCellViewModel) {
         self.cellViewModel = cellViewModel
-        
+
         self.cellViewModel?.delegate = self
         cellViewModel.fetchPreviewImage()
-        
+
         let isVideo = (cellViewModel.asset.mediaType == .video)
         assetVideoLabel.isHidden = !isVideo
         assetVideoGradientView.isHidden = !isVideo
@@ -122,18 +124,17 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
             let timeString = timeFormatter.string(from: cellViewModel.asset.duration) ?? "00:00"
             assetVideoLabel.text = timeString
         }
-        
+
         setDownloading(cellViewModel.isDownloading)
     }
 
     func setDownloading(_ isDownloading: Bool) {
         if isDownloading {
-
             let spinner = self.spinner ?? {
                 let spinner = UIActivityIndicatorView(style: .whiteLarge)
                 self.spinner = spinner
                 return spinner
-                }()
+            }()
 
             if spinner.superview != contentView {
                 contentView.addSubview(spinner)
@@ -147,22 +148,22 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
             spinner = nil
         }
     }
-    
-    public override func prepareForReuse() {
+
+    override public func prepareForReuse() {
         super.prepareForReuse()
         spinner?.removeFromSuperview()
         imageView.image = nil
-    }   
+    }
 }
 
 // MARK: AssetDetailCellViewModelDelegate
 
 extension AssetDetailCell: AssetDetailCellViewModelDelegate {
-    func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage) {
+    func cellViewModel(_: AssetDetailCellViewModel, didFetchImage image: UIImage) {
         imageView.image = image
     }
 
-    func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, isDownloading: Bool) {
+    func cellViewModel(_: AssetDetailCellViewModel, isDownloading: Bool) {
         setDownloading(isDownloading)
     }
 }
