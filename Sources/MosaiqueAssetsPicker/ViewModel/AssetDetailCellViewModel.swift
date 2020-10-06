@@ -10,32 +10,32 @@ import Foundation
 import Photos
 import UIKit.UIImage
 
-public protocol AssetDetailCellViewModelDelegate: class {
+public protocol AssetDetailCellViewModelDelegate: AnyObject {
     func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, didFetchImage image: UIImage)
     func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, isDownloading: Bool)
 }
 
 public extension AssetDetailCellViewModelDelegate {
-    func cellViewModel(_ cellViewModel: AssetDetailCellViewModel, isDownloading: Bool) {}
+    func cellViewModel(_: AssetDetailCellViewModel, isDownloading _: Bool) {}
 }
 
 public final class AssetDetailCellViewModel: ItemIdentifier {
     // MARK: Inner
-    
-    enum Selection : Equatable {
-        
+
+    enum Selection: Equatable {
         case notSelected
         case selected(number: Int)
     }
-    
+
     // MARK: Properties
-    
+
     public weak var delegate: AssetDetailCellViewModelDelegate?
     public var isDownloading = false {
         didSet {
             delegate?.cellViewModel(self, isDownloading: isDownloading)
         }
     }
+
     public let asset: PHAsset
     private let imageManager: PHCachingImageManager
     private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
@@ -45,32 +45,31 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     private var thumbnail: UIImage?
 
     // MARK: Lifecycle
-    
+
     init(
         asset: PHAsset,
         imageManager: PHCachingImageManager,
         selectionContainer: SelectionContainer<AssetDetailCellViewModel>
-        ) {
-        
+    ) {
         self.asset = asset
         self.imageManager = imageManager
         self.selectionContainer = selectionContainer
     }
-    
+
     func selectionStatus() -> Selection {
         var selectionState = Selection.notSelected
-        
-        if let index = self.selectionContainer.selectedItems.firstIndex(where: { $0.identifier == asset.localIdentifier }) {
+
+        if let index = selectionContainer.selectedItems.firstIndex(where: { $0.identifier == asset.localIdentifier }) {
             selectionState = Selection.selected(number: index + 1)
         }
-        
+
         return selectionState
     }
-    
+
     // MARK: Network
-    
+
     public func fetchPreviewImage() {
-        self.imagePreviewId = _fetchPreviewImage(onNext: { [weak self] (image, _) in
+        imagePreviewId = _fetchPreviewImage(onNext: { [weak self] image, _ in
             if let image = image {
                 guard let self = self else { return }
                 self.delegate?.cellViewModel(self, didFetchImage: image)
@@ -82,7 +81,8 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
 
     private func _fetchPreviewImage(
         onNext: @escaping (UIImage?, [AnyHashable: Any]?) -> Void,
-        size: CGSize = CGSize(width: 360, height: 360)) -> PHImageRequestID {
+        size: CGSize = CGSize(width: 360, height: 360)
+    ) -> PHImageRequestID {
         let options = PHImageRequestOptions()
         options.deliveryMode = .opportunistic
         options.isNetworkAccessAllowed = true
@@ -93,10 +93,9 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
                                          contentMode: .aspectFill,
                                          options: options,
                                          resultHandler: onNext)
-
     }
 
-    func download(onNext: @escaping ((UIImage?) -> ())) -> AssetFuture {
+    func download(onNext: @escaping ((UIImage?) -> Void)) -> AssetFuture {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
@@ -108,38 +107,38 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
             for: asset,
             targetSize: CGSize(width: 1920, height: 1920),
             contentMode: .default,
-            options: options) { [weak self, weak assetFuture] (image, userInfo) in
-                onNext(image)
-                self?.isDownloading = false
-                if let image = image {
-                    assetFuture?.finalImageResult = .success(image)
-                } else {
-                    let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
-                    assetFuture?.finalImageResult = .failure(error)
-                }
+            options: options
+        ) { [weak self, weak assetFuture] image, userInfo in
+            onNext(image)
+            self?.isDownloading = false
+            if let image = image {
+                assetFuture?.finalImageResult = .success(image)
+            } else {
+                let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
+                assetFuture?.finalImageResult = .failure(error)
+            }
         }
-        assetFuture.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetFuture] (image, userInfo) in
+        assetFuture.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetFuture] image, userInfo in
             if let image = image {
                 assetFuture?.thumbnailResult = .success(image)
             } else {
                 let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
                 assetFuture?.thumbnailResult = .failure(error)
             }
-            }, size: .init(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
+        }, size: .init(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
         assetFuture.imageRequestID = imageRequestID
         return assetFuture
     }
 
-    
     public func cancelPreviewImageIfNeeded() {
         guard let imageRequestId = imagePreviewId else { return }
         PHCachingImageManager.default().cancelImageRequest(imageRequestId)
-        self.imagePreviewId = nil
+        imagePreviewId = nil
     }
-    
+
     // MARK: ItemIdentifier
-    
+
     public var identifier: String {
-        return asset.localIdentifier
+        asset.localIdentifier
     }
 }

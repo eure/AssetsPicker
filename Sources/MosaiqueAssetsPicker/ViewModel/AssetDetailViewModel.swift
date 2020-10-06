@@ -9,12 +9,11 @@
 import Photos
 import UIKit.UIImage
 
-public protocol AssetDetailViewModelDelegate: class {
+public protocol AssetDetailViewModelDelegate: AnyObject {
     func displayItemsChange(_ changes: PHFetchResultChangeDetails<PHAsset>)
 }
 
 public final class AssetDetailViewModel: NSObject {
-
     // MARK: Properties
 
     public weak var delegate: AssetDetailViewModelDelegate?
@@ -24,7 +23,7 @@ public final class AssetDetailViewModel: NSObject {
     private(set) var displayItems: PHFetchResult<PHAsset>
     let configuration: MosaiqueAssetPickerConfiguration
     var selectedIndexs: [Int] {
-        let selectedAssets = selectionContainer.selectedItems.map { $0.asset }
+        let selectedAssets = selectionContainer.selectedItems.map(\.asset)
         return selectedAssets.compactMap { displayItems.contains($0) ? displayItems.index(of: $0) : nil }
     }
 
@@ -33,14 +32,13 @@ public final class AssetDetailViewModel: NSObject {
     init(assetCollection: PHAssetCollection, selectionContainer: SelectionContainer<AssetDetailCellViewModel>, configuration: MosaiqueAssetPickerConfiguration) {
         self.assetCollection = assetCollection
         self.selectionContainer = selectionContainer
-        self.displayItems = PHFetchResult<PHAsset>()
+        displayItems = PHFetchResult<PHAsset>()
         self.configuration = configuration
         super.init()
     }
 
-    func fetchPhotos(onNext: @escaping (() -> ())) {
+    func fetchPhotos(onNext: @escaping (() -> Void)) {
         DispatchQueue.global(qos: .userInteractive).async {
-
             let fetchOptions = PHFetchOptions()
 
             if !self.configuration.supportOnlyMediaTypes.isEmpty {
@@ -84,11 +82,10 @@ public final class AssetDetailViewModel: NSObject {
 
     func reset(withAssetCollection assetCollection: PHAssetCollection) {
         self.assetCollection = assetCollection
-        self.selectionContainer.purge()
+        selectionContainer.purge()
     }
 
     func cellModel(at index: Int) -> AssetDetailCellViewModel {
-
         let asset = displayItems.object(at: index)
 
         if let cellModel = selectionContainer.item(for: asset.localIdentifier) {
@@ -101,7 +98,6 @@ public final class AssetDetailViewModel: NSObject {
     }
 
     private func makeCellModel(from asset: PHAsset) -> AssetDetailCellViewModel {
-
         let cellModel = AssetDetailCellViewModel(
             asset: asset,
             imageManager: imageManager,
@@ -127,7 +123,6 @@ public final class AssetDetailViewModel: NSObject {
         selectionContainer.remove(item: item)
     }
 }
-
 
 extension AssetDetailViewModel: PHPhotoLibraryChangeObserver {
     public func photoLibraryDidChange(_ changeInstance: PHChange) {

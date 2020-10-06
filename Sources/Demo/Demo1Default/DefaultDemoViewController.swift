@@ -6,20 +6,19 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
-import UIKit
 import MosaiqueAssetsPicker
+import UIKit
 
 class DemoDefaultViewController: UIViewController {
-    
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     // MARK: User Interaction
 
-    @IBAction func didTapPresentButton(_ sender: Any) {
+    @IBAction func didTapPresentButton(_: Any) {
         let photoPicker = MosaiqueAssetPickerViewController()
         photoPicker.pickerDelegate = self
         photoPicker.setMediaTypes([.image, .video])
@@ -29,16 +28,15 @@ class DemoDefaultViewController: UIViewController {
 }
 
 extension DemoDefaultViewController: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {
-    }
+    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
 
-    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
-        self.dismiss(animated: true, completion: nil)
+    func photoPicker(_: UIViewController, didPickImages images: [UIImage]) {
+        dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
-    
-    func photoPickerDidCancel(_ controller: UIViewController) {
+
+    func photoPickerDidCancel(_: UIViewController) {
         print("photoPickerDidCancel")
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

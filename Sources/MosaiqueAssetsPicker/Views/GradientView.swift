@@ -10,7 +10,7 @@ import UIKit
 
 final class GradiantView: UIView {
     override class var layerClass: AnyClass {
-        return CAGradientLayer.self
+        CAGradientLayer.self
     }
 
     required init(colors: [CGColor], startPoint: CGPoint, endPoint: CGPoint, type: CAGradientLayerType, locations: [NSNumber]?) {
@@ -27,7 +27,7 @@ final class GradiantView: UIView {
     }
 
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

@@ -6,11 +6,10 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
-import UIKit
 import enum Photos.PHAssetMediaType
+import UIKit
 
-public protocol MosaiqueAssetPickerDelegate: class {
-
+public protocol MosaiqueAssetPickerDelegate: AnyObject {
     func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage])
     /// [Optional] Will be called when the user press the done button. At this point, you can either:
     /// - Keep or dissmiss the view controller and continue forward with the `AssetFuture` object
@@ -21,52 +20,53 @@ public protocol MosaiqueAssetPickerDelegate: class {
 }
 
 extension MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {}
+    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
 }
 
-public final class MosaiqueAssetPickerViewController : UINavigationController {
-    
+public final class MosaiqueAssetPickerViewController: UINavigationController {
     // MARK: - Properties
+
     var configuration = MosaiqueAssetPickerConfiguration()
     public weak var pickerDelegate: MosaiqueAssetPickerDelegate?
     private var assetFutures: [AssetFuture]?
 
     // MARK: - Lifecycle
-    
+
     public init() {
         super.init(nibName: nil, bundle: nil)
     }
-    
-    public required init?(coder aDecoder: NSCoder) {
+
+    @available(*, unavailable)
+    public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
-    public override func viewDidLoad() {
+
+    override public func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupRootController: do  {
+
+        setupRootController: do {
             let controller = SelectAssetCollectionContainerViewController(configuration: configuration)
             pushViewController(controller, animated: false)
         }
-        
+
         setupPickImagesNotification: do {
             NotificationCenter.assetPicker.addObserver(self,
-                                                   selector: #selector(didPickImages(notification:)),
-                                                   name: PhotoPickerPickImagesNotificationName,
-                                                   object: nil)
+                                                       selector: #selector(didPickImages(notification:)),
+                                                       name: PhotoPickerPickImagesNotificationName,
+                                                       object: nil)
             NotificationCenter.assetPicker.addObserver(self,
-                                                   selector: #selector(didPickAssets(notification:)),
-                                                   name: PhotoPickerPickAssetsNotificationName,
-                                                   object: nil)
-            
+                                                       selector: #selector(didPickAssets(notification:)),
+                                                       name: PhotoPickerPickAssetsNotificationName,
+                                                       object: nil)
+
             NotificationCenter.assetPicker.addObserver(self,
-                                                   selector: #selector(didCancel(notification:)),
-                                                   name: PhotoPickerCancelNotificationName,
-                                                   object: nil)
+                                                       selector: #selector(didCancel(notification:)),
+                                                       name: PhotoPickerCancelNotificationName,
+                                                       object: nil)
         }
         setupNavigationBar: do {
             let dismissBarButtonItem = UIBarButtonItem(title: configuration.localize.dismiss, style: .plain, target: self, action: #selector(dismissPicker(sender:)))
@@ -74,20 +74,20 @@ public final class MosaiqueAssetPickerViewController : UINavigationController {
             navigationBar.tintColor = configuration.tintColor
         }
     }
-    
+
     @objc func didPickImages(notification: Notification) {
         if let images = notification.object as? [UIImage] {
             self.pickerDelegate?.photoPicker(self, didPickImages: images)
         }
         assetFutures = nil
     }
-    
-    @objc func didCancel(notification: Notification) {
+
+    @objc func didCancel(notification _: Notification) {
         self.pickerDelegate?.photoPickerDidCancel(self)
         assetFutures = nil
     }
-    
-    @objc func dismissPicker(sender: Any) {
+
+    @objc func dismissPicker(sender _: Any) {
         NotificationCenter.assetPicker.post(name: PhotoPickerCancelNotificationName, object: nil)
     }
 
@@ -99,7 +99,6 @@ public final class MosaiqueAssetPickerViewController : UINavigationController {
     }
 }
 
-
 // MARK: Builder pattern
 
 extension MosaiqueAssetPickerViewController {
@@ -108,56 +107,56 @@ extension MosaiqueAssetPickerViewController {
         configuration.selectionMode = selectionMode
         return self
     }
-    
+
     @discardableResult
     public func setSelectionMode(_ selectionColor: UIColor) -> MosaiqueAssetPickerViewController {
         configuration.selectionColor = selectionColor
         return self
     }
-    
+
     @discardableResult
     public func setSelectionColor(_ tintColor: UIColor) -> MosaiqueAssetPickerViewController {
         configuration.tintColor = tintColor
         return self
     }
-    
+
     @discardableResult
     public func setNumberOfItemsPerRow(_ numberOfItemsPerRow: Int) -> MosaiqueAssetPickerViewController {
         configuration.numberOfItemsPerRow = numberOfItemsPerRow
         return self
     }
-    
+
     @discardableResult
     public func setCellSpacing(_ spacing: CGFloat) -> MosaiqueAssetPickerViewController {
         configuration.cellSpacing = spacing
         return self
     }
-    
+
     @discardableResult
     public func setHeaderView(_ headerView: UIView, isHeaderFloating: Bool) -> MosaiqueAssetPickerViewController {
         configuration.headerView = headerView
         configuration.isHeaderFloating = isHeaderFloating
         return self
     }
-    
+
     @discardableResult
     public func setCellRegistrator(_ cellRegistrator: AssetPickerCellRegistrator) -> MosaiqueAssetPickerViewController {
         configuration.cellRegistrator = cellRegistrator
         return self
     }
-    
+
     @discardableResult
     public func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType]) -> MosaiqueAssetPickerViewController {
         configuration.supportOnlyMediaTypes = supportOnlyMediaType
         return self
     }
-    
+
     @discardableResult
     public func disableOnLibraryScrollAnimation() -> MosaiqueAssetPickerViewController {
         configuration.disableOnLibraryScrollAnimation = true
         return self
     }
-    
+
     @discardableResult
     public func localize(_ localize: LocalizedStrings) -> MosaiqueAssetPickerViewController {
         configuration.localize = localize

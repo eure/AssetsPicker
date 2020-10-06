@@ -7,11 +7,10 @@
 //
 
 import Foundation
-import UIKit
 import Photos
+import UIKit
 
 final class SelectAssetCollectionContainerViewController: UIViewController {
-
     let configuration: MosaiqueAssetPickerConfiguration
 
     private lazy var changePermissionsButton: UIButton = {
@@ -29,11 +28,12 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
@@ -43,14 +43,14 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
 
     // MARK: User Interaction
 
-    @objc func openSettings(sender: UIButton) {
+    @objc func openSettings(sender _: UIButton) {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
 
     private func handleAuthorizations() {
         switch PHPhotoLibrary.authorizationStatus() {
         case .limited:
-            /// TODO Use configuration to determine wether to prompt for more pictures or not?
+            // TODO: Use configuration to determine wether to prompt for more pictures or not?
             setup()
         case .authorized:
             setup()
@@ -79,11 +79,11 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
         assetsCollectionsViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            assetsCollectionsViewController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
-            assetsCollectionsViewController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            assetsCollectionsViewController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            assetsCollectionsViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            ])
+            assetsCollectionsViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            assetsCollectionsViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            assetsCollectionsViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            assetsCollectionsViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
     }
 
     private func showPermissionsLabel() {
@@ -98,8 +98,7 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
             changePermissionsButton.leftAnchor.constraint(equalTo: view.leftAnchor),
             changePermissionsButton.rightAnchor.constraint(equalTo: view.rightAnchor),
             changePermissionsButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            ]
+        ]
         )
     }
-
 }

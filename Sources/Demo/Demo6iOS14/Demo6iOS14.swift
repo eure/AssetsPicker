@@ -6,8 +6,8 @@
 //  Copyright © 2019 eureka, Inc. All rights reserved.
 //
 
-import UIKit
 import MosaiqueAssetsPicker
+import UIKit
 
 class Demo6iOS14: UIViewController {
     // MARK: Lifecycle
@@ -18,23 +18,21 @@ class Demo6iOS14: UIViewController {
 
     // MARK: User Interaction
 
-    @IBAction func didTapPresentButton(_ sender: Any) {
+    @IBAction func didTapPresentButton(_: Any) {
         present(MosaiqueAssetPickerPresenter.controller(delegate: self), animated: true, completion: nil)
     }
 }
 
 extension Demo6iOS14: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {
+    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
 
-    }
-
-    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
-        self.dismiss(animated: true, completion: nil)
+    func photoPicker(_: UIViewController, didPickImages images: [UIImage]) {
+        dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
 
-    func photoPickerDidCancel(_ controller: UIViewController) {
+    func photoPickerDidCancel(_: UIViewController) {
         print("photoPickerDidCancel")
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

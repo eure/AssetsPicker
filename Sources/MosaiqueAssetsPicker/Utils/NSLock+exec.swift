@@ -10,9 +10,9 @@ import Foundation
 
 extension NSLock {
     func exec<T>(proc: () -> T) -> T {
-        self.lock()
+        lock()
         let result = proc()
-        self.unlock()
+        unlock()
         return result
     }
 }

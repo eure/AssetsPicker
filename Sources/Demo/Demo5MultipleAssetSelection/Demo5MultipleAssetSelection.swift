@@ -6,11 +6,10 @@
 //  Copyright © 2019 eureka, Inc. All rights reserved.
 //
 
-import UIKit
 import MosaiqueAssetsPicker
+import UIKit
 
 class Demo5MultipleAssetSelection: UIViewController {
-
     // MARK: Lifecycle
 
     override func viewDidLoad() {
@@ -19,7 +18,7 @@ class Demo5MultipleAssetSelection: UIViewController {
 
     // MARK: User Interaction
 
-    @IBAction func didTapPresentButton(_ sender: Any) {
+    @IBAction func didTapPresentButton(_: Any) {
         let photoPicker = MosaiqueAssetPickerViewController()
         photoPicker.setSelectionMode(.multiple(limit: 3))
         photoPicker.pickerDelegate = self
@@ -29,15 +28,15 @@ class Demo5MultipleAssetSelection: UIViewController {
 }
 
 extension Demo5MultipleAssetSelection: MosaiqueAssetPickerDelegate {
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) { }
+    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
 
-    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
-        self.dismiss(animated: true, completion: nil)
+    func photoPicker(_: UIViewController, didPickImages images: [UIImage]) {
+        dismiss(animated: true, completion: nil)
         print("main didPickImages = \(images)")
     }
 
-    func photoPickerDidCancel(_ controller: UIViewController) {
+    func photoPickerDidCancel(_: UIViewController) {
         print("photoPickerDidCancel")
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
