@@ -13,11 +13,15 @@ public protocol MosaiqueAssetPickerDelegate: class {
 
     func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage])
     /// [Optional] Will be called when the user press the done button. At this point, you can either:
-    /// - Keep or dissmiss the view controller and continue forward with the `AssetDownload` object
+    /// - Keep or dissmiss the view controller and continue forward with the `AssetFuture` object
     /// - Wait for the images to be ready (will be provided with by the `didPickImages`
     func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture])
 
     func photoPickerDidCancel(_ controller: UIViewController)
+}
+
+extension MosaiqueAssetPickerDelegate {
+    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {}
 }
 
 public final class MosaiqueAssetPickerViewController : UINavigationController {
