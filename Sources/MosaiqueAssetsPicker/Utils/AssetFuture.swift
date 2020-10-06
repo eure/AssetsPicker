@@ -1,5 +1,5 @@
 //
-//  AssetDownload.swift
+//  AssetFuture.swift
 //  AssetsPicker
 //
 //  Created by Antoine Marandon on 09/12/2019.
@@ -11,6 +11,8 @@ import Photos
 import UIKit
 import PhotosUI
 
+/// Represent a picked asset
+/// The relevant images might not be available (ie: downloading, resizing) yet.
 public class AssetFuture {
     public enum AssetRepresentation {
         public struct PHPickerResultWrapper {
@@ -38,6 +40,9 @@ public class AssetFuture {
         }
     }
     public let assetRepresentation: AssetRepresentation
+    /// Set this callback to get the final UIImage.
+    /// Might be called from a background thread
+    /// Might be called immediately if the image is already available.
     public var onComplete: ((Result<UIImage, NSError>) -> Void)? {
         didSet {
             guard onComplete != nil else { return }
@@ -50,6 +55,9 @@ public class AssetFuture {
             cancelBackgroundTaskIfNeed()
         }
     }
+    /// Set this callback to get the thumbnail UIImage.
+    /// Might be called from a background thread
+    /// Might be called immediately if the image is already available.
     public var onThumbnailCompletion: ((Result<UIImage, NSError>) -> Void)? {
         didSet {
             guard onThumbnailCompletion != nil else { return }

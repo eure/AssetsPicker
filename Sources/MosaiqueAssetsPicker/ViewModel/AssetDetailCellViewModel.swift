@@ -40,7 +40,7 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
     private let imageManager: PHCachingImageManager
     private let selectionContainer: SelectionContainer<AssetDetailCellViewModel>
     private var imagePreviewId: PHImageRequestID?
-    private var assetDownload: AssetFuture?
+    private var assetFuture: AssetFuture?
     private weak var weakThumbnail: UIImage?
     private var thumbnail: UIImage?
 
@@ -103,31 +103,31 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         options.version = .current
         options.resizeMode = .exact
         isDownloading = true
-        let assetDownload = AssetFuture(asset: asset)
+        let assetFuture = AssetFuture(asset: asset)
         let imageRequestID = imageManager.requestImage(
             for: asset,
             targetSize: CGSize(width: 1920, height: 1920),
             contentMode: .default,
-            options: options) { [weak self, weak assetDownload] (image, userInfo) in
+            options: options) { [weak self, weak assetFuture] (image, userInfo) in
                 onNext(image)
                 self?.isDownloading = false
                 if let image = image {
-                    assetDownload?.finalImageResult = .success(image)
+                    assetFuture?.finalImageResult = .success(image)
                 } else {
                     let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
-                    assetDownload?.finalImageResult = .failure(error)
+                    assetFuture?.finalImageResult = .failure(error)
                 }
         }
-        assetDownload.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetDownload] (image, userInfo) in
+        assetFuture.thumbnailRequestID = _fetchPreviewImage(onNext: { [weak assetFuture] (image, userInfo) in
             if let image = image {
-                assetDownload?.thumbnailResult = .success(image)
+                assetFuture?.thumbnailResult = .success(image)
             } else {
                 let error = userInfo?["PHImageErrorKey"] as? NSError ?? NSError()
-                assetDownload?.thumbnailResult = .failure(error)
+                assetFuture?.thumbnailResult = .failure(error)
             }
             }, size: .init(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
-        assetDownload.imageRequestID = imageRequestID
-        return assetDownload
+        assetFuture.imageRequestID = imageRequestID
+        return assetFuture
     }
 
     
