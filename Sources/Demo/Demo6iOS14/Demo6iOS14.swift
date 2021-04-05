@@ -30,19 +30,19 @@ extension Demo6iOS14: MosaiqueAssetPickerDelegate {
 
     }
 
-    func photoPicker(_: UIViewController, didPickAssets  assets: [AssetFuture]) {
-        assets.first?.onComplete = {
+    func photoPicker(_ controller: UIViewController, didPickAssets  assets: [AssetFuture]) {
+        assets.first?.onComplete = { [weak self] in
+            _ = assets // capture
             switch $0 {
             case .success(let image):
-                print("Success!")
                 DispatchQueue.main.async {
-                    self.imageView.image = image
+                    self?.imageView.image = image
                 }
-                    //WEAK
             case .failure(let error):
                 print("Failed with \(error)")
             }
         }
+        controller.dismiss(animated: true, completion: {})
     }
 
     func photoPickerDidCancel(_: UIViewController) {

@@ -14,6 +14,9 @@ import UIKit
 /// Represent a picked asset
 /// The relevant images might not be available (ie: downloading, resizing) yet.
 public class AssetFuture {
+    public enum Error: Swift.Error {
+        case couldNotCreateUIImage
+    }
     public enum AssetRepresentation {
         public struct PHPickerResultWrapper {
             private let result: Any
@@ -47,7 +50,7 @@ public class AssetFuture {
     /// Set this callback to get the final UIImage.
     /// Might be called from a background thread
     /// Might be called immediately if the image is already available.
-    public var onComplete: ((Result<UIImage, NSError>) -> Void)? {
+    public var onComplete: ((Result<UIImage, Swift.Error>) -> Void)? {
         didSet {
             guard onComplete != nil else { return }
             lock.exec {
@@ -63,7 +66,7 @@ public class AssetFuture {
     /// Set this callback to get the thumbnail UIImage.
     /// Might be called from a background thread
     /// Might be called immediately if the image is already available.
-    public var onThumbnailCompletion: ((Result<UIImage, NSError>) -> Void)? {
+    public var onThumbnailCompletion: ((Result<UIImage, Swift.Error>) -> Void)? {
         didSet {
             guard onThumbnailCompletion != nil else { return }
             lock.exec {
@@ -75,7 +78,7 @@ public class AssetFuture {
         }
     }
 
-    public internal(set) var thumbnailResult: Result<UIImage, NSError>? {
+    public internal(set) var thumbnailResult: Result<UIImage, Swift.Error>? {
         didSet {
             guard let thumbnailResult = thumbnailResult else { preconditionFailure("thumbnailResult must not be set to nil") }
             lock.exec {
@@ -85,7 +88,7 @@ public class AssetFuture {
         }
     }
 
-    public internal(set) var finalImageResult: Result<UIImage, NSError>? {
+    public internal(set) var finalImageResult: Result<UIImage, Swift.Error>? {
         didSet {
             lock.exec {
                 guard let finalImageResult = finalImageResult else { preconditionFailure("finalImageResult must not be set to nil") }
@@ -120,23 +123,22 @@ public class AssetFuture {
                 if let result = $0 as? UIImage {
                     self.finalImageResult = .success(result)
                 } else {
-                    self.finalImageResult = .failure($1 as NSError? ?? .init())
+                    self.finalImageResult = .failure($1 ?? Error.couldNotCreateUIImage)
                 }
             }
         } else {
             /// Try to load in a CIImage, support for RAW/DNG files
             let typeIdentifier = pickerResult.itemProvider.registeredTypeIdentifiers.first ?? "" // XXX What if there is an other type identifier ?
             pickerResult.itemProvider.loadDataRepresentation(forTypeIdentifier: typeIdentifier) { (data, error) in
-                if let error = error {
-                    print("Unhandled format ? \(error)")
-                    self.finalImageResult = .failure(error as NSError)
+                if let data = data {
+                    if let image = CIImage(data: data) {
+                        self.finalImageResult = .success(UIImage(ciImage: image))
+                    } else {
+                        self.finalImageResult = .failure(Error.couldNotCreateUIImage)
+                    }
+                } else if let error = error {
+                    self.finalImageResult = .failure(error)
                     return
-                }
-                pickerResult.itemProvider
-                if let data = data, let image = CIImage(data: data) {
-                    self.finalImageResult = .success(UIImage(ciImage: image))
-                } else {
-                    self.finalImageResult = .failure(.init()) /// CRASH !!!
                 }
             }
         }
@@ -146,7 +148,7 @@ public class AssetFuture {
             if let result = $0 as? UIImage {
                 self.thumbnailResult = .success(result)
             } else if let error = $1 { // If the full size image is readily available, this will fail without error.
-                self.thumbnailResult = .failure(error as NSError)
+                self.thumbnailResult = .failure(error)
             }
         }
     }

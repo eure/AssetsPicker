@@ -345,16 +345,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hy-Pv-gz4">
-                                <rect key="frame" x="156.5" y="316.5" width="62" height="34"/>
-                                <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Present">
-                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTapPresentButton:" destination="q1A-nP-EUN" eventType="touchUpInside" id="Xad-1A-lSg"/>
-                                </connections>
-                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xuV-vl-v9i">
                                 <rect key="frame" x="16" y="60" width="343" height="180"/>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
@@ -368,16 +358,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jub-G7-j6s">
+                                <rect key="frame" x="156.5" y="325" width="62" height="34"/>
+                                <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Present">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapPresentButton:" destination="q1A-nP-EUN" eventType="touchUpInside" id="xUd-wl-TAF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="95a-3p-hPs"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="jub-G7-j6s" firstAttribute="top" secondItem="REe-so-PzG" secondAttribute="bottom" constant="48" id="0NW-Ft-AU4"/>
                             <constraint firstItem="xuV-vl-v9i" firstAttribute="leading" secondItem="95a-3p-hPs" secondAttribute="leading" constant="16" id="Bcf-X2-jga"/>
+                            <constraint firstItem="jub-G7-j6s" firstAttribute="centerX" secondItem="95a-3p-hPs" secondAttribute="centerX" id="Bcn-Ap-vd5"/>
                             <constraint firstItem="REe-so-PzG" firstAttribute="centerX" secondItem="95a-3p-hPs" secondAttribute="centerX" id="D0f-d1-2D6"/>
-                            <constraint firstItem="5hy-Pv-gz4" firstAttribute="centerY" secondItem="WNV-ex-yq8" secondAttribute="centerY" id="NSB-eB-Fil"/>
                             <constraint firstItem="95a-3p-hPs" firstAttribute="trailing" secondItem="xuV-vl-v9i" secondAttribute="trailing" constant="16" id="Phg-uo-6eG"/>
                             <constraint firstItem="REe-so-PzG" firstAttribute="top" secondItem="xuV-vl-v9i" secondAttribute="bottom" constant="16" id="Ygo-SN-eew"/>
-                            <constraint firstItem="5hy-Pv-gz4" firstAttribute="centerX" secondItem="WNV-ex-yq8" secondAttribute="centerX" id="i0b-uY-BRX"/>
                             <constraint firstItem="xuV-vl-v9i" firstAttribute="top" secondItem="95a-3p-hPs" secondAttribute="top" constant="16" id="rL1-fS-5q7"/>
                         </constraints>
                     </view>
