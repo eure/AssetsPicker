@@ -16,6 +16,7 @@ import UIKit
 public class AssetFuture {
     public enum Error: Swift.Error {
         case couldNotCreateUIImage
+        case unkownError
     }
     public enum AssetRepresentation {
         public struct PHPickerResultWrapper {
