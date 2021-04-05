@@ -66,6 +66,8 @@ public class AssetFuture {
         }
     }
 
+    internal let internalOnComplete: ((Result<UIImage, Swift.Error>) -> Void)
+
     /// Set this callback to get the thumbnail UIImage.
     /// Might be called from a background thread
     /// Might be called immediately if the image is already available.
@@ -96,6 +98,7 @@ public class AssetFuture {
             lock.exec {
                 guard let finalImageResult = finalImageResult else { preconditionFailure("finalImageResult must not be set to nil") }
                 onComplete?(finalImageResult)
+                internalOnComplete(finalImageResult)
                 imageRequestID = nil
             }
             cancelBackgroundTaskIfNeed()
@@ -107,7 +110,8 @@ public class AssetFuture {
     internal var thumbnailRequestID: PHImageRequestID?
     internal var imageRequestID: PHImageRequestID?
 
-    init(asset: PHAsset) {
+    init(asset: PHAsset, _ internalOnComplete: @escaping ((Result<UIImage, Swift.Error>) -> Void)) {
+        self.internalOnComplete = internalOnComplete
         assetRepresentation = .asset(asset: asset)
         taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
             self?.cancelBackgroundTaskIfNeed()
@@ -115,7 +119,8 @@ public class AssetFuture {
     }
 
     @available(iOS 14, *)
-    init(pickerResult: PHPickerResult) {
+    init(pickerResult: PHPickerResult, _ internalOnComplete: @escaping ((Result<UIImage, Swift.Error>) -> Void)) {
+        self.internalOnComplete = internalOnComplete
         assetRepresentation = .result(object: .init(pickerResult))
         taskID = UIApplication.shared.beginBackgroundTask(withName: "AssetPicker.download", expirationHandler: { [weak self] in
             self?.cancelBackgroundTaskIfNeed()

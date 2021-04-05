@@ -102,14 +102,20 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         options.version = .current
         options.resizeMode = .exact
         isDownloading = true
-        let assetFuture = AssetFuture(asset: asset)
+        let assetFuture = AssetFuture(asset: asset, {
+            switch $0 {
+            case .success(let image):
+                onNext(image)
+            case .failure(_):
+                onNext(nil)
+            }
+        })
         let imageRequestID = imageManager.requestImage(
             for: asset,
             targetSize: CGSize(width: 1920, height: 1920),
             contentMode: .default,
             options: options
         ) { [weak self, weak assetFuture] image, userInfo in
-            onNext(image)
             self?.isDownloading = false
             if let image = image {
                 assetFuture?.finalImageResult = .success(image)

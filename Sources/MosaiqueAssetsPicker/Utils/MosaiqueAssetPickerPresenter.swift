@@ -43,28 +43,25 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
 
     @available(iOS 14, *)
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        let assetsDownloads: [AssetFuture] = results.map { .init(pickerResult: $0) }
-        delegate?.photoPicker(picker, didPickAssets: assetsDownloads)
-
         let dispatchGroup = DispatchGroup()
         var images: [UIImage] = []
+        var assetFutures: [AssetFuture] = []
         for result in results {
             dispatchGroup.enter()
-            if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
-                result.itemProvider.loadObject(ofClass: UIImage.self) { image, _ in
-                    if let image = image as? UIImage {
-                        DispatchQueue.main.async {
-                            images.append(image)
-                            dispatchGroup.leave()
-                        }
-                    } else {
-                        dispatchGroup.leave()
+            assetFutures.append(AssetFuture(pickerResult: result) { (imageResult) in
+                switch imageResult {
+                case .success(let image):
+                    DispatchQueue.main.async {
+                        images.append(image)
                     }
+                case .failure(_):
+                    break
                 }
-            } else {
                 dispatchGroup.leave()
-            }
+            })
         }
+        delegate?.photoPicker(picker, didPickAssets: assetFutures)
+
         dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
             if images.isEmpty {
                 self?.delegate?.photoPickerDidCancel(picker)
