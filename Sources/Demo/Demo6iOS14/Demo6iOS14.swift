@@ -21,14 +21,28 @@ class Demo6iOS14: UIViewController {
     @IBAction func didTapPresentButton(_: Any) {
         present(MosaiqueAssetPickerPresenter.controller(delegate: self), animated: true, completion: nil)
     }
+
+    @IBOutlet var imageView: UIImageView!
 }
 
 extension Demo6iOS14: MosaiqueAssetPickerDelegate {
-    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
+    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
 
-    func photoPicker(_: UIViewController, didPickImages images: [UIImage]) {
-        dismiss(animated: true, completion: nil)
-        print("main didPickImages = \(images)")
+    }
+
+    func photoPicker(_: UIViewController, didPickAssets  assets: [AssetFuture]) {
+        assets.first?.onComplete = {
+            switch $0 {
+            case .success(let image):
+                print("Success!")
+                DispatchQueue.main.async {
+                    self.imageView.image = image
+                }
+                    //WEAK
+            case .failure(let error):
+                print("Failed with \(error)")
+            }
+        }
     }
 
     func photoPickerDidCancel(_: UIViewController) {

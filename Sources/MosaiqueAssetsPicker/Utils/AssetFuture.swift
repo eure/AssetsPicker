@@ -123,16 +123,31 @@ public class AssetFuture {
                     self.finalImageResult = .failure($1 as NSError? ?? .init())
                 }
             }
-            pickerResult.itemProvider.loadPreviewImage(options: [:]) { [weak self] in
-                guard let self = self else { return }
-                if let result = $0 as? UIImage {
-                    self.thumbnailResult = .success(result)
-                } else if let error = $1 { // If the full size image is readily available, this will fail without error.
-                    self.thumbnailResult = .failure(error as NSError)
+        } else {
+            /// Try to load in a CIImage, support for RAW/DNG files
+            let typeIdentifier = pickerResult.itemProvider.registeredTypeIdentifiers.first ?? "" // XXX What if there is an other type identifier ?
+            pickerResult.itemProvider.loadDataRepresentation(forTypeIdentifier: typeIdentifier) { (data, error) in
+                if let error = error {
+                    print("Unhandled format ? \(error)")
+                    self.finalImageResult = .failure(error as NSError)
+                    return
+                }
+                pickerResult.itemProvider
+                if let data = data, let image = CIImage(data: data) {
+                    self.finalImageResult = .success(UIImage(ciImage: image))
+                } else {
+                    self.finalImageResult = .failure(.init()) /// CRASH !!!
                 }
             }
-        } else {
-            finalImageResult = .failure(.init())
+        }
+
+        pickerResult.itemProvider.loadPreviewImage(options: [:]) { [weak self] in
+            guard let self = self else { return }
+            if let result = $0 as? UIImage {
+                self.thumbnailResult = .success(result)
+            } else if let error = $1 { // If the full size image is readily available, this will fail without error.
+                self.thumbnailResult = .failure(error as NSError)
+            }
         }
     }
 
