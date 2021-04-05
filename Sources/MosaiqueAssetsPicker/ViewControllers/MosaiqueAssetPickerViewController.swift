@@ -101,64 +101,64 @@ public final class MosaiqueAssetPickerViewController: UINavigationController {
 
 // MARK: Builder pattern
 
-extension MosaiqueAssetPickerViewController {
+public extension MosaiqueAssetPickerViewController {
     @discardableResult
-    public func setSelectionMode(_ selectionMode: SelectionMode) -> MosaiqueAssetPickerViewController {
+    func setSelectionMode(_ selectionMode: SelectionMode) -> MosaiqueAssetPickerViewController {
         configuration.selectionMode = selectionMode
         return self
     }
 
     @discardableResult
-    public func setSelectionMode(_ selectionColor: UIColor) -> MosaiqueAssetPickerViewController {
+    func setSelectionMode(_ selectionColor: UIColor) -> MosaiqueAssetPickerViewController {
         configuration.selectionColor = selectionColor
         return self
     }
 
     @discardableResult
-    public func setSelectionColor(_ tintColor: UIColor) -> MosaiqueAssetPickerViewController {
+    func setSelectionColor(_ tintColor: UIColor) -> MosaiqueAssetPickerViewController {
         configuration.tintColor = tintColor
         return self
     }
 
     @discardableResult
-    public func setNumberOfItemsPerRow(_ numberOfItemsPerRow: Int) -> MosaiqueAssetPickerViewController {
+    func setNumberOfItemsPerRow(_ numberOfItemsPerRow: Int) -> MosaiqueAssetPickerViewController {
         configuration.numberOfItemsPerRow = numberOfItemsPerRow
         return self
     }
 
     @discardableResult
-    public func setCellSpacing(_ spacing: CGFloat) -> MosaiqueAssetPickerViewController {
+    func setCellSpacing(_ spacing: CGFloat) -> MosaiqueAssetPickerViewController {
         configuration.cellSpacing = spacing
         return self
     }
 
     @discardableResult
-    public func setHeaderView(_ headerView: UIView, isHeaderFloating: Bool) -> MosaiqueAssetPickerViewController {
+    func setHeaderView(_ headerView: UIView, isHeaderFloating: Bool) -> MosaiqueAssetPickerViewController {
         configuration.headerView = headerView
         configuration.isHeaderFloating = isHeaderFloating
         return self
     }
 
     @discardableResult
-    public func setCellRegistrator(_ cellRegistrator: AssetPickerCellRegistrator) -> MosaiqueAssetPickerViewController {
+    func setCellRegistrator(_ cellRegistrator: AssetPickerCellRegistrator) -> MosaiqueAssetPickerViewController {
         configuration.cellRegistrator = cellRegistrator
         return self
     }
 
     @discardableResult
-    public func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType]) -> MosaiqueAssetPickerViewController {
+    func setMediaTypes(_ supportOnlyMediaType: [PHAssetMediaType]) -> MosaiqueAssetPickerViewController {
         configuration.supportOnlyMediaTypes = supportOnlyMediaType
         return self
     }
 
     @discardableResult
-    public func disableOnLibraryScrollAnimation() -> MosaiqueAssetPickerViewController {
+    func disableOnLibraryScrollAnimation() -> MosaiqueAssetPickerViewController {
         configuration.disableOnLibraryScrollAnimation = true
         return self
     }
 
     @discardableResult
-    public func localize(_ localize: LocalizedStrings) -> MosaiqueAssetPickerViewController {
+    func localize(_ localize: LocalizedStrings) -> MosaiqueAssetPickerViewController {
         configuration.localize = localize
         return self
     }

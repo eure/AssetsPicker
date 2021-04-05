@@ -16,8 +16,10 @@ import UIKit
 public class AssetFuture {
     public enum Error: Swift.Error {
         case couldNotCreateUIImage
+        case assetHasNoTypeIdentifier
         case unknownError
     }
+
     public enum AssetRepresentation {
         public struct PHPickerResultWrapper {
             private let result: Any
@@ -129,8 +131,11 @@ public class AssetFuture {
             }
         } else {
             /// Try to load in a CIImage, support for RAW/DNG files
-            let typeIdentifier = pickerResult.itemProvider.registeredTypeIdentifiers.first ?? "" // XXX What if there is an other type identifier ?
-            pickerResult.itemProvider.loadDataRepresentation(forTypeIdentifier: typeIdentifier) { (data, error) in
+            guard let typeIdentifier = pickerResult.itemProvider.registeredTypeIdentifiers.first else {
+                finalImageResult = .failure(Error.assetHasNoTypeIdentifier)
+                return
+            }
+            pickerResult.itemProvider.loadDataRepresentation(forTypeIdentifier: typeIdentifier) { data, error in
                 if let data = data {
                     if let image = CIImage(data: data) {
                         self.finalImageResult = .success(UIImage(ciImage: image))
@@ -140,6 +145,8 @@ public class AssetFuture {
                 } else if let error = error {
                     self.finalImageResult = .failure(error)
                     return
+                } else {
+                    self.finalImageResult = .failure(Error.unknownError)
                 }
             }
         }
