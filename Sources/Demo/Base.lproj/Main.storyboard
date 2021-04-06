@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zLm-2b-GFc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zLm-2b-GFc">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -344,29 +345,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hy-Pv-gz4">
-                                <rect key="frame" x="156.5" y="316.5" width="62" height="34"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xuV-vl-v9i">
+                                <rect key="frame" x="16" y="60" width="343" height="180"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="180" id="b7b-Jk-zft"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The first image picked will be displayed here" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="REe-so-PzG">
+                                <rect key="frame" x="19.5" y="256" width="336" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jub-G7-j6s">
+                                <rect key="frame" x="156.5" y="325" width="62" height="34"/>
                                 <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="Present">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="didTapPresentButton:" destination="q1A-nP-EUN" eventType="touchUpInside" id="Xad-1A-lSg"/>
+                                    <action selector="didTapPresentButton:" destination="q1A-nP-EUN" eventType="touchUpInside" id="xUd-wl-TAF"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="95a-3p-hPs"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="5hy-Pv-gz4" firstAttribute="centerY" secondItem="WNV-ex-yq8" secondAttribute="centerY" id="NSB-eB-Fil"/>
-                            <constraint firstItem="5hy-Pv-gz4" firstAttribute="centerX" secondItem="WNV-ex-yq8" secondAttribute="centerX" id="i0b-uY-BRX"/>
+                            <constraint firstItem="jub-G7-j6s" firstAttribute="top" secondItem="REe-so-PzG" secondAttribute="bottom" constant="48" id="0NW-Ft-AU4"/>
+                            <constraint firstItem="xuV-vl-v9i" firstAttribute="leading" secondItem="95a-3p-hPs" secondAttribute="leading" constant="16" id="Bcf-X2-jga"/>
+                            <constraint firstItem="jub-G7-j6s" firstAttribute="centerX" secondItem="95a-3p-hPs" secondAttribute="centerX" id="Bcn-Ap-vd5"/>
+                            <constraint firstItem="REe-so-PzG" firstAttribute="centerX" secondItem="95a-3p-hPs" secondAttribute="centerX" id="D0f-d1-2D6"/>
+                            <constraint firstItem="95a-3p-hPs" firstAttribute="trailing" secondItem="xuV-vl-v9i" secondAttribute="trailing" constant="16" id="Phg-uo-6eG"/>
+                            <constraint firstItem="REe-so-PzG" firstAttribute="top" secondItem="xuV-vl-v9i" secondAttribute="bottom" constant="16" id="Ygo-SN-eew"/>
+                            <constraint firstItem="xuV-vl-v9i" firstAttribute="top" secondItem="95a-3p-hPs" secondAttribute="top" constant="16" id="rL1-fS-5q7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="CFW-gb-3Na"/>
+                    <connections>
+                        <outlet property="imageView" destination="xuV-vl-v9i" id="nWA-su-EMz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e3p-cc-TRF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1841" y="2467"/>
+            <point key="canvasLocation" x="1840.8" y="2466.1169415292356"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

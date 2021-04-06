@@ -130,8 +130,8 @@ extension AssetCollectionViewModel: PHPhotoLibraryChangeObserver {
     }
 }
 
-extension PHFetchResult where ObjectType == PHAssetCollection {
-    fileprivate func toArray() -> [PHAssetCollection] {
+private extension PHFetchResult where ObjectType == PHAssetCollection {
+    func toArray() -> [PHAssetCollection] {
         var array: [PHAssetCollection] = []
         array.reserveCapacity(count)
         enumerateObjects { asset, _, _ in
