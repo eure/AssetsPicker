@@ -157,8 +157,11 @@ public class AssetFuture {
                             ],
                         ]
                     }()
-                    if let image = CIImage(data: data, options: options) {
-                        self.finalImageResult = .success(UIImage(ciImage: image))
+                    if let image: CGImage = CIImage(data: data, options: options).flatMap({
+                        let context = CIContext()
+                        return context.createCGImage($0, from: $0.extent)
+                    }) {
+                        self.finalImageResult = .success(UIImage(cgImage: image))
                     } else {
                         self.finalImageResult = .failure(Error.couldNotCreateUIImage)
                     }
