@@ -48,13 +48,13 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
         var assetFutures: [AssetFuture] = []
         for result in results {
             dispatchGroup.enter()
-            assetFutures.append(AssetFuture(pickerResult: result) { (imageResult) in
+            assetFutures.append(AssetFuture(pickerResult: result) { imageResult in
                 switch imageResult {
-                case .success(let image):
+                case let .success(image):
                     DispatchQueue.main.async {
                         images.append(image)
                     }
-                case .failure(_):
+                case .failure:
                     break
                 }
                 dispatchGroup.leave()

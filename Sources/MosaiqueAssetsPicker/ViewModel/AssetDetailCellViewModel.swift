@@ -102,14 +102,14 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         options.version = .current
         options.resizeMode = .exact
         isDownloading = true
-        let assetFuture = AssetFuture(asset: asset, {
+        let assetFuture = AssetFuture(asset: asset) {
             switch $0 {
-            case .success(let image):
+            case let .success(image):
                 onNext(image)
-            case .failure(_):
+            case .failure:
                 onNext(nil)
             }
-        })
+        }
         let imageRequestID = imageManager.requestImage(
             for: asset,
             targetSize: CGSize(width: 1920, height: 1920),

@@ -66,7 +66,7 @@ public class AssetFuture {
         }
     }
 
-    internal let internalOnComplete: ((Result<UIImage, Swift.Error>) -> Void)
+    internal let internalOnComplete: (Result<UIImage, Swift.Error>) -> Void
 
     /// Set this callback to get the thumbnail UIImage.
     /// Might be called from a background thread
@@ -142,7 +142,22 @@ public class AssetFuture {
             }
             pickerResult.itemProvider.loadDataRepresentation(forTypeIdentifier: typeIdentifier) { data, error in
                 if let data = data {
-                    if let image = CIImage(data: data) {
+                    let options: [CIImageOption: Any]? = {
+                        let propertiesOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+                        guard let imageSource = CGImageSourceCreateWithData(data as CFData, nil),
+                              let properties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, propertiesOptions) as? [CFString: Any],
+                              let orientationValue = properties[kCGImagePropertyOrientation]
+                        else {
+                            return nil
+                        }
+                        return [
+                            CIImageOption.applyOrientationProperty: true,
+                            CIImageOption.properties: [
+                                kCGImagePropertyOrientation: orientationValue,
+                            ],
+                        ]
+                    }()
+                    if let image = CIImage(data: data, options: options) {
                         self.finalImageResult = .success(UIImage(ciImage: image))
                     } else {
                         self.finalImageResult = .failure(Error.couldNotCreateUIImage)
