@@ -14,6 +14,7 @@ import PhotosUI
 public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate {
     private weak var delegate: MosaiqueAssetPickerDelegate?
     private let configuration: MosaiqueAssetPickerConfiguration
+    private var assetFutures: [AssetFuture]?
 
     public static func controller(delegate: MosaiqueAssetPickerDelegate, configuration: MosaiqueAssetPickerConfiguration = .init()) -> UIViewController {
         Self(delegate: delegate, configuration: configuration).controller()
@@ -60,6 +61,7 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
                 dispatchGroup.leave()
             })
         }
+        self.assetFutures = assetFutures
         delegate?.photoPicker(picker, didPickAssets: assetFutures)
 
         dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in

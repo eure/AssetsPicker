@@ -140,7 +140,8 @@ public class AssetFuture {
                 finalImageResult = .failure(Error.assetHasNoTypeIdentifier)
                 return
             }
-            pickerResult.itemProvider.loadDataRepresentation(forTypeIdentifier: typeIdentifier) { data, error in
+            pickerResult.itemProvider.loadDataRepresentation(forTypeIdentifier: typeIdentifier) { [weak self] data, error in
+                guard let self = self else { return }
                 if let data = data {
                     let options: [CIImageOption: Any]? = {
                         let propertiesOptions = [kCGImageSourceShouldCache: false] as CFDictionary

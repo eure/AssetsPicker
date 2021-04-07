@@ -26,21 +26,27 @@ class Demo6iOS14: UIViewController {
 }
 
 extension Demo6iOS14: MosaiqueAssetPickerDelegate {
-    func photoPicker(_: UIViewController, didPickImages _: [UIImage]) {}
-
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {
-        assets.first?.onComplete = { [weak self] in
-            _ = assets // capture
-            switch $0 {
-            case let .success(image):
-                DispatchQueue.main.async {
-                    self?.imageView.image = image
-                }
-            case let .failure(error):
-                print("Failed with \(error)")
-            }
+    func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
+          DispatchQueue.main.async {
+            self.imageView.image = images.first
+            controller.dismiss(animated: true, completion: {})
         }
-        controller.dismiss(animated: true, completion: {})
+    }
+
+    //Note: any of these delegates is fine, implementation is left commented for reference.
+    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {
+//        assets.first?.onComplete = { [weak self] in
+//            _ = assets // capture
+//            switch $0 {
+//            case let .success(image):
+//                DispatchQueue.main.async {
+//                    self?.imageView.image = image
+//                }
+//            case let .failure(error):
+//                print("Failed with \(error)")
+//            }
+//        }
+//        controller.dismiss(animated: true, completion: {})
     }
 
     func photoPickerDidCancel(_: UIViewController) {
