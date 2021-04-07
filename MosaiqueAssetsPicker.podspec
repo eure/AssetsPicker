@@ -22,5 +22,5 @@ Pod::Spec.new do |spec|
   spec.source_files  = ['Sources/MosaiqueAssetsPicker/**/*.{swift,h}']
   spec.requires_arc = true
   spec.ios.deployment_target = '10.0'
-  spec.swift_version = "5.0"
+  spec.swift_version = "5.3"
 end
