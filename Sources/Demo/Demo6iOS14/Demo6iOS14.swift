@@ -27,14 +27,14 @@ class Demo6iOS14: UIViewController {
 
 extension Demo6iOS14: MosaiqueAssetPickerDelegate {
     func photoPicker(_ controller: UIViewController, didPickImages images: [UIImage]) {
-          DispatchQueue.main.async {
+        DispatchQueue.main.async {
             self.imageView.image = images.first
             controller.dismiss(animated: true, completion: {})
         }
     }
 
-    //Note: any of these delegates is fine, implementation is left commented for reference.
-    func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture]) {
+    // Note: any of these delegates is fine, implementation is left commented for reference.
+    func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {
 //        assets.first?.onComplete = { [weak self] in
 //            _ = assets // capture
 //            switch $0 {
