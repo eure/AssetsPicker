@@ -26,19 +26,15 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
     }
 
     private func controller() -> UIViewController {
-        let controller: UIViewController = {
-            if #available(iOS 14, *) {
-                let controller = PHPickerViewController(configuration: configuration.assetPickerConfiguration)
-                controller.delegate = self
-                return controller
-            } else {
-                let controller = MosaiqueAssetPickerViewController()
-                controller.configuration = configuration
-                controller.pickerDelegate = delegate
-                return controller
-            }
-        }()
-        objc_setAssociatedObject(controller, Unmanaged.passUnretained(self).toOpaque(), self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        if #available(iOS 14, *) {
+            let controller = PHPickerViewController(configuration: configuration.assetPickerConfiguration)
+            controller.delegate = self
+            objc_setAssociatedObject(controller, Unmanaged.passUnretained(self).toOpaque(), self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return controller
+        }
+        let controller = MosaiqueAssetPickerViewController()
+        controller.configuration = configuration
+        controller.pickerDelegate = delegate
         return controller
     }
 
