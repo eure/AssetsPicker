@@ -35,7 +35,9 @@ public class AssetFuture {
         }
 
         case asset(asset: PHAsset)
+        #if swift(<5.5)
         @available(iOS 14, *)
+        #endif
         case result(object: PHPickerResultWrapper)
     }
 
