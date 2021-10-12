@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "MosaiqueAssetsPicker"
-  spec.version      = "1.3.1"
+  spec.version      = "1.3.3"
   spec.summary      = "Your customizable asset picker."
 
   spec.description  = "Allow your users to pick one or many images, from any album, without worrying about downloading or permissions."
@@ -22,5 +22,5 @@ Pod::Spec.new do |spec|
   spec.source_files  = ['Sources/MosaiqueAssetsPicker/**/*.{swift,h}']
   spec.requires_arc = true
   spec.ios.deployment_target = '10.0'
-  spec.swift_version = "5.3"
+  spec.swift_version = "5.5"
 end
