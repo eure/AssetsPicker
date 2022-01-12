@@ -6,6 +6,7 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Photos
 import UIKit
 
@@ -308,3 +309,4 @@ private enum HorizontalStackItemSizeCalculator {
         }
     }
 }
+#endif

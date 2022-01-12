@@ -6,6 +6,7 @@
 //  Copyright © 2019 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Photos
 import UIKit.UIImage
 
@@ -135,3 +136,4 @@ extension AssetDetailViewModel: PHPhotoLibraryChangeObserver {
         }
     }
 }
+#endif

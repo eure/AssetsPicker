@@ -6,6 +6,7 @@
 //  Copyright © 2020 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 import Photos
 import PhotosUI
@@ -69,3 +70,4 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
         }
     }
 }
+#endif

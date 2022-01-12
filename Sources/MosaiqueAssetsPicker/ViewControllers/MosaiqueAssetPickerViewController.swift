@@ -6,6 +6,7 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import enum Photos.PHAssetMediaType
 import UIKit
 
@@ -163,3 +164,4 @@ public extension MosaiqueAssetPickerViewController {
         return self
     }
 }
+#endif

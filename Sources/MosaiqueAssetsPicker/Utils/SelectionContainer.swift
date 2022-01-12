@@ -6,6 +6,7 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 import Photos
 
@@ -75,3 +76,4 @@ public final class SelectionContainer<T: ItemIdentifier> {
         selectedItems = []
     }
 }
+#endif

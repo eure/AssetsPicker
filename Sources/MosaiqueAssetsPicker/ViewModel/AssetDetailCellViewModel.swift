@@ -5,7 +5,7 @@
 //  Created by Aymen Rebouh on 2018/10/19.
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import Photos
 import UIKit.UIImage
@@ -148,3 +148,4 @@ public final class AssetDetailCellViewModel: ItemIdentifier {
         asset.localIdentifier
     }
 }
+#endif

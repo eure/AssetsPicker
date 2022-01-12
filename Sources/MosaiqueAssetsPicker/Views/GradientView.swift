@@ -6,6 +6,7 @@
 //  Copyright © 2020 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
 
 final class GradiantView: UIView {
@@ -31,3 +32,4 @@ final class GradiantView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+#endif

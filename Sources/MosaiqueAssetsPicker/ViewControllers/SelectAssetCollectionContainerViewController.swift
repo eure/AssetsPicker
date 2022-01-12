@@ -6,6 +6,7 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 import Photos
 import UIKit
@@ -102,3 +103,4 @@ final class SelectAssetCollectionContainerViewController: UIViewController {
         )
     }
 }
+#endif
