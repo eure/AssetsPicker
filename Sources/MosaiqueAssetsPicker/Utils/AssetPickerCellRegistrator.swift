@@ -6,6 +6,7 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 import UIKit
 
@@ -60,3 +61,4 @@ public class AssetPickerCellRegistrator {
         customAssetItemClasses[cellType] = (cellClass, cellIdentifier)
     }
 }
+#endif

@@ -5,7 +5,7 @@
 //  Created by Aymen Rebouh on 2018/10/19.
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import UIKit
 
@@ -167,3 +167,4 @@ extension AssetDetailCell: AssetDetailCellViewModelDelegate {
         setDownloading(isDownloading)
     }
 }
+#endif

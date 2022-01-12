@@ -140,6 +140,14 @@ You can default to it if the user runs iOS 14 by using the new API:
 
 ```pod 'MosaiqueAssetsPicker'```
 
+### SPM:
+
+```
+dependencies: [
+    .package(url: "https://github.com/eure/AssetsPicker.git", .upToNextMajor(from: "1.3.0"))
+]
+```
+
 ### What's using MosaiqueAssetsPicker
 
 - Pairs Engage

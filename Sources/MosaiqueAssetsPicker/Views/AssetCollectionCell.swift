@@ -5,7 +5,7 @@
 //  Created by Aymen Rebouh on 2018/10/18.
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import UIKit
 
@@ -108,3 +108,4 @@ extension AssetCollectionCell: AssetsCollectionCellViewModelDelegate {
         assetNumberOfItemsLabel.text = numberOfAssets
     }
 }
+#endif

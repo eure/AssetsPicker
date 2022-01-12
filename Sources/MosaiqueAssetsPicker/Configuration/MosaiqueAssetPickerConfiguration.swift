@@ -6,6 +6,8 @@
 //  Copyright © 2018 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
+
 import Foundation
 import enum Photos.PHAssetMediaType
 import PhotosUI
@@ -109,3 +111,4 @@ public struct MosaiqueAssetPickerConfiguration {
 
     public init() {}
 }
+#endif

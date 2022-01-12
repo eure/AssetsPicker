@@ -6,6 +6,7 @@
 //  Copyright © 2019 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 
 extension NSLock {
@@ -16,3 +17,4 @@ extension NSLock {
         return result
     }
 }
+#endif

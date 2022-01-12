@@ -6,6 +6,7 @@
 //  Copyright © 2019 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 import Photos
 import PhotosUI
@@ -208,3 +209,4 @@ public class AssetFuture {
         }
     }
 }
+#endif

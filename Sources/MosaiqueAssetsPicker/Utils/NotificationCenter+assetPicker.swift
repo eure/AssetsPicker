@@ -6,6 +6,7 @@
 //  Copyright © 2019 eureka, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 
 let PhotoPickerPickAssetsNotificationName = NSNotification.Name(rawValue: "jp.eure.assetspicke.PhotoPickerPickAssestNotification")
@@ -14,3 +15,4 @@ let PhotoPickerCancelNotificationName = NSNotification.Name(rawValue: "jp.eure.a
 extension NotificationCenter {
     static let assetPicker = NotificationCenter()
 }
+#endif
