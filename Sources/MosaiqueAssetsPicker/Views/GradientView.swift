@@ -16,7 +16,7 @@ final class GradiantView: UIView {
 
     required init(colors: [CGColor], startPoint: CGPoint, endPoint: CGPoint, type: CAGradientLayerType, locations: [NSNumber]?) {
         super.init(frame: .zero)
-        guard let layer = self.layer as? CAGradientLayer else {
+        guard let layer = layer as? CAGradientLayer else {
             assertionFailure("should be of CAGradientLayer")
             return
         }
