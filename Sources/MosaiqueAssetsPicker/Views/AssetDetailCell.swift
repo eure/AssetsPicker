@@ -130,7 +130,7 @@ final class AssetDetailCell: UICollectionViewCell, AssetDetailCellBindable {
 
     func setDownloading(_ isDownloading: Bool) {
         if isDownloading {
-            let spinner = self.spinner ?? {
+            let spinner = spinner ?? {
                 let spinner = UIActivityIndicatorView(style: .whiteLarge)
                 self.spinner = spinner
                 return spinner

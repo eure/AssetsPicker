@@ -5,14 +5,15 @@ import PackageDescription
 
 let package = Package(
     name: "MosaiqueAssetsPicker",
-     platforms: [
-        .iOS(.v10)
+    platforms: [
+        .iOS(.v10),
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "MosaiqueAssetsPicker",
-            targets: ["MosaiqueAssetsPicker"]),
+            targets: ["MosaiqueAssetsPicker"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -25,14 +26,14 @@ let package = Package(
             name: "MosaiqueAssetsPicker",
             dependencies: [],
             path: "Sources/MosaiqueAssetsPicker",
-            exclude:["Info.plist"]
-            ),
+            exclude: ["Info.plist"]
+        ),
         .testTarget(
             name: "MosaiqueAssetsPickerTests",
             dependencies: ["MosaiqueAssetsPicker"],
             path: "Tests/AssetsPickerTests",
-            exclude:["Info.plist"]
-            ),
+            exclude: ["Info.plist"]
+        ),
     ],
     swiftLanguageVersions: [.v5]
 )
