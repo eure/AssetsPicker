@@ -44,6 +44,7 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
         let dispatchGroup = DispatchGroup()
         var images: [UIImage] = []
         var assetFutures: [AssetFuture] = []
+        var failureError: Swift.Error?
         for result in results {
             dispatchGroup.enter()
             assetFutures.append(AssetFuture(pickerResult: result) { imageResult in
@@ -52,8 +53,10 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
                     DispatchQueue.main.async {
                         images.append(image)
                     }
-                case .failure:
-                    break
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        failureError = error
+                    }
                 }
                 dispatchGroup.leave()
             })
@@ -63,7 +66,11 @@ public final class MosaiqueAssetPickerPresenter: PHPickerViewControllerDelegate 
 
         dispatchGroup.notify(queue: DispatchQueue.main) { [weak self] in
             if images.isEmpty {
-                self?.delegate?.photoPickerDidCancel(picker)
+                if let failureError = failureError {
+                    self?.delegate?.photoPicker(picker, didFailPickingAssets: failureError)
+                } else {
+                    self?.delegate?.photoPickerDidCancel(picker)
+                }
             } else {
                 self?.delegate?.photoPicker(picker, didPickImages: images)
             }

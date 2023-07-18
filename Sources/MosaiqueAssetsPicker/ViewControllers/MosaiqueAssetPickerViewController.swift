@@ -17,11 +17,14 @@ public protocol MosaiqueAssetPickerDelegate: AnyObject {
     /// - Wait for the images to be ready (will be provided with by the `didPickImages`
     func photoPicker(_ controller: UIViewController, didPickAssets assets: [AssetFuture])
 
+    func photoPicker(_: UIViewController, didFailPickingAssets _: Swift.Error)
+
     func photoPickerDidCancel(_ controller: UIViewController)
 }
 
 extension MosaiqueAssetPickerDelegate {
     func photoPicker(_: UIViewController, didPickAssets _: [AssetFuture]) {}
+    func photoPicker(_: UIViewController, didFailPickingAssets _: Swift.Error) {}
 }
 
 public final class MosaiqueAssetPickerViewController: UINavigationController {
